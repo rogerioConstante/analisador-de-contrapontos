@@ -1,5 +1,5 @@
 //=========================================================================================\\ 
-//  Contraponto v0.11                                                                       \\
+//  Contraponto v0.12                                                                       \\
 //                                                                                         \\
 //  Copyright (C)2018 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,7 +24,7 @@ import MuseScore 1.1
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.11"
+      version: "0.12"
  
 // ----------------------------- janela de configuração ----------------------- 
 
@@ -82,7 +82,7 @@ MuseScore {
             				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = true; 
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
-            				 ocultSalto.checked = false; consecObli.checked = false;
+            				 ocultSalto.checked = true; consecObli.checked = false;
 								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
 								 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true; 
 								 distancia.checked = true; distQt.text = "0"; 
@@ -243,7 +243,7 @@ MuseScore {
             				 especie2.visible = false; bLabel2.color = "#000000"; 
             				 especie1.visible = false; bLabel1.color = "#000000";
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = true; quiEsp = false; melodia = false;
-            				 ambInp.text = "16"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
+            				 ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
             				 distQt.text = "2";  // 1ª espécie
@@ -253,7 +253,7 @@ MuseScore {
             				 ocultSalto.checked = true; consecObli.checked = false;
 								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
 								 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "3";
+								 distancia.checked = true; distQt.text = "5";
 								 tF.checked = false; dissNP.checked = true; // 2ª espécie
 								 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
 								 susp4.checked = true; // 4ª espécie
@@ -734,7 +734,7 @@ MuseScore {
 		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Exceto no final" }
 		 		}
 		 		
-		 	  CheckBox { id: ocultSalto; checked: false; x: 190; y: 24; 
+		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 24; 
 		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Somente se salto na voz superior" }
 		 		} 
 		  }
@@ -1993,7 +1993,7 @@ function carregarNotas() {
         		  cursor.next(); segmento = cursor.segment; 
         		    
            }; 
-    if (pausa) { vozes.splice(0, 1); pausa = false; }; 
+    if (pausa && !melodia) { vozes.splice(0, 1); pausa = false; }; 
         
    if (seg == 0) { msgErros.text += "Nenhum acorde carregado!!\n"; 
                         msgErros.estado=true; Qt.quit(); };
@@ -2549,7 +2549,7 @@ function notaIniFin() {
    var test1 = false, test2 = false, test3 = false, test4 = false, test5 = false, test6 = false;
    var nI = verificaGrauMelodico(vozes[0].tonal[voz], tom);
    var nF = verificaGrauMelodico(vozes[vozes.length-1].tonal[voz], tom);
-  
+ 
    if (tonic.checked && nI == 1) { test1 = true; }; 
    if (terça.checked && nI == 3) { test2 = true; }; 
    if (quinta.checked && nI == 5) { test3 = true; }; 
