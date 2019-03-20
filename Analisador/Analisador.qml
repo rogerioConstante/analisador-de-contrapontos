@@ -1,5 +1,5 @@
 //=========================================================================================\\ 
-//  Contraponto v0.12                                                                       \\
+//  Contraponto v0.121                                                                       \\
 //                                                                                         \\
 //  Copyright (C)2018 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -16,7 +16,7 @@
 //=========================================================================================\\
 
 import QtQuick 2.3
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 import MuseScore 1.1
@@ -24,7 +24,7 @@ import MuseScore 1.1
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.12"
+      version: "0.121"
  
 // ----------------------------- janela de configuração ----------------------- 
 
