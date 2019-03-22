@@ -1,5 +1,5 @@
 //=========================================================================================\\ 
-//  Contraponto v0.121                                                                       \\
+//  Contraponto v0.2                                                                       \\
 //                                                                                         \\
 //  Copyright (C)2018 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,7 +24,7 @@ import MuseScore 1.1
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.121"
+      version: "0.2"
  
 // ----------------------------- janela de configuração ----------------------- 
 
@@ -74,21 +74,22 @@ MuseScore {
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000"; 
             				 especie1.visible = true; bLabel1.color = "#002e77"; 
+            				 gerais.visible = true;
             				 priEsp = true; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false;
             				 ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
             				 tritono1.checked = true; melPFi.checked = true; priviGC.checked = true;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 distQt.text = "0";  // 1ª espécie
-            				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = true; 
+            				 // 1ª espécie
+            				 ultNotas.checked = true; cons.checked = true; 
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
             				 ocultSalto.checked = true; consecObli.checked = false;
-								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
-								 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "0"; 
-								 tF.checked = false; dissNP.checked = false; // 2ª espécie		
-								 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie	
-								 susp4.checked = false; // 4ª espécie	 
+										 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
+										 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true; 
+										 distancia.checked = true; distQt.text = "0"; 
+										 tF.checked = false; dissNP.checked = false; // 2ª espécie		
+										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie	
+										 susp4.checked = false; // 4ª espécie	 
             				 }
              MouseArea {
                   id: mArea1
@@ -130,21 +131,22 @@ MuseScore {
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = true; bLabel2.color = "#002e77"; 
             				 especie1.visible = false; bLabel1.color = "#000000";
+            				 gerais.visible = true;
             				 priEsp = false; secEsp = true; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; 
             				 ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 distQt.text = "1";  // 1ª espécie
-            				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = false;
+            				 // 1ª espécie
+            				 ultNotas.checked = true; cons.checked = false;
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
             				 ocultSalto.checked = true; consecObli.checked = false;
-								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
-								 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "3"; 
-								 tF.checked = true; dissNP.checked = true; // 2ª espécie
-								 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-								 susp4.checked = false; // 4ª espécie
+										 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
+										 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true; 
+										 distancia.checked = true; distQt.text = "3"; 
+										 tF.checked = true; dissNP.checked = true; // 2ª espécie
+										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+										 susp4.checked = false; // 4ª espécie
             				 }
             MouseArea {
                   id: mArea2
@@ -185,22 +187,23 @@ MuseScore {
             				 especie4.visible = false; bLabel24.color = "#000000";
             				 especie3.visible = true; bLabel23.color = "#002e77";
             				 especie2.visible = false; bLabel2.color = "#000000"; 
-            				 especie1.visible = false; bLabel1.color = "#000000"; 
+            				 especie1.visible = false; bLabel1.color = "#000000";
+            				 gerais.visible = true; 
             				 priEsp = false; secEsp = false; terEsp = true; quaEsp = false; quiEsp = false; melodia = false;
             				 ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "8";  // melodia
             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 distQt.text = "4";  // 1ª espécie
-            				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = false; 
+            				 // 1ª espécie
+            				 ultNotas.checked = true; cons.checked = false; 
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
             				 ocultSalto.checked = true; consecObli.checked = false;
-								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
-								 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "3";
-								 tF.checked = false; dissNP.checked = false; // 2ª espécie
-								 notaP.checked = true; cambi.checked = true; borda.checked = true; // 3ª espécie
-								 susp4.checked = false; // 4ª espécie
+										 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
+										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
+										 distancia.checked = true; distQt.text = "4";
+										 tF.checked = false; dissNP.checked = false; // 2ª espécie
+										 notaP.checked = true; cambi.checked = true; borda.checked = true; // 3ª espécie
+										 susp4.checked = false; // 4ª espécie
             				}
             MouseArea {
                   id: mArea23
@@ -242,21 +245,22 @@ MuseScore {
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000"; 
             				 especie1.visible = false; bLabel1.color = "#000000";
+            				 gerais.visible = true;
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = true; quiEsp = false; melodia = false;
             				 ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 distQt.text = "2";  // 1ª espécie
-            				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = false; 
+            				 // 1ª espécie
+            				 ultNotas.checked = true; cons.checked = false; 
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
             				 ocultSalto.checked = true; consecObli.checked = false;
-								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
-								 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "5";
-								 tF.checked = false; dissNP.checked = true; // 2ª espécie
-								 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-								 susp4.checked = true; // 4ª espécie
+										 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
+										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
+										 distancia.checked = true; distQt.text = "3";
+										 tF.checked = false; dissNP.checked = true; // 2ª espécie
+										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+										 susp4.checked = true; // 4ª espécie
             				}
             MouseArea {
                   id: mArea24
@@ -298,21 +302,22 @@ MuseScore {
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000"; 
             				 especie1.visible = false; bLabel1.color = "#000000"; 
+            				 gerais.visible = true;
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = true; melodia = false;
             				 ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "7";  // melodia
             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 distQt.text = "4";  // 1ª espécie
-            				 primUltInt.checked = true; ultNotas.checked = true; cons.checked = false; 
+            				 // 1ª espécie
+            				 ultNotas.checked = true; cons.checked = false; 
             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false; 
             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true; 
             				 ocultSalto.checked = true; consecObli.checked = false;
-								 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
-								 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
-								 distancia.checked = true; distQt.text = "3";
-								 tF.checked = false; dissNP.checked = false; // 2ª espécie
-								 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-								 susp4.checked = false; // 4ª espécie
+										 consecCont.checked = false; inter5.checked = true; inter8.checked = true; 
+										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true; 
+										 distancia.checked = true; distQt.text = "4";
+										 tF.checked = false; dissNP.checked = false; // 2ª espécie
+										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+										 susp4.checked = false; // 4ª espécie
             				}
             MouseArea {
                   id: mArea25
@@ -354,6 +359,7 @@ MuseScore {
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000"; 
             				 especie1.visible = false; bLabel1.color = "#000000"; 
+            				 gerais.visible = false;
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = true;
             				 ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
             				 tritono1.checked = true; priviGC.checked = true;
@@ -468,7 +474,7 @@ MuseScore {
     // ------------------------------ Apresentação ---------------------------    
  Item { id: apresenta; visible: true
     
-    Text { x: 194; y: 250; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto" }
+    Text { x: 165; y: 250; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto 0.13" }
     Text { x: 196; y: 278; font.pointSize: 9; color: "#aaa31e"; text: "Extensão para MuseScore" } 
   
  }   
@@ -649,105 +655,104 @@ MuseScore {
       }  
     }
 }     // ------------------------------ verificações -----------------------------------             
- Item { id: especie1; visible: false;
+
+ Item { id: gerais; visible: false;  
  
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#2b313a"; radius: 2 
-     // primeiro e último intervalo uníssono ou oitava
-     Rectangle { id: item; x: 5; y: 3; width: 490; height: 47;	color: "#627fad"; radius: 2 
-     
-       CheckBox { id: primUltInt; checked: true; x: 5; y: 3;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 14; text: "primeiro e último intervalo diferente de uníssono ou 8ª" } 
-	      CheckBox { id: exCFg; checked: true; x: 15; y: 22; 
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Se CF estiver na voz inferior, 1º intervalo pode ser 5ªJ ou 3ª" } }
+   Rectangle { x: 2; y: 149; width: 508; height: 398;	color: "#3a3a3a"; radius: 2 
+     // primeiro intervalo
+     Rectangle { id: item; x: 3; y: 3; width: 502; height: 57;	color: "#282828"; radius: 2 
+       CheckBox { id: primInt; checked: true; x: 3; y: 2;                           
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "início diferente de unís./8ªJ" } 
+	      CheckBox { id: ex5Ji; checked: true; x: 20; y: 18; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
+	      CheckBox { id: ex3i; checked: true; x: 20; y: 35; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
+	    } // ultimo intervalo
+	    CheckBox { id: ultInt; checked: true; x: 260; y: 2;                           
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "final diferente de unís./8ªJ" } 
+	      CheckBox { id: ex5Jf; checked: true; x: 20; y: 18; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
+	      CheckBox { id: ex3f; checked: true; x: 20; y: 35; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
 	    }
 	  }
 	  // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente    
-	  Rectangle { id: item1a; x: 5; y: 54; width: 490; height: 47;	color: "#627fad"; radius: 2 
-     
+	  Rectangle { id: item1a; x: 3; y: 63; width: 502; height: 47;	color: "#282828"; radius: 2 
        CheckBox { id: ultNotas; checked: true; x: 5; y: 3;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 14; text: "Não alcançar último intervalo por grau conj. e mov. contrário" } 
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Não alcançar último intervalo por grau conj. e mov. contrário" } 
 	      CheckBox { id: quartaJi; checked: true; x: -3; y: 22; 
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
-         CheckBox { id: quartaJs; checked: true; x: 237; y: 22; 
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }
-	 	    
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
+         CheckBox { id: quartaJs; checked: true; x: 240; y: 22; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }  
 	    }
 	  }
-	  // consonancias  
-	  Rectangle { id: item1b; x: 5; y: 105; width: 490; height: 25;	color: "#627fad"; radius: 2 
-     
-       CheckBox { id: cons; checked: true; x: 5; y: 3;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 14; text: "Verificar consonâncias" } 
-	      CheckBox { id: maiorCons; checked: true; x: 190; y: 0; 
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "maioria de consonâncias imperfeitas" } }
-	    }
-	  }
+	 
      // paralelas
-	  Rectangle { id: item1; x: 5; y: 134; width: 490; height: 159; color: "#627fad"; radius: 2 
+	  Rectangle { id: item1; x: 3; y: 113; width: 502; height: 83; color: "#1c1c1c"; radius: 2 
 	  	     
-	     CheckBox { id: paralela8; checked: true; x: 5; y: 5;                           
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "8ª paralela" }      
-	       Text { id: par8RepTxt; x: 5; y: 20; font.pixelSize: 12; text: "- se usar a 8ªJ mais do que" } 
-		     TextInput { id: par8Rep; anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "white"; validator: IntValidator{bottom: 0; top: 99;} 
-		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "vez/vezes consectivas" }
+	     CheckBox { id: paralela8; checked: true; x: 5; y: 3;                           
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª paralela" }      
+	       Text { id: par8RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" } 
+		     TextInput { id: par8Rep; anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;} 
+		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
 		     }
 		   }  
 	      
-	     CheckBox { id: paralela5; checked: true; x: 5; y: 42;                          
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "5ª paralela" }      
-	       Text { id: par5RepTxt; x: 5; y: 20; font.pixelSize: 12; text: "- se usar a 8ªJ mais do que" } 
-		     TextInput { id: par5Rep; anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "white"; validator: IntValidator{bottom: 0; top: 99;}  
-	         Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "vez/vezes consectivas" }
+	     CheckBox { id: paralela5; checked: true; x: 5; y: 44;                          
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª paralela" }      
+	       Text { id: par5RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" } 
+		     TextInput { id: par5Rep; anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}  
+	         Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
 	        }
 	       }     
 	    
-	     CheckBox { id: paralela4; checked: false; x: 5; y: 84;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "4ªJ paralela" } 
-	      Text { id: par4RepTxt; x: 5; y: 20; font.pixelSize: 12; text: "- se usar a 8ªJ mais do que" }
-	       TextInput { id: par4Rep; anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y; font.underline: true; text: "0"; font.pixelSize: 12; color: "white"; validator: IntValidator{bottom: 0; top: 99;}      
-           Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "vez/vezes consectivas" }	      
+	     CheckBox { id: paralela4; checked: false; x: 245; y: 3;                           
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "4ªJ paralela" } 
+	      Text { id: par4RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
+	       TextInput { id: par4Rep; anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}      
+           Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }	      
 	       }
 	      }
 	     
-	     CheckBox { id: paralela36; checked: true; x: 5; y: 122;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "3ª e 6ª paralela" } 
-	      Text { id: par36RepTxt; x: 5; y: 20;font.pixelSize: 12; text: "- se usar a 8ªJ mais do que" } 
-	       TextInput { id: par36Rep; anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y; font.underline: true; text: "3"; font.pixelSize: 12;  color: "white"; validator: IntValidator{bottom: 0; top: 99;}      
-	        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "vez/vezes consectivas" }
+	     CheckBox { id: paralela36; checked: true; x: 245; y: 44;                           
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "3ª e 6ª paralela" } 
+	      Text { id: par36RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" } 
+	       TextInput { id: par36Rep; anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y; font.underline: true; text: "4"; font.pixelSize: 12;  color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}      
+	        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
 	       }
 	      }  
 	  }  
 	     
 	   // ocultas
-	   Rectangle { id: item2; x: 5; y: 297; width: 490; height: 50; color: "#627fad"; radius: 2 
+	   Rectangle { id: item2; x: 3; y: 199; width: 502; height: 50; color: "#1c1c1c"; radius: 2 
 	      
 	     CheckBox { id: oculta8; checked: true; x: 5; y: 3; 
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultAsc.checked = false; ocultExt.checked = false; ocultSalto.checked = false;}}                     
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "8ª oculta ou direta" }      
+	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª oculta/direta" }      
 	      }
 	      
 	     CheckBox { id: oculta5; checked: true; x: 5; y: 26; 
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultAsc.checked = false; ocultExt.checked = false; ocultSalto.checked = false;}}                        
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "5ª oculta ou direta" }      
+	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª oculta/direta" }      
 	      }	 		
 		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 6; 
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Exceto no final" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto no final" }
 		 		}
 		 		
 		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 24; 
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Somente se salto na voz superior" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Somente se salto na voz superior" }
 		 		} 
 		  }
 			 		    
 	     // consecutivas por movimento contrário e oblíquo    
-	   Rectangle { id: item3; x: 5; y: 351; width: 255; height: 50;	color: "#627fad"; radius: 2 
+	   Rectangle { id: item3; x: 3; y: 252; width: 267; height: 50;	color: "#1c1c1c"; radius: 2 
 	  	     
 	     CheckBox { id: consecObli; checked: false; x: 5; y: 3;                        
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "5ª e 8ª consecutivas oblíquo" }      
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas oblíquo" }      
 	      }
 	      	
 			CheckBox { id: consecCont; checked: false; x: 5; y: 26;  	   
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "5ª e 8ª consecutivas contrário" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas contrário" }
 		 		}
 		 		
 		 	/*CheckBox { id: consecExt; checked: false; x: 260; y: 15; 
@@ -755,64 +760,75 @@ MuseScore {
 			 	}*/
 		 }
 		  // 5ªs e 8ªs intermitentes
-		 Rectangle { id: item3a; x: 265; y: 351; width: 230; height: 50; color: "#627fad"; radius: 2 
+		 Rectangle { id: item3a; x: 275; y: 252; width: 230; height: 50; color: "#1c1c1c"; radius: 2 
 	  	     
 	     CheckBox { id: inter8; checked: true; x: 5; y: 5;                           
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "8ª intermitente" }       
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª intermitente" }       
 		   }
 		   CheckBox { id: inter5; checked: true; x: 5; y: 25;                           
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "5ª intermitente" }       
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª intermitente" }       
 		   }
 		  } 
 		  // uníssono
-		 Rectangle { id: item3b; x: 5; y: 405; width: 240; height: 50; color: "#627fad"; radius: 2 
+		 Rectangle { id: item3b; x: 3; y: 305; width: 263; height: 45; color: "#282828"; radius: 2 
 	  	     
-	     CheckBox { id: uniss; checked: false; x: 5; y: 5;                           
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Uníssono" }      
-	       Text { id: unissTxt; x: 5; y: 20; font.pixelSize: 12; text: "- se a quantidade for maior do que" } 
-		     TextInput { id: unissQt; anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y; font.underline: true; text: "0"; font.pixelSize: 12; color: "white"; validator: IntValidator{bottom: 0; top: 20;} }
-		    }  
-		   }   		
+	     CheckBox { id: uniss; checked: true; x: 3; y: 5;                           
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Uníssono" }      
+	       CheckBox { id: unissIF; checked: true; x: 105; y: 0                         
+		       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto Início/Final" }}	
+	       Text { id: unissTxt; x: 5; y: 22; color: "#e0dfc3"; font.pixelSize: 12; text: "- se a quantidade for maior do que" } 
+		      TextInput { id: unissQt; anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y; font.underline: true; text: "0"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}}  
+		   }  
+		  }   		
 		 // cruzamento de vozes 
 		 
-	   Rectangle { id: item4; x: 250; y: 405; width: 245; height: 50; color: "#627fad"; radius: 2 
+	   Rectangle { id: item4; x: 270; y: 305; width: 235; height: 45; color: "#282828"; radius: 2 
 		 	 	
 			CheckBox { id: cruzaVozes; checked: true; x: 5; y: 3                         
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Cruzamento de vozes" }      
+		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Cruzamento de vozes" }      
 		   }
 		   
-		   CheckBox { id: falsaR; checked: true; x: 5; y: 27                         
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Falsa relação" }      
+		   CheckBox { id: falsaR; checked: true; x: 5; y: 23                         
+		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Falsa relação" }      
 		   }	     
 		 } 
 		  // distância
-		 Rectangle { id: item4a; x: 5; y: 459; width: 490; height: 50; color: "#627fad"; radius: 2 
+		 Rectangle { id: item4a; x: 3; y: 353; width: 502; height: 42; color: "#282828"; radius: 2 
 	  	     
-	     CheckBox { id: distancia; checked: true; x: 5; y: 5;                           
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Distância entre as vozes" }      
-	       Text { id: distTxt; x: 5; y: 20; font.pixelSize: 12; text: "- se uma sequencia maior do que" } 
-		     TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "white"; validator: IntValidator{bottom: 0; top: 20;} 
-		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "intervalo(s) maior(es) do que a décima" }
+	     CheckBox { id: distancia; checked: true; x: 5; y: 3;                           
+	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Distância entre as vozes" }      
+	       Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se uma sequencia maior do que" } 
+		     TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;} 
+		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "intervalo(s) maior(es) do que a décima" }
 		     }
 		    }  
 		   } 
     }  
   }  
+  Item { id: especie1; visible: false;
+ 
+   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2 
+      // consonancias  
+	  Rectangle { id: item1b; x: 3; y: 3; width: 502; height: 105;	color: "#b2b2b2"; radius: 2 
+      CheckBox { id: cons; checked: true; x: 5; y: 5;                           
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 14; text: "Dissonâncias" } }
+	    CheckBox { id: maiorCons; checked: true; x: 5; y: 30; 
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Se a maioria dos intervalos não for consonância imperfeita" } }
+	  }
+   }
+ }  
  Item { id: especie2; visible: false; 
  
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#12280c"; radius: 2 
+   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2 
      // tempos fortes     
-     Rectangle { id: item6; x: 10; y: 5; width: 480; height: 30; color: "#769b6c"; radius: 2 
+     Rectangle { id: item6; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2 
 	      
 	     CheckBox { id: tF; checked: true; x: 5; y: 5;                   
 	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Tempos fortes, quando não for consonância" }      
 		  }
-	   }
-	   
-	  // tempos fracos     
-     Rectangle { id: item7; x: 10; y: 40; width: 480; height: 30; color: "#769b6c"; radius: 2 
-	      
-	     CheckBox { id: dissNP; checked: true; x: 5; y: 5;               
+	  
+	  // tempos fracos      
+	     CheckBox { id: dissNP; checked: true; x: 5; y: 30;               
 	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Dissonâncias, exceto se for Nota de passagem" }        
 		 	} 
 	   }
@@ -820,21 +836,21 @@ MuseScore {
   }  
  Item { id: especie3; visible: false; 
    
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#39420b"; radius: 2 
+   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2 
    
-    Rectangle { id: item8; x: 10; y: 5; width: 480; height: 110; color: "#84832e"; radius: 2
+    Rectangle { id: item8; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
      
 	  Text { x: 5; y: 5; font.pixelSize: 14; text: "Dissonâncias:" }
 	  
-	  CheckBox { id: notaP; checked: true; x: 5; y: 30;   
+	  CheckBox { id: notaP; checked: true; x: 5; y: 25;   
 		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Nota de Passagem" }
 	  }
 	  
-	  CheckBox { id: cambi; checked: true; x: 5; y: 55;   
+	  CheckBox { id: cambi; checked: true; x: 5; y: 50;   
 		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Cambiata" }
 	  }
 	  
-	  CheckBox { id: borda; checked: true; x: 5; y: 80;   
+	  CheckBox { id: borda; checked: true; x: 5; y: 75;   
 		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Bordadura" }
 	  }
     } 
@@ -842,52 +858,52 @@ MuseScore {
   }
   
  Item { id: especie4; visible: false; 
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#66632a"; radius: 2 
-     Rectangle { id: item9; x: 10; y: 5; width: 480; height: 35; color: "#f9f59a"; radius: 2
+   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2 
+     Rectangle { id: item9; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
        
-      CheckBox { id: susp4; checked: true; x: 5; y: 7;   
+      CheckBox { id: susp4; checked: true; x: 5; y: 5;   
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Dissonâncias, exceto se for Suspensão" }
 	   } 
 	  }
    }
  } 
  Item { id: especie5; visible: false; 
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#5b5b5b"; radius: 2 
-    Rectangle { id: item10; x: 10; y: 5; width: 480; height: 160; color: "#303030"; radius: 2
+   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2 
+    Rectangle { id: item10; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
      
-		 Text { x: 5; y: 5; font.pixelSize: 14; color: "#e0dfc3"; text: "Dissonâncias:" }
+		 Text { x: 3; y: 3; font.pixelSize: 14; text: "Dissonâncias:" }
 		 
-		 CheckBox { id: nP5; checked: true; x: 10; y: 30;   
+		 CheckBox { id: nP5; checked: true; x: 93; y: 3;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
-		   color: "#e0dfc3"; text: "Exceto se for Nota de Passagem" }
+		   text: "Exceto se for Nota de Passagem" }
 		 }
 		 
-		 CheckBox { id: bord5; checked: true; x: 10; y: 55;   
+		 CheckBox { id: bord5; checked: true; x: 93; y: 23;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
-		   color: "#e0dfc3"; text: "Exceto se for Bordadura" }
+		   text: "Exceto se for Bordadura" }
 		 } 
 		 
-		 CheckBox { id: cambi5; checked: true; x: 10; y: 80;   
+		 CheckBox { id: cambi5; checked: true; x: 93; y: 43;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
-		   color: "#e0dfc3"; text: "Exceto se for Cambiata" }
+		   text: "Exceto se for Cambiata" }
 		 } 
 		 
-		 CheckBox { id: susp5; checked: true; x: 10; y: 105;   
+		 CheckBox { id: susp5; checked: true; x: 93; y: 63;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; 
-		   color: "#e0dfc3"; text: "Exceto se for Suspensão/Retardo" }
+		   text: "Exceto se for Suspensão/Retardo" }
 		 } 
 		 
-		 CheckBox { id: sRI5; checked: true; x: 10; y: 130;   
+		 CheckBox { id: sRI5; checked: true; x: 93; y: 83;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
-		   color: "#e0dfc3"; text: "Exceto se for Suspensão/Retardo com resolução interrompida" }	   
+		   text: "Exceto se for Suspensão/Retardo com resolução interrompida" }	   
 		 }   
      } 
    }
  }
  
  Item { id: melodias; visible: false; 
-   Rectangle { x: 5; y: 35; width: 500; height: 512;	color: "#5b5b5b"; radius: 2 
-    Rectangle { x: 5; y: 5; width: 490; height: 80; color: "#303030"; radius: 2
+   Rectangle { x: 2; y: 35; width: 508; height: 512;	color: "#5b5b5b"; radius: 2 
+    Rectangle { x: 3; y: 5; width: 502; height: 80; color: "#303030"; radius: 2
 		 CheckBox { id: peNota; checked: false; x: 5; y: 5;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)" }
@@ -909,7 +925,7 @@ MuseScore {
 		 } 
 	  } 
 	  
-	  Rectangle { x: 5; y: 90; width: 490; height: 103; color: "#303030"; radius: 2
+	  Rectangle { x: 3; y: 90; width: 502; height: 103; color: "#303030"; radius: 2
 		 Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Não usar os seguintes intervalos:" 
 			 CheckBox { id: salt7; checked: true; x: 0; y: 17;   
 			   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
@@ -933,7 +949,7 @@ MuseScore {
 	    }  
 	  }
 	  
-	  Rectangle { x: 5; y: 198; width: 490; height: 100; color: "#303030"; radius: 2  
+	  Rectangle { x: 3; y: 198; width: 502; height: 100; color: "#303030"; radius: 2  
 	    CheckBox { id: tritono2; checked: true; x: 5; y: 4;   
 		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Trítono nas duas extremidades de movimentos melódicos" }
@@ -961,7 +977,7 @@ MuseScore {
 	    }   
     } 
     
-    Rectangle { x: 5; y: 303; width: 490; height: 90; color: "#303030"; radius: 2 
+    Rectangle { x: 3; y: 303; width: 502; height: 90; color: "#303030"; radius: 2 
      CheckBox { id: varDir; checked: true; x: 5; y: 5;   
 		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		color: "#e0dfc3"; text: "Variedade de direcionamentos: se >" } 
@@ -991,7 +1007,7 @@ MuseScore {
 	    } 
     }
     
-    Rectangle { x: 5; y: 398; width: 490; height: 50; color: "#303030"; radius: 2 
+    Rectangle { x: 3; y: 398; width: 502; height: 50; color: "#303030"; radius: 2 
       CheckBox { id: melPFs; checked: true; x: 5; y: 5;   
 		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		color: "#e0dfc3"; text: "Ponto focal agudo" }
@@ -1002,16 +1018,16 @@ MuseScore {
 		color: "#e0dfc3"; text: "Ponto focal grave" }
 	  }
    }
-   Rectangle { x: 5; y: 453; width: 490; height: 50; color: "#303030"; radius: 2 
+   Rectangle { x: 3; y: 453; width: 502; height: 50; color: "#303030"; radius: 2 
      CheckBox { id: tonic; checked: true; x: 5; y:5; 
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "Nota inicial diferente de tônica/finalis," }
 	  
-	   CheckBox { id: terça; checked: false; x: 245; 
+	   CheckBox { id: terça; checked: false; x: 255; 
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "terça," }
 	   }
-	   CheckBox { id: quinta; checked: false; x: 330; 
+	   CheckBox { id: quinta; checked: false; x: 340; 
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "ou quinta" }
 	   }
@@ -1019,11 +1035,11 @@ MuseScore {
 	  CheckBox { id: tonicF; checked: true; x: 5; y:25; 
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "Nota final diferente de tônica/finalis," }
-	   CheckBox { id: terçaF; checked: false; x: 240; 
+	   CheckBox { id: terçaF; checked: false; x: 250; 
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "terça," }
 	   }
-	   CheckBox { id: quintaF; checked: false; x: 325;  
+	   CheckBox { id: quintaF; checked: false; x: 335;  
 		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; 
 		 color: "#e0dfc3"; text: "ou quinta" }
 	   }
@@ -1788,7 +1804,7 @@ function verificar() {
  if (melPFs.checked || melPFi.checked) { melodiaPF(); };
  if (tonic.checked || tonicF.checked) { notaIniFin(); };
  // --------------- primeira espécie ------------
- if (!melodia && primUltInt.checked) { primUltIntervalo(); };
+ if (!melodia && (primInt.checked || ultInt.checked)) { primUltIntervalo(); };
  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
  if (!melodia && priEsp && cons.checked) { consonancias(); };
  if (!melodia && (paralela5.checked || paralela8.checked)) { quintasOitavas(); };
@@ -2587,19 +2603,29 @@ function primUltIntervalo() {
  
  var intI = (Math.abs(vozes[0].nota[0] - vozes[0].nota[1])) % 12;
  var intF = (Math.abs(vozes[vozes.length-1].nota[0] - vozes[vozes.length-1].nota[1])) % 12;
+ var inicio = false, finale = false;
  
  if (intI != 0) { 
-   if ((intI != 7 && intI != 3 && intI != 4) || !exCFg.checked || vozCF != 1) {
-	      verificados++;     
-	      criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); };
-       };
+   
+   if (intI == 7 && ex5Ji.checked) { inicio = true; } else
+   if ((intI == 3 || intI == 4) && ex3i.checked) { inicio = true; };
+   	
+   if (!inicio) {
+   	verificados++;     
+	  criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); 
+   };	
+ };
        
  if (intF != 0) { 
-   if ((intF != 7 && intI != 3 && intI != 4) || !exCFg.checked || vozCF != 1) {
-	      verificados++;     
-	      criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2);
-       };
-    };
+   
+   if (intF == 7 && ex5Jf.checked) { finale = true; } else
+   if ((intF == 3 || intF == 4) && ex3f.checked) { finale = true; };
+   
+   if (!finale) {
+    verificados++;     
+    criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2);
+   };
+ };
 }
 
 function alcançarMovContra() {
@@ -2960,7 +2986,10 @@ function unissono() {
   var unissono = parseInt(unissQt.text)
   var uni = 0;
   
-  for (var x=1;x<vozes.length;x++) { // percorre acordes 
+  if (unissIF.checked) { var a1 = 1, a2 = vozes.length-1; } 
+    else { var a1 = 0, a2 = vozes.length; } ;
+  
+  for (var x=a1;x<a2;x++) { // percorre acordes 
     
     for (var voz=1;voz<vozes[x].nota.length;voz++) {
       
@@ -2968,7 +2997,7 @@ function unissono() {
       
       if (int1 == 0) { uni++; };
   
-      if (int1 == 0 && x != vozes.length-1 && uni > unissono) { 
+      if (int1 == 0 && uni > unissono) { 
         verificados++;     
     	  criaResultado(verificados, x, voz-1, voz, "uníssono", 1, 2); };   
     };  	
