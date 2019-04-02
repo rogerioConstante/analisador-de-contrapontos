@@ -1,5 +1,5 @@
 //=========================================================================================\\ 
-//  Contraponto v0.2                                                                       \\
+//  Contraponto v0.21                                                                      \\
 //                                                                                         \\
 //  Copyright (C)2018 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,7 +24,7 @@ import MuseScore 1.1
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.2"
+      version: "0.21"
  
 // ----------------------------- janela de configuração ----------------------- 
 
@@ -474,7 +474,7 @@ MuseScore {
     // ------------------------------ Apresentação ---------------------------    
  Item { id: apresenta; visible: true
     
-    Text { x: 165; y: 250; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto 0.13" }
+    Text { x: 165; y: 250; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto 0.21" }
     Text { x: 196; y: 278; font.pointSize: 9; color: "#aaa31e"; text: "Extensão para MuseScore" } 
   
  }   
@@ -2658,7 +2658,7 @@ function consonancias() {
    if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; }
     else { 
       verificados++;     
-	   criaResultado(verificados, x, 0, 1, "não é consonância", 1, 2);
+	   criaResultado(verificados, x, 0, 1, "dissonância", 1, 2);
    };
   };
   
@@ -3099,7 +3099,7 @@ function notaPassagem() {
    
    if (int2 == "D" && pMetric2 != "F" && (!intervalos || !contorno)) { 
       verificados++;     
-	   criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2);
+	   criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);
    };
   };
 }
@@ -3156,7 +3156,7 @@ function dissonancias3() {
    
    if (intHarm[1] == "D") {
       verificados++;     
-	   criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2);};
+	   criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);};
  };
  var i=0;
  for (var x=vozes.length-3;x<vozes.length-1;x++) {
@@ -3170,7 +3170,7 @@ function dissonancias3() {
 	 };
 	if (intHarm[i+1] == "D"  && !loopCompleto) { 
 	 verificados++;     
-	 criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2); };
+	 criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2); };
 	i++;
  };
  
@@ -3204,7 +3204,7 @@ function suspensao4() {
 	   
 	   if (!intervalos || !contorno) { 
 	      verificados++;     
-		   criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2);
+		   criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);
 	   };
 	 };
   };
@@ -3276,9 +3276,9 @@ function dissonancias5() {
     };
    };
    
-   if (intHarm[1] == "D") { console.log("antes")
+   if (intHarm[1] == "D") { //console.log("antes")
       verificados++;     
-	   criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2);};
+	   criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);};
  };
  var i=1;
  for (var x=vozes.length-3;x<vozes.length-1;x++) { 
@@ -3295,7 +3295,7 @@ function dissonancias5() {
 	 };
 	if (intHarm[i+1] == "D" && !loopCompleto) { 
 	 verificados++;     
-	 criaResultado(verificados, x, 0, 1, "dissonância não preparada", 1, 2); };
+	 criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2); };
 	i++;
  };
  
