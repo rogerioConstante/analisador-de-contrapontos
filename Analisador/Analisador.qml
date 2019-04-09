@@ -1,5 +1,5 @@
 //=========================================================================================\\ 
-//  Contraponto v0.21                                                                      \\
+//  Contraponto v0.3                                                                      \\
 //                                                                                         \\
 //  Copyright (C)2018 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,7 +24,7 @@ import MuseScore 1.1
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.21"
+      version: "0.3"
  
 // ----------------------------- janela de configuração ----------------------- 
 
@@ -474,7 +474,7 @@ MuseScore {
     // ------------------------------ Apresentação ---------------------------    
  Item { id: apresenta; visible: true
     
-    Text { x: 165; y: 250; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto 0.21" }
+    Text { x: 165; y: 253; font.pointSize: 19; color: "#aaa31e"; text: "Contraponto 0.3" }
     Text { x: 196; y: 278; font.pointSize: 9; color: "#aaa31e"; text: "Extensão para MuseScore" } 
   
  }   
@@ -679,11 +679,14 @@ MuseScore {
 	  // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente    
 	  Rectangle { id: item1a; x: 3; y: 63; width: 502; height: 47;	color: "#282828"; radius: 2 
        CheckBox { id: ultNotas; checked: true; x: 5; y: 3;                           
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Não alcançar último intervalo por grau conj. e mov. contrário" } 
-	      CheckBox { id: quartaJi; checked: true; x: -3; y: 22; 
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
-         CheckBox { id: quartaJs; checked: true; x: 240; y: 22; 
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }  
+	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Se não alcançar último intervalo por grau conj. e mov. contrário" } 
+	      CheckBox { id: quartaJi; checked: true; x: 39; y: 22; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -69; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto:" } 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "4ªJ asc / 5ªJ desc, voz inf." } }
+         CheckBox { id: quartaJs; checked: true; x: 212; y: 22; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "4ªJ asc / 5ªJ desc, voz sup." } }
+	       CheckBox { id: ultNotas3v; checked: true; x: 385; y: 22; 
+	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "3 ou + vozes" } }  
 	    }
 	  }
 	 
@@ -1631,7 +1634,8 @@ function verificaTempoForte(tempo,metrica) {
 function verificaConsonancia(x) {
   var int1 = x % 12;
   if (int1 == 0 || int1 == 7) { return "CP"; } else
-  if (int1 == 3 || int1 == 4 || int1 == 8 || int1 == 9) { return "CI"; } else { return "D" };
+  if (int1 == 3 || int1 == 4 || int1 == 8 || int1 == 9) { return "CI"; } else 
+  if (int1 == 5) { return "D4" } else { return "D" };
 }
 
 function direção(x) {
@@ -1786,7 +1790,7 @@ function verificar() {
  if (finaliza) { return; };
  //mostraIntervalos();
  // --------------- melodia --------------------
- if (peNota.checked) { penultimaNota(); };   
+ /*if (peNota.checked) { penultimaNota(); };   
  if (ambito.checked) { ambitoMelodico(); };
  if (priviGC.checked) { privilegiaConj(); };
  if (salt7.checked) { melodia7(); };
@@ -1802,12 +1806,12 @@ function verificar() {
  if (repPad.checked) { repetePadrão(); };
  if (arpMel.checked) { melodiaArpejo(); };
  if (melPFs.checked || melPFi.checked) { melodiaPF(); };
- if (tonic.checked || tonicF.checked) { notaIniFin(); };
+ if (tonic.checked || tonicF.checked) { notaIniFin(); };*/
  // --------------- primeira espécie ------------
  if (!melodia && (primInt.checked || ultInt.checked)) { primUltIntervalo(); };
  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
  if (!melodia && priEsp && cons.checked) { consonancias(); };
- if (!melodia && (paralela5.checked || paralela8.checked)) { quintasOitavas(); };
+ /*if (!melodia && (paralela5.checked || paralela8.checked)) { quintasOitavas(); };
  if (!melodia && paralela4.checked) { quartas(); };
  if (!melodia && paralela36.checked) { terçasSextas(); };
  if (!melodia && (oculta5.checked || oculta8.checked)) { ocultas(); };
@@ -1825,7 +1829,7 @@ function verificar() {
  // --------------- quarta espécie ---------------
  if (!melodia && susp4.checked) { suspensao4() };
  // --------------- quinta espécie ---------------
- if (!melodia && quiEsp) { dissonancias5(); };
+ if (!melodia && quiEsp) { dissonancias5(); };*/
  // ----------------------------------------------
  
   for (var i=0;i<verificados;i++) {
@@ -2017,17 +2021,16 @@ function carregarNotas() {
 }
 // --------------------------------------
 function vozCantusFirmus() {
-	
-	      for (var x = 0; x < vozes[0].trilha.length; x++) {  
-	           var v = Math.floor(vozes[0].trilha[x] / 4);
-              var nomeParte = curScore.parts[v].longName
-              var pos = nomeParte.indexOf("CF");
-              if (pos != -1) { vozCF = x; break; };
-            };
-      
-            if (!vozCF && vozCF != 0) { 
-          msgErros.text = "Erro! \n Cantus Firmus não detectado! \n Por favor, acrescente '(CF)' ao nome da parte que contém o Cantus Firmus."; 
-                       msgErros.visible=true; finaliza = true; return; };           
+  for (var x = 0; x < vozes[0].trilha.length; x++) {  
+       var v = Math.floor(vozes[0].trilha[x] / 4);
+        var nomeParte = curScore.parts[v].longName;
+        var pos = nomeParte.indexOf("CF");
+        if (pos != -1) { vozCF = x; break; };
+      };
+ 
+      if (!vozCF && vozCF != 0) { 
+    msgErros.text = "Erro! \n Cantus Firmus não detectado! \n Por favor, acrescente '(CF)' ao nome da parte que contém o Cantus Firmus."; 
+                 msgErros.visible=true; finaliza = true; return; };           
 }
 //------------------- melodia -----------
 function penultimaNota() {
@@ -2596,13 +2599,16 @@ function notaIniFin() {
 }
 
 // --------------------- 1ª espécie ------------
-function primUltIntervalo() {
+function primUltIntervalo() {   
 	  
  if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de intervalo inicial e final!\n"; 
                        msgErros.estado=true; return; };
  
- var intI = (Math.abs(vozes[0].nota[0] - vozes[0].nota[1])) % 12;
- var intF = (Math.abs(vozes[vozes.length-1].nota[0] - vozes[vozes.length-1].nota[1])) % 12;
+ for (var x=0;x<vozes[vozes.length-1].nota.length-1;x++) { 
+ var h = vozes[0].nota.length-1;
+ var i = vozes[vozes.length-1].nota.length-1;
+ var intI = (Math.abs(vozes[0].nota[x] - vozes[0].nota[h])) % 12;
+ var intF = (Math.abs(vozes[vozes.length-1].nota[x] - vozes[vozes.length-1].nota[i])) % 12;
  var inicio = false, finale = false;
  
  if (intI != 0) { 
@@ -2612,7 +2618,7 @@ function primUltIntervalo() {
    	
    if (!inicio) {
    	verificados++;     
-	  criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); 
+	  criaResultado(verificados, 0, x, i, "intervalo inicial", 1, 2); 
    };	
  };
        
@@ -2623,8 +2629,9 @@ function primUltIntervalo() {
    
    if (!finale) {
     verificados++;     
-    criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2);
+    criaResultado(verificados, vozes.length-1, x, x, "intervalo final", 1, 2);
    };
+  };
  };
 }
 
@@ -2633,38 +2640,45 @@ function alcançarMovContra() {
  if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n"; 
                        msgErros.estado=true; return; };
  
- var intS = vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]
- var intI = vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1];
+ var i = vozes[vozes.length-1].nota.length-1;
+ if (i >= 2 && ultNotas3v.checked) { return; };
  
- var dir1 = direção(vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]);
- var dir2 = direção(vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1]);
- 
- if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) { 
-
-   if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
-	      verificados++;     
-	      criaResultado(verificados, vozes.length-2, 0, 1, "alcança intervalo final", 1, 2); 
-       };
+ for (var x=0;x<vozes[vozes.length-1].nota.length-1;x++) { 
+	 
+	 var intS = vozes[vozes.length-1].nota[x] - vozes[vozes.length-2].nota[x]
+	 var intI = vozes[vozes.length-1].nota[i] - vozes[vozes.length-2].nota[i];
+	 
+	 var dir1 = direção(vozes[vozes.length-1].nota[x] - vozes[vozes.length-2].nota[x]);
+	 var dir2 = direção(vozes[vozes.length-1].nota[i] - vozes[vozes.length-2].nota[i]);
+	
+	 if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) { 
+	
+	   if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
+		      verificados++;     
+		      criaResultado(verificados, vozes.length-1, x, i, "alcança intervalo final", 2, 1); 
+	       };
+ };
 }
 
 function consonancias() {
- 
+
   var cP = 0, cI = 0;
+  for (var j=0;j<vozes[vozes.length-1].nota.length-1;j++) { // percorre voz sup
+   for (var k=1;k<vozes[vozes.length-1].nota.length;k++) { // percorre voz inf
+    for (var x=0;x<vozes.length;x++) { // percorre acordes
+	   var int1 = verificaConsonancia(Math.abs(vozes[x].nota[j] - vozes[x].nota[k]));
+	   if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; } else if (int1 == "D4" && k < vozes[vozes.length-1].nota.length-1) { cI++; }
+	    else { 
+	      verificados++;     
+		   criaResultado(verificados, x, j, k, "dissonância", 1, 2);
+	   };
+	  };
   
-  for (var x=0;x<vozes.length;x++) { // percorre acordes
-   
-   var int1 = verificaConsonancia(Math.abs(vozes[x].nota[0] - vozes[x].nota[1]));
-   
-   if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; }
-    else { 
-      verificados++;     
-	   criaResultado(verificados, x, 0, 1, "dissonância", 1, 2);
+	  if (cP > cI && maiorCons.checked) { 
+	  	 verificados++;     
+		 criaResultado(verificados, vozes.length-1, j, k, "consonância imperfeita não é maioria", vozes.length, 2);
+	  };
    };
-  };
-  
-  if (cP > cI && maiorCons.checked) { 
-  	 verificados++;     
-	 criaResultado(verificados, vozes.length-1, 0, 1, "consonância imperfeita não é maioria", vozes.length, "null");
   };
 }
 
