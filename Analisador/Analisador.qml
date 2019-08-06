@@ -19,7 +19,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
-import MuseScore 1.1
+import MuseScore 3.0
 
 MuseScore {
       menuPath: "Plugins.Contraponto"
@@ -1967,7 +1967,7 @@ function mostraIntervalos() {
          if (int1.slice(-1) == "M" || int1.slice(-1) == "m" || int1.slice(-1) == "J" )
                 { myText.text = int1.slice(0,(int1.length-1)); } else { myText.text = int1;}; };
 
-      if (voz == 0) { myText.pos.y = 10; } else { myText.pos.y = 0; }
+      if (voz == 0) { myText.offsetY = 10; } else { myText.offsetY = 0; }
 
      cursor.add(myText);
   };
@@ -2129,7 +2129,7 @@ function carregarNotas() {
 
            while (segmento && (processaTudo || segmento.tick < posFinal)) {
 
-           	var denominador = cursor.timeSignature.denominator;
+           	var denominador = cursor.timesig.denominator;
             var numerador = cursor.timeSignature.numerator;
 
            	carregou = false;
