@@ -24,7 +24,8 @@ import MuseScore 3.0
 MuseScore {
       menuPath: "Plugins.Contraponto"
       description: "Contraponto.\nPlugin de auxílio na correção de exercícios de contraponto por espécies."
-      version: "0.3"
+      version: "0.31ms323"
+      //pluginType: "dialog"
 
 // ----------------------------- janela de configuração -----------------------
   ApplicationWindow {
@@ -48,7 +49,7 @@ MuseScore {
             anchors.left: parent.left; anchors.leftMargin: 3
             spacing: 3
 
-              // CF
+         // CF
             Rectangle {
              id: botao27
              property string text: "C.F."
@@ -70,6 +71,7 @@ MuseScore {
               GradientStop { position: 1.0; color: "#334455" }
             }
             onClicked: { melodias.visible = true; bLabel27.color = "#002e77";
+                     salvarCfg();
                      bLabel26.color = "#002e77"; bLabel28.color = "#000000";
             				 especie5.visible = false; bLabel25.color = "#000000";
             				 especie4.visible = false; bLabel24.color = "#000000";
@@ -78,9 +80,10 @@ MuseScore {
             				 especie1.visible = false; bLabel1.color = "#000000";
             				 gerais.visible = false;
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = true;
-            				 ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
-            				 tritono1.checked = true; priviGC.checked = true;
-            				 terça.checked = false; quinta.checked = false; terçaF.checked = false; quintaF.checked = false;
+                     carregarCfg();
+            				 // ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
+            				 // tritono1.checked = true; priviGC.checked = true;
+            				 // terça.checked = false; quinta.checked = false; terçaF.checked = false; quintaF.checked = false;
             				}
             MouseArea {
                   id: mArea27
@@ -95,7 +98,7 @@ MuseScore {
              text: botao27.text
                   }
             }
-             // primeira espécie
+         // primeira espécie
             Rectangle {
              id: botao1
              property string text: "1ª esp."
@@ -117,28 +120,30 @@ MuseScore {
                GradientStop { position: 1.0; color: "#334455" }
              }
              onClicked: {melodias.visible = false;
+                     salvarCfg();
                      bLabel27.color = "#000000"; bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-            				 especie5.visible = false; bLabel25.color = "#000000";
+                     especie5.visible = false; bLabel25.color = "#000000";
             				 especie4.visible = false; bLabel24.color = "#000000";
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000";
             				 especie1.visible = true; bLabel1.color = "#002e77";
             				 gerais.visible = true;
             				 priEsp = true; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false;
-            				 ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
-            				 tritono1.checked = true; melPFi.checked = true; priviGC.checked = true;
-            				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 // 1ª espécie
-            				 ultNotas.checked = true; cons.checked = true;
-            				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-            				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-            				 ocultSalto.checked = true; consecObli.checked = false;
-										 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
-										 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true;
-										 distancia.checked = true; distQt.text = "0";
-										 tF.checked = false; dissNP.checked = false; // 2ª espécie
-										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-										 susp4.checked = false; // 4ª espécie
+                     carregarCfg();
+                     // ambInp.text = "12"; repPadQt.text = "0"; arpMelQt.text = "1"; varDirQt.text = "4";   //melodia
+            				 // tritono1.checked = true; melPFi.checked = true; priviGC.checked = true;
+            				 // terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
+            				 // // 1ª espécie
+            				 // ultNotas.checked = true; cons.checked = true;
+            				 // paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
+            				 // paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
+            				 // ocultSalto.checked = true; consecObli.checked = false;
+										 // consecCont.checked = false; inter5.checked = true; inter8.checked = true;
+										 // uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true;
+										 // distancia.checked = true; distQt.text = "0";
+										 // tF.checked = false; dissNP.checked = false; // 2ª espécie
+										 // notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+										 // susp4.checked = false; // 4ª espécie
             				 }
              MouseArea {
                   id: mArea1
@@ -175,28 +180,30 @@ MuseScore {
               GradientStop { position: 1.0; color: "#334455" }
             }
              onClicked: {melodias.visible = false; bLabel27.color = "#000000";
-             				 bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-            				 especie5.visible = false; bLabel25.color = "#000000";
+                     salvarCfg();
+                     bLabel26.color = "#002e77"; bLabel28.color = "#000000";
+                  	 especie5.visible = false; bLabel25.color = "#000000";
             				 especie4.visible = false; bLabel24.color = "#000000";
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = true; bLabel2.color = "#002e77";
             				 especie1.visible = false; bLabel1.color = "#000000";
             				 gerais.visible = true;
             				 priEsp = false; secEsp = true; terEsp = false; quaEsp = false; quiEsp = false; melodia = false;
-            				 ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
-            				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
-            				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 // 1ª espécie
-            				 ultNotas.checked = true; cons.checked = false;
-            				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-            				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-            				 ocultSalto.checked = true; consecObli.checked = false;
-										 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
-										 uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true;
-										 distancia.checked = true; distQt.text = "3";
-										 tF.checked = true; dissNP.checked = true; // 2ª espécie
-										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-										 susp4.checked = false; // 4ª espécie
+                     carregarCfg();
+                     // ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
+            				 // tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
+            				 // terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
+            				 // // 1ª espécie
+            				 // ultNotas.checked = true; cons.checked = false;
+            				 // paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
+            				 // paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
+            				 // ocultSalto.checked = true; consecObli.checked = false;
+										 // consecCont.checked = false; inter5.checked = true; inter8.checked = true;
+										 // uniss.checked = true; cruzaVozes.checked = true; falsaR.checked = true;
+										 // distancia.checked = true; distQt.text = "3";
+										 // tF.checked = true; dissNP.checked = true; // 2ª espécie
+										 // notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+										 // susp4.checked = false; // 4ª espécie
             				 }
             MouseArea {
                   id: mArea2
@@ -233,28 +240,30 @@ MuseScore {
               GradientStop { position: 1.0; color: "#334455" }
             }
              onClicked: {melodias.visible = false; bLabel27.color = "#000000";
+                     salvarCfg();
                      bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-            				 especie5.visible = false; bLabel25.color = "#000000";
+                  	 especie5.visible = false; bLabel25.color = "#000000";
             				 especie4.visible = false; bLabel24.color = "#000000";
             				 especie3.visible = true; bLabel23.color = "#002e77";
             				 especie2.visible = false; bLabel2.color = "#000000";
             				 especie1.visible = false; bLabel1.color = "#000000";
             				 gerais.visible = true;
             				 priEsp = false; secEsp = false; terEsp = true; quaEsp = false; quiEsp = false; melodia = false;
-            				 ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "8";  // melodia
-            				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
-            				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 // 1ª espécie
-            				 ultNotas.checked = true; cons.checked = false;
-            				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-            				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-            				 ocultSalto.checked = true; consecObli.checked = false;
-										 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
-										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
-										 distancia.checked = true; distQt.text = "4";
-										 tF.checked = false; dissNP.checked = false; // 2ª espécie
-										 notaP.checked = true; cambi.checked = true; borda.checked = true; // 3ª espécie
-										 susp4.checked = false; // 4ª espécie
+                     carregarCfg();
+                     // ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "8";  // melodia
+            				 // tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
+            				 // terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
+            				 // // 1ª espécie
+            				 // ultNotas.checked = true; cons.checked = false;
+            				 // paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
+            				 // paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
+            				 // ocultSalto.checked = true; consecObli.checked = false;
+										 // consecCont.checked = false; inter5.checked = true; inter8.checked = true;
+										 // uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
+										 // distancia.checked = true; distQt.text = "4";
+										 // tF.checked = false; dissNP.checked = false; // 2ª espécie
+										 // notaP.checked = true; cambi.checked = true; borda.checked = true; // 3ª espécie
+										 // susp4.checked = false; // 4ª espécie
             				}
             MouseArea {
                   id: mArea23
@@ -291,28 +300,30 @@ MuseScore {
                GradientStop { position: 1.0; color: "#334455" }
              }
               onClicked: {melodias.visible = false; bLabel27.color = "#000000";
-                      bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-             				 especie5.visible = false; bLabel25.color = "#000000";
+                     salvarCfg();
+                     bLabel26.color = "#002e77"; bLabel28.color = "#000000";
+                     especie5.visible = false; bLabel25.color = "#000000";
              				 especie4.visible = true; bLabel24.color = "#002e77";
              				 especie3.visible = false; bLabel23.color = "#000000";
              				 especie2.visible = false; bLabel2.color = "#000000";
              				 especie1.visible = false; bLabel1.color = "#000000";
              				 gerais.visible = true;
              				 priEsp = false; secEsp = false; terEsp = false; quaEsp = true; quiEsp = false; melodia = false;
-             				 ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
-             				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
-             				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-             				 // 1ª espécie
-             				 ultNotas.checked = true; cons.checked = false;
-             				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-             				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-             				 ocultSalto.checked = true; consecObli.checked = false;
- 										 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
- 										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
- 										 distancia.checked = true; distQt.text = "3";
- 										 tF.checked = false; dissNP.checked = true; // 2ª espécie
- 										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
- 										 susp4.checked = true; // 4ª espécie
+                     carregarCfg();
+                     // ambInp.text = "19"; repPadQt.text = "0"; arpMelQt.text = "3"; varDirQt.text = "6";  // melodia
+             				 // tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
+             				 // terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
+             				 // // 1ª espécie
+             				 // ultNotas.checked = true; cons.checked = false;
+             				 // paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
+             				 // paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
+             				 // ocultSalto.checked = true; consecObli.checked = false;
+ 										 // consecCont.checked = false; inter5.checked = true; inter8.checked = true;
+ 										 // uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
+ 										 // distancia.checked = true; distQt.text = "3";
+ 										 // tF.checked = false; dissNP.checked = true; // 2ª espécie
+ 										 // notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
+ 										 // susp4.checked = true; // 4ª espécie
              				}
              MouseArea {
                    id: mArea24
@@ -348,28 +359,17 @@ MuseScore {
               GradientStop { position: 1.0; color: "#334455" }
             }
             onClicked: { melodias.visible = false; bLabel27.color = "#000000";
+                     salvarCfg();
                      bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-            				 especie5.visible = true; bLabel25.color = "#002e77";
+                     especie5.visible = true; bLabel25.color = "#002e77";
             				 especie4.visible = false; bLabel24.color = "#000000";
             				 especie3.visible = false; bLabel23.color = "#000000";
             				 especie2.visible = false; bLabel2.color = "#000000";
             				 especie1.visible = false; bLabel1.color = "#000000";
             				 gerais.visible = true;
             				 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = true; melodia = false;
-            				 ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "7";  // melodia
-            				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
-            				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-            				 // 1ª espécie
-            				 ultNotas.checked = true; cons.checked = false;
-            				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-            				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-            				 ocultSalto.checked = true; consecObli.checked = false;
-										 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
-										 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
-										 distancia.checked = true; distQt.text = "4";
-										 tF.checked = false; dissNP.checked = false; // 2ª espécie
-										 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-										 susp4.checked = false; // 4ª espécie
+                     carregarCfg();
+
             				}
             MouseArea {
                   id: mArea25
@@ -384,71 +384,12 @@ MuseScore {
              text: botao25.text
                   }
             }
-             // contraponto livre
-            Rectangle {
-               id: livre
-               property string text: "CP livre"
-               signal clicked
-               width: bLabLivre.width + 20; height: bLabLivre.height + 7
-               border { width: 1; color: "#555555" }
-               smooth: true
-               radius: 2
-               gradient: Gradient {
-                  GradientStop {
-                      position: 0.0
-                      color: {
-                        if (mArLiv.pressed)
-                            return "#888d96"
-                            else
-                            return "#a0a8af"
-                                 }
-                          }
-                  GradientStop { position: 1.0; color: "#334455" }
-                }
-                onClicked: { melodias.visible = false; bLabel27.color = "#000000";
-                           bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-                           cpLivre.visible = false; bLabLivre.color = "#002e77";
-                  				 especie5.visible = false; bLabel25.color = "#000000";
-                  				 especie4.visible = false; bLabel24.color = "#000000";
-                  				 especie3.visible = false; bLabel23.color = "#000000";
-                  				 especie2.visible = false; bLabel2.color = "#000000";
-                  				 especie1.visible = false; bLabel1.color = "#000000";
-                  				 gerais.visible = true;
-                  				 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = true; melodia = false;
-                  				 ambInp.text = "19"; repPadQt.text = "1"; arpMelQt.text = "3"; varDirQt.text = "7";  // melodia
-                  				 tritono1.checked = false; melPFi.checked = false; priviGC.checked = false;
-                  				 terça.checked = true; quinta.checked = true; terçaF.checked = true; quintaF.checked = true;
-                  				 // 1ª espécie
-                  				 ultNotas.checked = true; cons.checked = false;
-                  				 paralela5.checked = true; paralela8.checked = true; paralela4.checked = false;
-                  				 paralela36.checked = true; oculta5.checked = true; oculta8.checked = true;
-                  				 ocultSalto.checked = true; consecObli.checked = false;
-            							 consecCont.checked = false; inter5.checked = true; inter8.checked = true;
-            							 uniss.checked = false; cruzaVozes.checked = true; falsaR.checked = true;
-            							 distancia.checked = true; distQt.text = "4";
-            							 tF.checked = false; dissNP.checked = false; // 2ª espécie
-            							 notaP.checked = false; cambi.checked = false; borda.checked = false; // 3ª espécie
-            							 susp4.checked = false; // 4ª espécie
-                    				}
-                MouseArea {
-                  id: mArLiv
-                  anchors.fill: parent
-                  onClicked: livre.clicked();
-                }
-
-                Text {
-                 id: bLabLivre
-                 anchors.centerIn: livre
-                 color: "#000000"
-                 text: livre.text
-                }
-              }
           }
         } // botões das espécies
 
     Rectangle {
      	      id: menu2
-            width: 124; height: 30
+            width: 120; height: 30
             color: "#002b72"
             border.color: "#383838"
             border.width: 1
@@ -676,7 +617,7 @@ MuseScore {
 	       Menu {
 	       	id: menuTonica
 	       	property int value: 1
-	    		    	MenuItem { text: "Dó"; onTriggered: { menuTonica.value = 1; btTonica.text = "Dó" } }
+	    		    MenuItem { text: "Dó"; onTriggered: { menuTonica.value = 1; btTonica.text = "Dó" } }
 				    	MenuItem { text: "Ré"; onTriggered: { menuTonica.value = 2; btTonica.text = "Ré" } }
 				    	MenuItem { text: "Mi"; onTriggered: { menuTonica.value = 3; btTonica.text = "Mi" } }
 				    	MenuItem { text: "Fá"; onTriggered: { menuTonica.value = 4; btTonica.text = "Fá" } }
@@ -688,15 +629,15 @@ MuseScore {
 		   Menu {
 	       	id: menuAcid
 	       	property string value: ""
-	    		    	MenuItem { text: "Natural"; onTriggered: { menuAcid.value = 1; btAcid.text = "" } }
+	    		    MenuItem { text: "Natural"; onTriggered: { menuAcid.value = 1; btAcid.text = "" } }
 				    	MenuItem { text: "#"; onTriggered: { menuAcid.value = 2; btAcid.text = "#" } }
 				    	MenuItem { text: "b"; onTriggered: { menuAcid.value = 3; btAcid.text = "b" } }
 				 }
 
 			Menu {
 	       	id: menuModo
-	       	property string value: "Maior"
-	    		    	MenuItem { text: "Maior"; onTriggered: { menuModo.value = 1; btModo.text = "Maior" } }
+          property int value: 1
+	    		    MenuItem { text: "Maior"; onTriggered: { menuModo.value = 1; btModo.text = "Maior" } }
 				    	MenuItem { text: "Menor"; onTriggered: { menuModo.value = 2; btModo.text = "Menor" } }
 				    	MenuItem { text: "Jônico"; onTriggered: { menuModo.value = 3; btModo.text = "Jônico" } }
 				    	MenuItem { text: "Dórico"; onTriggered: { menuModo.value = 4; btModo.text = "Dórico" } }
@@ -812,28 +753,28 @@ MuseScore {
      // primeiro intervalo
      Rectangle { id: item; x: 3; y: 3; width: 502; height: 57;	color: "#282828"; radius: 2
        CheckBox { id: primInt; checked: true; x: 3; y: 2;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "início diferente de unís./8ªJ" }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "início diferente de unís./8ªJ" }
 	      CheckBox { id: ex5Ji; checked: true; x: 20; y: 18;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
 	      CheckBox { id: ex3i; checked: true; x: 20; y: 35;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
 	    } // ultimo intervalo
 	    CheckBox { id: ultInt; checked: true; x: 260; y: 2;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "final diferente de unís./8ªJ" }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "final diferente de unís./8ªJ" }
 	      CheckBox { id: ex5Jf; checked: true; x: 20; y: 18;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, se CF voz inf." } }
 	      CheckBox { id: ex3f; checked: true; x: 20; y: 35;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, se CF voz inf." } }
 	    }
 	  }
 	  // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente
 	  Rectangle { id: item1a; x: 3; y: 63; width: 502; height: 47;	color: "#282828"; radius: 2
        CheckBox { id: ultNotas; checked: true; x: 5; y: 3;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Não alcançar último intervalo por grau conj. e mov. contrário" }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Não alcançar último intervalo por grau conj. e mov. contrário" }
 	      CheckBox { id: quartaJi; checked: true; x: -3; y: 22;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
          CheckBox { id: quartaJs; checked: true; x: 240; y: 22;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }
 	    }
 	  }
 
@@ -841,7 +782,7 @@ MuseScore {
 	  Rectangle { id: item1; x: 3; y: 113; width: 502; height: 83; color: "#1c1c1c"; radius: 2
 
 	     CheckBox { id: paralela8; checked: true; x: 5; y: 3;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª paralela" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª paralela" }
 	       Text { id: par8RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
 		     TextInput { id: par8Rep; anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
@@ -849,7 +790,7 @@ MuseScore {
 		   }
 
 	     CheckBox { id: paralela5; checked: true; x: 5; y: 44;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª paralela" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª paralela" }
 	       Text { id: par5RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
 		     TextInput { id: par5Rep; anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 	         Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
@@ -857,7 +798,7 @@ MuseScore {
 	       }
 
 	     CheckBox { id: paralela4; checked: false; x: 245; y: 3;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "4ªJ paralela" }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "4ªJ paralela" }
 	      Text { id: par4RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
 	       TextInput { id: par4Rep; anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
            Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
@@ -865,7 +806,7 @@ MuseScore {
 	      }
 
 	     CheckBox { id: paralela36; checked: true; x: 245; y: 44;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "3ª e 6ª paralela" }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "3ª e 6ª paralela" }
 	      Text { id: par36RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
 	       TextInput { id: par36Rep; anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y; font.underline: true; text: "4"; font.pixelSize: 12;  color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 	        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "paralela(s)" }
@@ -878,19 +819,19 @@ MuseScore {
 
 	     CheckBox { id: oculta8; checked: true; x: 5; y: 3;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultAsc.checked = false; ocultExt.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª oculta/direta" }
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª oculta/direta" }
 	      }
 
 	     CheckBox { id: oculta5; checked: true; x: 5; y: 26;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultAsc.checked = false; ocultExt.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª oculta/direta" }
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª oculta/direta" }
 	      }
 		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 6;
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto no final" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto no final" }
 		 		}
 
 		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 24;
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Somente se salto na voz superior" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Somente se salto na voz superior" }
 		 		}
 		  }
 
@@ -898,34 +839,31 @@ MuseScore {
 	   Rectangle { id: item3; x: 3; y: 252; width: 267; height: 50;	color: "#1c1c1c"; radius: 2
 
 	     CheckBox { id: consecObli; checked: false; x: 5; y: 3;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas oblíquo" }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas oblíquo" }
 	      }
 
 			CheckBox { id: consecCont; checked: false; x: 5; y: 26;
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas contrário" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas contrário" }
 		 		}
 
-		 	/*CheckBox { id: consecExt; checked: false; x: 260; y: 15;
-			  Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Somente se em vozes externas" }
-			 	}*/
 		 }
 		  // 5ªs e 8ªs intermitentes
 		 Rectangle { id: item3a; x: 275; y: 252; width: 230; height: 50; color: "#1c1c1c"; radius: 2
 
 	     CheckBox { id: inter8; checked: true; x: 5; y: 5;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª intermitente" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª intermitente" }
 		   }
 		   CheckBox { id: inter5; checked: true; x: 5; y: 25;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª intermitente" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª intermitente" }
 		   }
 		  }
 		  // uníssono
 		 Rectangle { id: item3b; x: 3; y: 305; width: 263; height: 45; color: "#282828"; radius: 2
 
 	     CheckBox { id: uniss; checked: true; x: 3; y: 5;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Uníssono" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Uníssono" }
 	       CheckBox { id: unissIF; checked: true; x: 105; y: 0
-		       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto Início/Final" }}
+		       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto Início/Final" }}
 	       Text { id: unissTxt; x: 5; y: 22; color: "#e0dfc3"; font.pixelSize: 12; text: "- se a quantidade for maior do que" }
 		      TextInput { id: unissQt; anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y; font.underline: true; text: "0"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}}
 		   }
@@ -935,18 +873,18 @@ MuseScore {
 	   Rectangle { id: item4; x: 270; y: 305; width: 235; height: 45; color: "#282828"; radius: 2
 
 			CheckBox { id: cruzaVozes; checked: true; x: 5; y: 3
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Cruzamento de vozes" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Cruzamento de vozes" }
 		   }
 
 		   CheckBox { id: falsaR; checked: true; x: 5; y: 23
-		     Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Falsa relação" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Falsa relação" }
 		   }
 		 }
 		  // distância
 		 Rectangle { id: item4a; x: 3; y: 353; width: 502; height: 42; color: "#282828"; radius: 2
 
 	     CheckBox { id: distancia; checked: true; x: 5; y: 3;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Distância entre as vozes" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Distância entre as vozes" }
 	       Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se uma sequencia maior do que" }
 		     TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}
 		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "intervalo(s) maior(es) do que a décima" }
@@ -961,9 +899,9 @@ MuseScore {
       // consonancias
 	  Rectangle { id: item1b; x: 3; y: 3; width: 502; height: 105;	color: "#b2b2b2"; radius: 2
       CheckBox { id: cons; checked: true; x: 5; y: 5;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 14; text: "Dissonâncias" } }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ; font.pixelSize: 12; text: "Dissonâncias" } }
 	    CheckBox { id: maiorCons; checked: true; x: 5; y: 30;
-	      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Se a maioria dos intervalos não for consonância imperfeita" } }
+	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Se a maioria dos intervalos não for consonância imperfeita" } }
 	  }
    }
  }
@@ -974,12 +912,12 @@ MuseScore {
      Rectangle { id: item6; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
 
 	     CheckBox { id: tF; checked: true; x: 5; y: 5;
-	       Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Tempos fortes, quando não for consonância" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Tempos fortes, quando não for consonância" }
 		  }
 
 	  // tempos fracos
 	     CheckBox { id: dissNP; checked: true; x: 5; y: 30;
-	        Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Dissonâncias, exceto se for Nota de passagem" }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Dissonâncias, exceto se for Nota de passagem" }
 		 	}
 	   }
     }
@@ -990,18 +928,18 @@ MuseScore {
 
     Rectangle { id: item8; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
 
-	  Text { x: 5; y: 5; font.pixelSize: 14; text: "Dissonâncias:" }
+	  Text { x: 5; y: 5; font.pixelSize: 13; text: "Dissonâncias:" }
 
 	  CheckBox { id: notaP; checked: true; x: 5; y: 25;
-		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Nota de Passagem" }
+		Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Exceto se for Nota de Passagem" }
 	  }
 
 	  CheckBox { id: cambi; checked: true; x: 5; y: 50;
-		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Cambiata" }
+		Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Exceto se for Cambiata" }
 	  }
 
 	  CheckBox { id: borda; checked: true; x: 5; y: 75;
-		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Exceto se for Bordadura" }
+		Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Exceto se for Bordadura" }
 	  }
     }
    }
@@ -1011,7 +949,7 @@ MuseScore {
      Rectangle { id: item9; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
 
       CheckBox { id: susp4; checked: true; x: 5; y: 5;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "Dissonâncias, exceto se for Suspensão" }
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; text: "Dissonâncias, exceto se for Suspensão" }
 	   }
 	  }
    }
@@ -1020,207 +958,207 @@ MuseScore {
    Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2
     Rectangle { id: item10; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
 
-		 Text { x: 3; y: 3; font.pixelSize: 14; text: "Dissonâncias:" }
+		 Text { x: 3; y: 3; font.pixelSize: 13; text: "Dissonâncias:" }
 
 		 CheckBox { id: nP5; checked: true; x: 93; y: 3;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   text: "Exceto se for Nota de Passagem" }
 		 }
 
 		 CheckBox { id: bord5; checked: true; x: 93; y: 23;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   text: "Exceto se for Bordadura" }
 		 }
 
 		 CheckBox { id: cambi5; checked: true; x: 93; y: 43;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   text: "Exceto se for Cambiata" }
 		 }
 
 		 CheckBox { id: susp5; checked: true; x: 93; y: 63;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   text: "Exceto se for Suspensão/Retardo" }
 		 }
 
 		 CheckBox { id: sRI5; checked: true; x: 93; y: 83;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   text: "Exceto se for Suspensão/Retardo com resolução interrompida" }
 		 }
      }
    }
  }
- Item { id: cpLivre; visible: false;
-   Rectangle { x: 2; y: 35; width: 508; height: 111;	color: "#003f87"; radius: 2
-     Rectangle { id: item11; x: 3; y: 3; width: 502; height: 105; color: "#b2b2b2"; radius: 2
-
-      CheckBox { id: cpLivreB; checked: true; x: 5; y: 5;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 14; text: "--" }
-	   }
-	  }
-   }
- }
  Item { id: melodias; visible: false;
    Rectangle { x: 2; y: 35; width: 508; height: 512;	color: "#5b5b5b"; radius: 2
     Rectangle { x: 3; y: 5; width: 502; height: 80; color: "#303030"; radius: 2
-		 CheckBox { id: peNota; checked: false; x: 5; y: 5;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)" }
+		 CheckBox { id: peNota; checked: true; x: 5; y: 5;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; color: "#e0dfc3";
+              text: "Penúltima nota:"
+        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11; color: "#e0dfc3";
+              text: "se não pertencer ao V ou vii grau (quando tonal), \nou não conduzir por grau conjunto para a finalis (quando modal)" }
+       }
 		 }
 
 		 CheckBox { id: ambito; checked: true; x: 5; y: 32;
-		   Text { id: ambTxt1; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Âmbito melódico não deve ser maior do que" }
+		   Text { id: ambTxt1; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		   color: "#e0dfc3"; text: "Âmbito melódico: se maior do que" }
 		   TextInput { id: ambInp; anchors.left: ambTxt1.right; anchors.leftMargin: 5; y: ambTxt1.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "12"; validator: IntValidator{bottom: 0; top: 99;}}
 		   Text { anchors.left: ambInp.right; anchors.leftMargin: 5; y: ambInp.y; font.pixelSize: 12; color: "#e0dfc3"; text: "semitons" }
 		 }
 
 		 CheckBox { id: priviGC; checked: true; x: 5; y: 55;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Privilegiar graus conjuntos" }
-		   CheckBox { id: priviGCEx; checked: true; x: 195; y: 0;
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: "e terças" } }
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		   color: "#e0dfc3"; text: "Se não privilegiar graus conjuntos"
+		      CheckBox { id: priviGCEx; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	          color: "#e0dfc3"; text: "e terças" } } }
 		 }
 	  }
 
-	  Rectangle { x: 3; y: 90; width: 502; height: 103; color: "#303030"; radius: 2
-		 Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Não usar os seguintes intervalos:"
-			 CheckBox { id: salt7; checked: true; x: 0; y: 17;
-			   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	  Rectangle { x: 3; y: 88; width: 502; height: 118; color: "#303030"; radius: 2
+		 Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Intervalos melódicos:"
+			 CheckBox { id: salt7; checked: true; x: 0; y: 16;
+			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: "Sétimas maiores e menores" }
 			 }
-			 CheckBox { id: salt6; checked: true; x: 0; y: 37;
-		      Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		      color: "#e0dfc3"; text: "Sextas maiores e menores" }
-		      CheckBox { id: salt6Ex; checked: true; x: 195; y: 0;
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: "Exceto se ascendente" } }
+			 CheckBox { id: salt6M; checked: true; x: 0; y: 35;
+		      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		      color: "#e0dfc3"; text: "Sextas maiores"
+		      CheckBox { id: salt6MEx; checked: true;  anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	          color: "#e0dfc3"; text: "Exceto se ascendente" } } }
 		    }
-		    CheckBox { id: saltAum; checked: true; x: 0; y: 57;
-			   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+        CheckBox { id: salt6m; checked: true; x: 0; y: 54;
+ 		      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+ 		      color: "#e0dfc3"; text: "Sextas menores"
+ 		      CheckBox { id: salt6mEx; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter
+ 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+ 	          color: "#e0dfc3"; text: "Exceto se ascendente" } } }
+ 		    }
+		    CheckBox { id: saltAum; checked: true; x: 0; y: 73;
+			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: "Aumentados e diminutos" }
 			 }
-			 CheckBox { id: saltM8; checked: true; x: 0; y: 77;
-			   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+			 CheckBox { id: saltM8; checked: true; x: 0; y: 92;
+			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: "Maiores do que a oitava" }
 			 }
 	    }
 	  }
 
-	  Rectangle { x: 3; y: 198; width: 502; height: 100; color: "#303030"; radius: 2
+	  Rectangle { x: 3; y: 210; width: 502; height: 100; color: "#303030"; radius: 2
 	    CheckBox { id: tritono2; checked: true; x: 5; y: 4;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Trítono nas duas extremidades de movimentos melódicos" }
 		 }
 
 		 CheckBox { id: tritono1; checked: false; x: 5; y: 24;
-		   Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Trítono em uma extremidade de movimentos melódicos" }
 		 }
 
 		 CheckBox { id: dissoC; checked: true; x: 5; y: 44;
-		  Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Dissonância composta" }
 	    }
 
 	    CheckBox { id: saltM5; checked: true; x: 5; y: 70;
-		  Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Salto maior do que 5ªJ deve ser compensado \ncom direcionamento contrário" }
 		   CheckBox { id: saltM5Ex1; checked: true; x: 300; y: -7;
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
 	          color: "#e0dfc3"; text: "por grau conjunto" } }
 	      CheckBox { id: saltM5Ex2; checked: true; x: 300; y: 9;
-	          Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
 	          color: "#e0dfc3"; text: "por salto < 5ª" } }
 	    }
     }
 
-    Rectangle { x: 3; y: 303; width: 502; height: 90; color: "#303030"; radius: 2
-     CheckBox { id: varDir; checked: true; x: 5; y: 5;
-		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+    Rectangle { x: 3; y: 314; width: 502; height: 88; color: "#303030"; radius: 2
+     CheckBox { id: varDir; checked: true; x: 5; y: 4;
+		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: "Variedade de direcionamentos: se >" }
 		TextInput { id: varDirQt; anchors.left: varDirTxt.right; anchors.leftMargin: 5; y: varDirTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 0; top: 99;} }
 		Text { anchors.left: varDirQt.right; anchors.leftMargin: 5; y: varDirQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "movimento(s) na mesma direção" }
 	  }
 
-	  CheckBox { id: repNota; checked: true; x: 5; y: 25;
-		 Text { id: repNotaTxt; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	  CheckBox { id: repNota; checked: true; x: 5; y: 24;
+		 Text { id: repNotaTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3";text: "Repetição de notas: se >" }
 		 TextInput { id: repNotaQt; anchors.left: repNotaTxt.right; anchors.leftMargin: 5; y: repNotaTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
-		 Text { anchors.left: repNotaQt.right; anchors.leftMargin: 5; y: repNotaQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "repetição(ões)" }
-     CheckBox { id: repeteNoutra; checked: true; x: 260; y: 0;
- 	  	Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: repNotaQt.right; anchors.leftMargin: 5; y: repNotaQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "repetição(ões)"
+      CheckBox { id: repeteNoutra; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+ 	  	Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
  	   	color: "#e0dfc3";text: "sem mudar nota noutra voz" }
- 	   }
+     } }
     }
 
-	  CheckBox { id: repPad; checked: true; x: 5; y: 45;
-		Text { id: repPadTxt; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	  CheckBox { id: repPad; checked: true; x: 5; y: 44;
+		Text { id: repPadTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: "Repetição de padrões: se >" }
 		TextInput { id: repPadQt; anchors.left: repPadTxt.right; anchors.leftMargin: 5; y: repPadTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "0"; validator: IntValidator{bottom: 0; top: 99;} }
 		Text { anchors.left: repPadQt.right; anchors.leftMargin: 5; y: repPadQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "repetição(ões)" }
 	  }
 
-	  CheckBox { id: arpMel; checked: true; x: 5; y: 65;
-		  Text { id: arpMelTxt; anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+	  CheckBox { id: arpMel; checked: true; x: 5; y: 64;
+		  Text { id: arpMelTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: "Arpejo de acordes na linha melódica: se mais do que" }
       TextInput { id: arpMelQt; anchors.left: arpMelTxt.right; anchors.leftMargin: 5; y: arpMelTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
 		Text { anchors.left: arpMelQt.right; anchors.leftMargin: 5; y: arpMelQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "arpejo(s)" }
 	    }
     }
 
-    Rectangle { x: 3; y: 398; width: 150; height: 50; color: "#303030"; radius: 2
+    Rectangle { x: 3; y: 406; width: 150; height: 50; color: "#303030"; radius: 2
       CheckBox { id: melPFs; checked: true; x: 5; y: 5;
-		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: "Ponto focal agudo" }
 	  }
 
 	  CheckBox { id: melPFi; checked: true; x: 5; y: 25;
-		Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: "Ponto focal grave" }
 	  }
    }
 
-	  Rectangle { x: 160; y: 398; width: 345; height: 50; color: "#303030"; radius: 2
+	  Rectangle { x: 158; y: 406; width: 347; height: 50; color: "#303030"; radius: 2
       CheckBox { id: neutA; checked: true; x: 5; y: 5;
-				Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: "Se não conduzir 6° e 7° alterados" }
-				CheckBox { id: neutAim; checked: false; x: 220; y: 0;
-				  Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: "imediatamente" }}
+				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+				       color: "#e0dfc3"; text: "Se não conduzir 6° e 7° alterados"
+				CheckBox { id: neutAim; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
+				         color: "#e0dfc3"; text: "imediatamente" }}}
 	  	}
 	  	CheckBox { id: neutN; checked: true; x: 5; y: 25;
-				Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: "Se não neutralizar 6° e 7° naturais" }
-				CheckBox { id: neutNim; checked: false; x: 220; y: 0;
-				  Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: "imediatamente" }}
+				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+				       color: "#e0dfc3"; text: "Se não neutralizar 6° e 7° naturais"
+				CheckBox { id: neutNim; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
+				         color: "#e0dfc3"; text: "imediatamente" }}}
 	  	}
 	 }
 
-   Rectangle { x: 3; y: 453; width: 502; height: 50; color: "#303030"; radius: 2
+   Rectangle { x: 3; y: 459; width: 502; height: 50; color: "#303030"; radius: 2
      CheckBox { id: tonic; checked: true; x: 5; y:5;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "Nota inicial diferente de tônica/finalis," }
 
 	   CheckBox { id: terça; checked: false; x: 255;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "terça," }
 	   }
 	   CheckBox { id: quinta; checked: false; x: 340;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "ou quinta" }
 	   }
 	  }
 	  CheckBox { id: tonicF; checked: true; x: 5; y:25;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "Nota final diferente de tônica/finalis," }
 	   CheckBox { id: terçaF; checked: false; x: 250;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "terça," }
 	   }
 	   CheckBox { id: quintaF; checked: false; x: 335;
-		 Text { anchors.left: parent.right; anchors.leftMargin: -5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: "ou quinta" }
 	   }
 	  }
@@ -1347,9 +1285,9 @@ MuseScore {
       text: "-"
       property bool estado: false
       onAccepted: {
+            window.raise();
             msgErros.visible=false;
       }
-
       visible: false;
 } // msgErros
 // -----------------------------------------------------------------------------------------------------------------
@@ -1370,9 +1308,186 @@ MuseScore {
       property bool quiEsp: false;
       property bool melodia: false;
       property bool finaliza: false;
+      property var config: [];
 
 // ----------- funções ---------
-/*function openFile(fileUrl) {
+function salvarCfg() {
+   var i;
+   var j = 0;
+
+   if (melodia) { i = 0; } else
+   if (priEsp) { i = 1; } else
+   if (secEsp) { i = 2; } else
+   if (terEsp) { i = 3; } else
+   if (quaEsp) { i = 4; } else
+   if (quiEsp) { i = 5; };
+
+
+   config[i] = [];
+ // -------------- melodia -------------
+   if(peNota.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ambito.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = ambInp.text; j++;
+   if(priviGC.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(priviGCEx.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(salt7.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(salt6M.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(salt6MEx.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(salt6m.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(salt6mEx.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(saltAum.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(saltM8.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(tritono2.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(tritono1.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(dissoC.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(saltM5.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(saltM5Ex1.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(saltM5Ex2.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(varDir.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = varDirQt.text; j++;
+   if(repNota.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = repNotaQt.text; j++;
+   if(repeteNoutra.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(repPad.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = repPadQt.text; j++;
+   if(arpMel.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = arpMelQt.text; j++;
+   if(melPFs.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(melPFi.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(neutA.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(neutAim.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(neutN.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(neutNim.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(tonic.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(terça.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(quinta.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(tonicF.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(terçaF.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(quintaF.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+ // ---------------- gerais -----------
+   if(primInt.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ex5Ji.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ex3i.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ultInt.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ex5Jf.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ex3f.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ultNotas.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(quartaJi.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(quartaJs.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(paralela8.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = par8Rep.text; j++;
+   if(paralela5.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = par5Rep.text; j++;
+   if(paralela4.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = par4Rep.text; j++;
+   if(paralela36.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = par36Rep.text; j++;
+   if(oculta8.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(oculta5.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ocultEx.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(ocultSalto.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(consecObli.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(consecCont.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(inter8.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(inter5.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(uniss.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(unissIF.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = unissQt.text; j++;
+   if(cruzaVozes.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(falsaR.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   if(distancia.checked){ config[i][j] = true; } else { config[i][j] = false; }; j++;
+   config[i][j] = distQt.text;
+}
+
+function carregarCfg() {
+  var i;
+  var j = 0;
+
+  if (melodia) { i = 0; } else
+  if (priEsp) { i = 1; } else
+  if (secEsp) { i = 2; } else
+  if (terEsp) { i = 3; } else
+  if (quaEsp) { i = 4; } else
+  if (quiEsp) { i = 5; };
+
+
+//  config[i] = [];
+
+  peNota.checked = config[i][j]; j++;
+  ambito.checked = config[i][j]; j++;
+  ambInp.text = config[i][j]; j++;
+  priviGC.checked = config[i][j]; j++;
+  priviGCEx.checked = config[i][j]; j++;
+  salt7.checked = config[i][j]; j++;
+  salt6M.checked = config[i][j]; j++;
+  salt6MEx.checked = config[i][j]; j++;
+  salt6m.checked = config[i][j]; j++;
+  salt6mEx.checked = config[i][j]; j++;
+  saltAum.checked = config[i][j]; j++;
+  saltM8.checked = config[i][j]; j++;
+  tritono2.checked = config[i][j]; j++;
+  tritono1.checked = config[i][j]; j++;
+  dissoC.checked = config[i][j]; j++;
+  saltM5.checked = config[i][j]; j++;
+  saltM5Ex1.checked = config[i][j]; j++;
+  saltM5Ex2.checked = config[i][j]; j++;
+  varDir.checked = config[i][j]; j++;
+  varDirQt.text = config[i][j]; j++;
+  repNota.checked = config[i][j]; j++;
+  repNotaQt.text = config[i][j]; j++;
+  repeteNoutra.checked = config[i][j]; j++;
+  repPad.checked = config[i][j]; j++;
+  repPadQt.text = config[i][j]; j++;
+  arpMel.checked = config[i][j]; j++;
+  arpMelQt.text = config[i][j]; j++;
+  melPFs.checked = config[i][j]; j++;
+  melPFi.checked = config[i][j]; j++;
+  neutA.checked = config[i][j]; j++;
+  neutAim.checked = config[i][j]; j++;
+  neutN.checked = config[i][j]; j++;
+  neutNim.checked = config[i][j]; j++;
+  tonic.checked = config[i][j]; j++;
+  terça.checked = config[i][j]; j++;
+  quinta.checked = config[i][j]; j++;
+  tonicF.checked = config[i][j]; j++;
+  terçaF.checked = config[i][j]; j++;
+  quintaF.checked = config[i][j]; j++;
+// ---------------- gerais -----------
+  primInt.checked = config[i][j]; j++;
+  ex5Ji.checked = config[i][j]; j++;
+  ex3i.checked = config[i][j]; j++;
+  ultInt.checked = config[i][j]; j++;
+  ex5Jf.checked = config[i][j]; j++;
+  ex3f.checked = config[i][j]; j++;
+  ultNotas.checked = config[i][j]; j++;
+  quartaJi.checked = config[i][j]; j++;
+  quartaJs.checked = config[i][j]; j++;
+  paralela8.checked = config[i][j]; j++;
+  par8Rep.text = config[i][j]; j++;
+  paralela5.checked = config[i][j]; j++;
+  par5Rep.text = config[i][j]; j++;
+  paralela4.checked = config[i][j]; j++;
+  par4Rep.text = config[i][j]; j++;
+  paralela36.checked = config[i][j]; j++;
+  par36Rep.text = config[i][j]; j++;
+  oculta8.checked = config[i][j]; j++;
+  oculta5.checked = config[i][j]; j++;
+  ocultEx.checked = config[i][j]; j++;
+  ocultSalto.checked = config[i][j]; j++;
+  consecObli.checked = config[i][j]; j++;
+  consecCont.checked = config[i][j]; j++;
+  inter8.checked = config[i][j]; j++;
+  inter5.checked = config[i][j]; j++;
+  uniss.checked = config[i][j]; j++;
+  unissIF.checked = config[i][j]; j++;
+  unissQt.text = config[i][j]; j++;
+  cruzaVozes.checked = config[i][j]; j++;
+  falsaR.checked = config[i][j]; j++;
+  distancia.checked = config[i][j]; j++;
+  distQt.text = config[i][j];
+}
+
+function openFile(fileUrl) {
     var request = new XMLHttpRequest();
     request.open("GET", fileUrl, false);
     request.send(null);
@@ -1381,224 +1496,69 @@ MuseScore {
     nomePre.text = fileUrl;
     var nomeSplit = nomePre.text.split('/');
     nomePre.text = nomeSplit[nomeSplit.length-1];
-
+//console.log(preSet.length)
     for (var i=0;i<preSet.length;i++) {
 
       if (preSet[i] == "true") { preSet[i] = true; } else
-      if (preSet[i] == "false") { preSet[i] = false };
+      if (preSet[i] == "false") { preSet[i] = false; };
 
     };
 
-    mesmaDir.checked = preSet[0];
-    mDirAcor.checked = preSet[1];
-    paralela8.checked = preSet[2];
-    par8Rep.text = preSet[3];
-    paral8Ext.checked = preSet[4];
-    paralela5.checked = preSet[5];
-    par5Rep.text = preSet[6];
-    paral5Ext.checked = preSet[7];
-    paralela4.checked = preSet[8];
-    par4Rep.text = preSet[9];
-    paral4Ext.checked = preSet[10];
-    paralela36.checked = preSet[11];
-    par36Rep.text = preSet[12];
-    paral36Ext.checked = preSet[13];
-    oculta8.checked = preSet[14];
-    oculta5.checked = preSet[15];
-    ocultAsc.checked = preSet[16];
-    ocultExt.checked = preSet[17];
-    ocultSalto.checked = preSet[18];
-    consecObli.checked = preSet[19];
-    consecCont.checked = preSet[20];
-    consecExt.checked = preSet[21];
-    cruzaVozes.checked = preSet[22];
-    cruzaExt.checked = preSet[23];
-    overlap.checked = preSet[24];
-    uniss.checked = preSet[25];
-    falsaR.checked = preSet[26];
-    resolvSens.checked = preSet[27];
-    sensivelExt.checked = preSet[28];
-    sensivelVI.checked = preSet[29];
-    sensivelVvi.checked = preSet[30];
-    res43.checked = preSet[31];
-    res43Ext.checked = preSet[32];
-    res43VI.checked = preSet[33];
-    res43Vvi.checked = preSet[34];
-    segInvDiss.checked = preSet[35];
-    segInvConj.checked = preSet[36];
-    segInvArp.checked = preSet[37];
-    segInvPara.checked = preSet[38];
-	 dissonancias.checked = preSet[39];
-	 dissSusp.checked = preSet[40];
-	 dissNP.checked  = preSet[41];
-	 dissBordS.checked = preSet[42];
-	 dissBordI.checked  = preSet[43];
-    dissAp.checked = preSet[44];
-    dissRet.checked = preSet[45];
-    dissAnt.checked = preSet[46];
-    dissEsc.checked = preSet[47];
-    dissPed.checked = preSet[48];
-    dissRes.checked = preSet[49];
-    dissDiss.checked = preSet[50];
-    dDissB.checked = preSet[51];
-    melAum.checked = preSet[52];
-    melDim.checked = preSet[53];
-    melDimMuda.checked = preSet[54];
-    mel7.checked = preSet[55];
-    mel8.checked = preSet[56];
-    mel4.checked = preSet[57];
-    mel4Op.checked = preSet[58];
-    mel4r.checked = preSet[59];
-    mel4cj.checked = preSet[60];
-    mel2Salt.checked = preSet[61];
-    mel2tri.checked = preSet[62];
-    melDC.checked = preSet[63];
-    melPFs.checked = preSet[64];
-    melPFsS.checked = preSet[65];
-    melPFi.checked = preSet[66];
-    melPFiS.checked = preSet[67];
-    varDir.checked = preSet[68];
-    varDirQt.text = preSet[69];
-    repNota.checked = preSet[70];
-    repNotaQt.text = preSet[71];
-    repPad.checked = preSet[72];
-	 repPadQt.text = preSet[73];
-	 extMel.checked = preSet[74];
-	 extMelQt.text = preSet[75];
-	 extMelS.checked = preSet[76];
-	 extMelI.checked = preSet[77];
-	 extMelG.checked = preSet[78];
-    espaço.checked = preSet[79];
-    espS.text = preSet[80];
-    espB.text = preSet[81];
-    extens.checked = preSet[82];
-    sop1.text = preSet[83];
-    sop2.text = preSet[84];
-    alto1.text = preSet[85];
-    alto2.text = preSet[86];
-    ten1.text = preSet[87];
-    ten2.text = preSet[88];
-    bxo1.text = preSet[89];
-    bxo2.text = preSet[90];
-    sem3.checked = preSet[91];
-    pc3.checked = preSet[92];
-    triadesDobra3.checked = preSet[93];
-    dobra7.checked = preSet[94];
-    dobraSens.checked = preSet[95];
-    dSensV2I.checked = preSet[96];
-    dSensV2vi.checked = preSet[97];
-    dobra5dim.checked = preSet[98];
+    var n = 0;
 
+    cons.checked = preSet[n]; n++; // 1ª espécie
+    maiorCons.checked = preSet[n]; n++;
+    tF.checked = preSet[n]; n++;  // 2ª espécie
+    dissNP.checked = preSet[n]; n++;
+    notaP.checked = preSet[n]; n++; // 3ª espécie
+    cambi.checked = preSet[n]; n++;
+    borda.checked = preSet[n]; n++;
+    susp4.checked = preSet[n]; n++; // 4ª espécie
+    nP5.checked = preSet[n]; n++;   // 5ª espécie
+    bord5.checked = preSet[n]; n++;
+	  cambi5.checked = preSet[n]; n++;
+	  susp5.checked = preSet[n]; n++;
+	  sRI5.checked  = preSet[n]; n++;
 
+for (var i = 0; i < 6; i++) {      // gerais e melodia em cada espécie
+  for (var j = 0; j < 71; j++) {
+    config[i][j] = preSet[n]; n++;
+  };
+};
+carregarCfg();
     //return request.responseText;
 }
 
 function saveFile(fileUrl, text) {
     var request = new XMLHttpRequest();
     request.open("PUT", fileUrl, false);
-    var conteudoArquivo="";
+    var conteudoArquivo = "";
 
-    if(mesmaDir.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(mDirAcor.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(paralela8.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(par8Rep.text)+"\n";
-    if(paral8Ext.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(paralela5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(par5Rep.text)+"\n";
-    if(paral5Ext.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(paralela4.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(par4Rep.text)+"\n";
-    if(paral4Ext.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(paralela36.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(par36Rep.text)+"\n";
-    if(paral36Ext.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(oculta8.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(oculta5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(ocultAsc.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(ocultExt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(ocultSalto.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(consecObli.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(consecCont.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(consecExt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(cruzaVozes.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(cruzaExt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(overlap.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(uniss.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(falsaR.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(resolvSens.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(sensivelExt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(sensivelVI.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(sensivelVvi.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(res43.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(res43Ext.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(res43VI.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(res43Vvi.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(segInvDiss.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(segInvConj.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(segInvArp.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(segInvPara.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dissonancias.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dissSusp.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+
+// ---------------- 1ª espécie ----------------------
+    if(cons.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(maiorCons.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+// ---------------- 2ª espécie ----------------------
+    if(tF.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
     if(dissNP.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dissBordS.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
- 	 if(dissBordI.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
- 	 if(dissAp.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissRet.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissAnt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissEsc.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissPed.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissRes.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dissDiss.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(dDissB.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(melAum.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(melDim.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(melDimMuda.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(mel7.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(mel8.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(mel4.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(mel4Op.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(mel4r.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(mel4cj.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(mel2Salt.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(mel2tri.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(melDC.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(melPFs.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(melPFsS.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 if(melPFi.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(melPFiS.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(varDir.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(varDirQt.text)+"\n";
-    if(repNota.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(repNotaQt.text)+"\n";
-    if(repPad.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(repPadQt.text)+"\n";
-    if(extMel.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(extMelQt.text)+"\n";
-    if(extMelS.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(extMelI.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(extMelG.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(espaço.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    conteudoArquivo+=(espS.text)+"\n";
-    conteudoArquivo+=(espB.text)+"\n";
-	 if(extens.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-	 conteudoArquivo+=(sop1.text)+"\n";
-	 conteudoArquivo+=(sop2.text)+"\n";
-    conteudoArquivo+=(alto1.text)+"\n";
-    conteudoArquivo+=(alto2.text)+"\n";
-    conteudoArquivo+=(ten1.text)+"\n";
-    conteudoArquivo+=(ten2.text)+"\n";
-    conteudoArquivo+=(bxo1.text)+"\n";
-    conteudoArquivo+=(bxo2.text)+"\n";
-    if(sem3.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(pc3.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(triadesDobra3.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dobra7.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dobraSens.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dSensV2I.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dSensV2vi.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-    if(dobra5dim.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
-
-
+// ---------------- 3ª espécie ----------------------
+    if(notaP.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(cambi.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(borda.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+// ---------------- 4ª espécie ----------------------
+    if(susp4.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+// ---------------- 5ª espécie ----------------------
+    if(nP5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(bord5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(cambi5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(susp5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+    if(sRI5.checked){conteudoArquivo+="true\n";}else{conteudoArquivo+="false\n";};
+// ---------------- gerais e melodia ---------------------
+for (var i = 0; i < 6; i++) {
+  for (var j = 0; j < 71; j++) {
+    conteudoArquivo+=config[i][j]+"\n";
+  };
+};
     request.send(conteudoArquivo);
     return request.status;
 }
@@ -1615,7 +1575,7 @@ FileDialog {
     nameFilters: ["Text files (*.txt)", "All files (*)"]
     onAccepted: saveFile(saveFileDialog.fileUrl, "")
 }
-*/
+
 function colorir(valor) {
 
      curScore.startCmd();
@@ -1721,7 +1681,7 @@ function verificaGrauMelodico(nota,tom) {
   	case "Frígio":
   	 switch (x) {
   	 	case 0: return 1; break;
-  	 	case -5: return 2; break;
+  	 	case 0: return 2; break;
   	 	case -3: return 3; break;
   	 	case -1: return 4; break;
   	 	case 1: return 5; break;
@@ -1761,7 +1721,7 @@ function verificaGrauMelodico(nota,tom) {
   	case "Lócrio":
   	 switch (x) {
   	 	case 0: return 1; break;
-  	 	case -5: return 2; break;
+  	 	case 0: return 2; break;
   	 	case -3: return 3; break;
   	 	case -1: return 4; break;
   	 	case -6: return 5; break;
@@ -1911,7 +1871,7 @@ function tpc2Int(st) { // converte intervalo tpc para intervalos
    case 0: return "UJ";
    case 7: return "Ua";
    case -12: return "2d";
-   case -5: return "2m";
+   case 0: return "2m";
    case 2: return "2M";
    case 9: return "2a";
    case -10: return "3d";
@@ -1934,45 +1894,6 @@ function tpc2Int(st) { // converte intervalo tpc para intervalos
    case 12: return "7a";
   };
 }
-
-function mostraIntervalos() {
- curScore.startCmd();
- var voz = 1 - vozCF;
- var cursor = curScore.newCursor();
- var pos = 0;
-
- for (var x=0;x<vozes.length;x++) {	// percorre acordes
-       cursor.rewind(1);
-	if (!cursor.segment) { cursor.rewind(0)};
-
-	var int2 = Math.abs(vozes[x].nota[0]-vozes[x].nota[1]);
-	var int1 = tpc2Int(vozes[x].tonal[0]-vozes[x].tonal[1]);
-	var intA = int1.slice(0,1); var intB = int1.slice(-1);
-
-	if (intA == "U") {
-	 if (int2 > 0) { int1 = ((int2/12)*7+1) + intB; };
-
-  } else {
-   if (int2 > 12) { int1 = (Math.floor(int2/12)*7) + parseInt(intA) + intB; };
-  }
-
-	cursor.staffIdx = Math.floor(vozes[x].trilha[voz] / 4);
-
-   while (cursor.tick < vozes[x].posição[voz]) {
-          cursor.next();
-      };
-
-  var myText = newElement(Element.STAFF_TEXT);
-      if (!int1 && int1 !== 0) { myText.text = "?"; } else {
-         if (int1.slice(-1) == "M" || int1.slice(-1) == "m" || int1.slice(-1) == "J" )
-                { myText.text = int1.slice(0,(int1.length-1)); } else { myText.text = int1;}; };
-
-      if (voz == 0) { myText.offsetY = 10; } else { myText.offsetY = 0; }
-
-     cursor.add(myText);
-  };
- curScore.endCmd();
-}
 //-----------------------------------------------
 function verificar() {
  vozCF = null;
@@ -1992,13 +1913,13 @@ function verificar() {
  vCantusFirmus();
 
  if (finaliza) { return; };
- //mostraIntervalos();
+
  // --------------- melodia --------------------
  if (peNota.checked) { penultimaNota(); };
  if (ambito.checked) { ambitoMelodico(); };
  if (priviGC.checked) { privilegiaConj(); };
  if (salt7.checked) { melodia7(); };
- if (salt6.checked) { melodia6(); };
+ if (salt6M.checked || salt6m.checked) { melodia6(); };
  if (saltAum.checked) { melodiaAum(); };
  if (saltM8.checked) { melodia8(); };
  if (tritono2.checked) { tritono2Ext(); };
@@ -2027,14 +1948,14 @@ function verificar() {
  if (!melodia && falsaR.checked) { falsaRelação(); };
  if (!melodia && distancia.checked) { espaçamento(); };
  // --------------- segunda espécie --------------
- if (!melodia && tF.checked) { tempoForte(); };
- if (!melodia && dissNP.checked) { notaPassagem(); };
+ if (secEsp && tF.checked) { tempoForte(); };
+ if (secEsp && dissNP.checked) { notaPassagem(); };
  // --------------- terceira espécie -------------
- if (!melodia && (notaP.checked || cambi.checked || borda.checked)) { dissonancias3(); };
+ if (terEsp && (notaP.checked || cambi.checked || borda.checked)) { dissonancias3(); };
  // --------------- quarta espécie ---------------
- if (!melodia && susp4.checked) { suspensao4() };
+ if (quaEsp && susp4.checked) { suspensao4() };
  // --------------- quinta espécie ---------------
- if (!melodia && quiEsp) { dissonancias5(); };
+ if (quiEsp) { dissonancias5(); };
  // ----------------------------------------------
 
   for (var i=0;i<verificados;i++) {
@@ -2101,48 +2022,31 @@ function carregarNotas() {
             var trilhaInicial = pautaInicial * 4;
             var trilhaFinal = pautaFinal * 4;
             var compasso = 0;
-            var compassoAtual = null;
-            var tiqueComp = 0;
+            var qtC = 0;
+            var tickComp = [];  // posição de início dos compassos
 
-          if (!processaTudo) {
-            cursor.rewind(0);
-            while (cursor.segment && cursor.segment.tick < posInicial) {
-     	       if (cursor.measure != compassoAtual) {
-           	   compasso++;
-           	   compassoAtual = cursor.measure;
-           	 };
-           	 cursor.next();
+          if(processaTudo) { cursor.rewind(0); } else { cursor.rewind(1); }; // posiciona o cursor2 no início
+            while (cursor.segment && (processaTudo || cursor.segment.tick < posFinal)) { // cria array com as formulas de compasso
+              compasso++;
+              tickComp[compasso] = cursor.segment.tick;
+              cursor.nextMeasure();
             };
-          };
+        //   console.log(Object.keys(cursor.measure));
 
-            // lê as informações da seleção (ou do documento inteiro, caso não haja seleção)
-
-            if(processaTudo) { // posiciona o cursor no início
-                  cursor.rewind(0);
-            } else {
-                  cursor.rewind(1);
-            };
-
+          // lê as informações da seleção (ou do documento inteiro, caso não haja seleção)
+            if(processaTudo) { cursor.rewind(0); } else { cursor.rewind(1); }; // posiciona o cursor no início
             var segmento = cursor.segment;
-
             var pausa = false;
+            compasso = 1;
 
            while (segmento && (processaTudo || segmento.tick < posFinal)) {
-
-           	var denominador = cursor.timesig.denominator;
-            var numerador = cursor.timeSignature.numerator;
-
-           	carregou = false;
-
-           	 if (cursor.measure != compassoAtual) {
-           	   compasso++;
-           	   compassoAtual = cursor.measure;
-           	   tiqueComp = segmento.tick;
-           	 };
-
-             var tempo = ((segmento.tick - tiqueComp) / (1920 / denominador)) + 1;
-             var voz = 0;
-
+            carregou = false;
+           	var denominador = cursor.measure.timesigActual.denominator;
+            var numerador = cursor.measure.timesigActual.numerator;
+            var uT = 1920 / denominador;  // unidade de tempo em ticks
+            var tempo = ((segmento.tick - tickComp[compasso]) / uT) + 1;
+            var voz = 0;
+//console.log(segmento.tick, "-", tickComp[compasso], " ==> ", tempo);
 	          vozes[seg] = { nota: [], tonal: [], posição: [], duração: [], trilha: [], objeto: [], ligadura: [], tempo: [] };
 
              // Passo 1: ler as notas e guardar em "vozes"
@@ -2216,7 +2120,8 @@ function carregarNotas() {
               };
 
         		  cursor.next(); segmento = cursor.segment;
-
+              compasso++;
+              if (tickComp[compasso] && segmento.tick < tickComp[compasso]) { compasso--; };
            };
     if (pausa && !melodia) { vozes.splice(0, 1); pausa = false; };
 
@@ -2245,8 +2150,8 @@ function penultimaNota() {
    var x = vozes.length - 1;
 
    var g1 = parseInt(verificaGrauMelodico(vozes[x-1].tonal[voz], tom));
-
-   if (menuModo.value < 3) {
+//console.log("----",parseInt(menuModo.value))
+   if (parseInt(menuModo.value) < 3) {
 	   if (g1 != 5 && g1 != 7 && g1 != 2 && g1 != 4) {
 	      verificados++;
 	      criaResultado(verificados, x-1, voz, voz, "penúltima nota não pertence ao V ou viiº", 1, 1);
@@ -2341,11 +2246,16 @@ function melodia6() {
 
    var intervalo = vozes[x].nota[voz] - vozes[x-1].nota[voz];
 
-   if (intervalo == 8 || intervalo == 9 || intervalo == -8 || intervalo == -9) {
-     if (salt6Ex.checked && intervalo > 0) { continue; };
+   if (intervalo == 9 || intervalo == -9) {
+     if (salt6MEx.checked && intervalo > 0) { continue; };
       verificados++;
-      criaResultado(verificados, x, voz, voz, "intervalo melódico de 6ª", 2, 1);
-    };
+      criaResultado(verificados, x, voz, voz, "intervalo melódico de 6ªM", 2, 1);
+    } else
+   if (intervalo == 8 || intervalo == -8) {
+    if (salt6mEx.checked && intervalo > 0) { continue; };
+     verificados++;
+     criaResultado(verificados, x, voz, voz, "intervalo melódico de 6ªm", 2, 1);
+   };
   };
 }
 
@@ -2618,21 +2528,20 @@ function repetiçãoNotas() {
 
 	var qtRep = parseInt(repNotaQt.text);
 
- if (melodia) { var voz = vozCF; } else { var voz = 1 - vozCF; };
+  if (melodia) { var voz = vozCF; } else { var voz = 1 - vozCF; };
 
   var novaVoz = []; var qt = 0, pos1 = 0;
 
    for (var x=0;x<vozes.length;x++) {
-     console.log(x,")",vozes[x].nota[voz], vozes[x].ligadura[voz])
+     //console.log(x,")",vozes[x].nota[voz], vozes[x].ligadura[voz])
     if (!vozes[x].ligadura[voz]) {
       novaVoz.push({ nota: vozes[x].nota[voz], pos: x}) ;
-    } else { novaVoz[novaVoz.length-2].pos = x;};
-     console.log(novaVoz.length-1,") novaVoz.pos:", novaVoz[novaVoz.length-1].pos);
+    } else if (novaVoz.length > 1) { novaVoz[novaVoz.length-1].pos = x; };
    };
 
   for (var x=1;x<novaVoz.length;x++) { // percorre acordes
 
-   if (x < novaVoz.length) { var posIni = novaVoz[x-1].pos - novaVoz[pos1].pos; console.log(x, "posIni = ", novaVoz[x-1].pos, novaVoz[pos1].pos);};
+   if (x < novaVoz.length) { var posIni = novaVoz[x-1].pos - novaVoz[pos1].pos; };
 
    if (novaVoz[x].nota == novaVoz[x-1].nota) {
     if (repeteNoutra.checked) {
@@ -2647,11 +2556,10 @@ function repetiçãoNotas() {
    } else { pos1 = x-1; testaRep(); qt = 0; };
 
   };
-  var posIni = (novaVoz[novaVoz.length-1].pos - novaVoz[pos1].pos); console.log("posIni:", novaVoz[novaVoz.length-1].pos, novaVoz[pos1].pos);
+  var posIni = (novaVoz[novaVoz.length-1].pos - novaVoz[pos1].pos);
   testaRep();
 
  function testaRep() {
-
 	if (qt > qtRep) {
 		 verificados++;
        criaResultado(verificados, novaVoz[x-1].pos, voz, voz, "repetição de notas", posIni, 1); };
@@ -2679,14 +2587,14 @@ function repetePadrão() {
    if (novaVoz[x].nota == novaVoz[x-2].nota && novaVoz[x-1].nota == novaVoz[x-3].nota
        && novaVoz[x].nota != novaVoz[x-1].nota) { verRepPad(4,2); };
    if (x >=5 && novaVoz[x].nota == novaVoz[x-2].nota && novaVoz[x-1].nota == novaVoz[x-3].nota &&
-       novaVoz[x].nota == novaVoz[x-4].nota && novaVoz[x-1].nota == novaVoz[x-5].nota &&
+       novaVoz[x].nota == novaVoz[x-4].nota && novaVoz[x-1].nota == novaVoz[x0].nota &&
        novaVoz[x].nota != novaVoz[x-1].nota) { verRepPad(6,2); };
 
    if (x >= 6 && novaVoz[x].nota == novaVoz[x-3].nota && novaVoz[x-1].nota == novaVoz[x-4].nota
-       && novaVoz[x-2].nota == novaVoz[x-5].nota && (novaVoz[x].nota != novaVoz[x-1].nota ||
+       && novaVoz[x-2].nota == novaVoz[x].nota && (novaVoz[x].nota != novaVoz[x-1].nota ||
        novaVoz[x].nota != novaVoz[x-2].nota)) { verRepPad(6,3); };
    if (x >= 9 && novaVoz[x].nota == novaVoz[x-3].nota && novaVoz[x-1].nota == novaVoz[x-4].nota
-       && novaVoz[x-2].nota == novaVoz[x-5].nota && novaVoz[x].nota == novaVoz[x-6].nota &&
+       && novaVoz[x-2].nota == novaVoz[x0].nota && novaVoz[x].nota == novaVoz[x-6].nota &&
        novaVoz[x-1].nota == novaVoz[x-7].nota && novaVoz[x-2].nota == novaVoz[x-8].nota
        && (novaVoz[x].nota != novaVoz[x-1].nota || novaVoz[x].nota != novaVoz[x-2].nota)) { verRepPad(9,3); };
   };
@@ -2804,7 +2712,7 @@ for (var voz=0;voz<vozes[1].nota.length;voz++) { // percorre vozes
          if (x < novaVoz.length-2 && (alt2 != "7+" || alt3 != "1")) { var a = x + 1; verificaAlter(); };
        } else
        if (alt1.slice(0, 1) == "7") {
-         if (alt3 != "1") { var a = x + 1; verificaAlter(); };
+         if (alt2 != "1") { var a = x + 1; verificaAlter(); };
        };
      } else {
        for (var a=x+1;a<novaVoz.length;a++) {
@@ -3247,12 +3155,8 @@ function consecutivas() {
                  (Math.abs(intAnt%12) == 7 || Math.abs(intAnt%12) == 0))  {
 
                if ((consecObli.checked && (dir1 == 0 || dir2 == 0)) || (consecCont.checked && (dir1 != 0 && dir2 != 0 && dir1 != dir2))) {
-                 if (consecExt.checked) {
-                   if (voz == 0 && i == vozes[x].nota.length-1) {
-                  	verificados++;
-                  	criaResultado(verificados, x, voz, i, "5ª ou 8ª consecutivas", 2, 2);};
-                 } else { verificados++;
-                          criaResultado(verificados, x, voz, i, "5ª ou 8ª consecutivas", 2, 2); };
+                   verificados++;
+                   criaResultado(verificados, x, voz, i, "5ª ou 8ª consecutivas", 2, 2);
                };
              };
          };
@@ -3417,7 +3321,7 @@ function notaPassagem() {
    if (dir1 == dir2 && dir1 != 0 && intM1 < 3 && intM2 < 3) { var contorno = true; } else { var contorno = false; };
 
    if (int1.substr(0, 1) == "C" && int2 == "D" && int3.substr(0, 1) == "C") { var intervalos = true; } else { var intervalos = false; };
-
+console.log(int2, pMetric2, intervalos, contorno);
    if (int2 == "D" && pMetric2 != "F" && (!intervalos || !contorno)) {
       verificados++;
 	   criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);
@@ -3502,6 +3406,9 @@ function dissonancias3() {
 }
 //------------------------ 4ª espécie -------------
 function suspensao4() {
+
+  notaPassagem();
+
   var voz = 1 - vozCF;
 
   for (var x=1;x<vozes.length-1;x++) { // percorre acordes
@@ -3631,7 +3538,7 @@ function dissonancias5() {
 //------------------------------------------------------------------------------
 function criaResultado(verificados, x, voz, i, tipo, numAcordes, numVozes) {
 
- 	var primAcorde = x - (numAcordes-1);
+ 	var primAcorde = x - (numAcordes-1); //console.log(x, numAcordes, primAcorde);
  	var compAnt = Math.floor(vozes[primAcorde].compasso);
  	var compAtual = Math.floor(vozes[x].compasso);
  	var qtdVozes = vozes[x].nota.length;
@@ -3670,11 +3577,44 @@ function criaResultado(verificados, x, voz, i, tipo, numAcordes, numVozes) {
 
   onRun: {
 
-  /*curScore.parts[0].partName = "Mudei o nome!"
-  console.log(curScore.parts[0].partName)
-  console.log(curScore.parts[0].instrumentId)
-  console.log(curScore.parts[0].longName)
-  curScore.parts[0].longName = "Agora mudei o nome certo!"*/
+    inicializaVariáveis();
+
+    function inicializaVariáveis() {
+      var preSet = "true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-12-true-true-true-true-true-true-false-true-true-true-true-true-true-true-true-true-4-true-1-true-true-0-true-1-true-true-true-true-true-true-true-false-false-true-false-false-false-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-16-true-true-true-true-true-true-false-true-true-true-false-true-true-true-true-true-4-true-1-true-true-1-true-1-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-0-true-0-false-3-false-3-true-true-true-true-true-false-true-true-true-true-1-true-true-true-1-true-true-16-true-true-true-true-true-true-false-true-true-true-false-true-true-true-true-true-4-true-1-true-true-1-true-2-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-0-true-0-false-3-false-3-true-true-true-true-true-false-true-true-true-true-1-true-true-true-3-true-false-19-true-true-true-true-true-true-false-true-true-true-false-true-true-true-true-true-6-true-2-true-true-1-true-3-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-0-true-0-false-3-false-3-true-true-true-true-true-false-true-true-true-true-1-true-true-true-4-true-true-19-true-true-true-true-true-true-false-true-true-true-false-true-true-true-true-true-4-true-2-true-true-1-true-2-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-0-true-0-false-3-false-3-true-true-true-true-true-false-true-true-true-true-1-true-true-true-3-true-true-19-true-true-true-true-true-true-false-true-true-true-false-true-true-true-true-true-6-true-2-true-true-2-true-3-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-true-0-true-0-false-3-false-3-true-true-true-true-true-false-true-true-true-true-1-true-true-true-4-"
+        preSet = preSet.split("-");
+        //console.log(preSet.length);
+        for (var i=0;i<preSet.length;i++) {
+          if (preSet[i] == "true") { preSet[i] = true; } else
+          if (preSet[i] == "false") { preSet[i] = false; };
+        };
+
+        var n = 0;
+
+        cons.checked = preSet[n]; n++; // 1ª espécie
+        maiorCons.checked = preSet[n]; n++;
+        tF.checked = preSet[n]; n++;  // 2ª espécie
+        dissNP.checked = preSet[n]; n++;
+        notaP.checked = preSet[n]; n++; // 3ª espécie
+        cambi.checked = preSet[n]; n++;
+        borda.checked = preSet[n]; n++;
+        susp4.checked = preSet[n]; n++; // 4ª espécie
+        nP5.checked = preSet[n]; n++;   // 5ª espécie
+        bord5.checked = preSet[n]; n++;
+        cambi5.checked = preSet[n]; n++;
+        susp5.checked = preSet[n]; n++;
+        sRI5.checked  = preSet[n]; n++;
+
+    for (var i = 0; i < 6; i++) {      // gerais e melodia em cada espécie
+      config[i] = [];
+      for (var j = 0; j < 71; j++) {
+        config[i][j] = preSet[n]; n++;
+        //console.log(config[i][j])
+      };
+    };
+  };
+
+    window.visible = true;
+    window.raise();
 
   } // fecha onRun
 
