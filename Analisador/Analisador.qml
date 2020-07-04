@@ -22,15 +22,15 @@ import QtQuick.Window 2.1
 import MuseScore 3.0
 
 MuseScore {
-      menuPath: "Plugins.Contraponto.Analisador"
-      description: "Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto."
-      version: "0.411ms3"
+      menuPath: qsTr("Plugins.Contraponto.Analisador")
+      description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
+      version: "0.41ms3"
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
     id: window
     visible: true
-    title: "Analisador de Contrapontos v0.4"
+    title: qsTr("Analisador de Contrapontos v0.4")
       width: 700; height: 630
     color: "#020202"
 
@@ -51,7 +51,7 @@ MuseScore {
 
        Rectangle {
              id: btVerifica
-             property string text: "Verificar"
+             property string text: qsTr("Verificar")
              signal clicked
              anchors.verticalCenter: parent.verticalCenter
              anchors.right: parent.horizontalCenter //; anchors.leftMargin: 3
@@ -88,7 +88,7 @@ MuseScore {
 
        Rectangle {
              id: btFechar
-             property string text: "Fechar"
+             property string text: qsTr("Fechar")
              signal clicked
              anchors.verticalCenter: parent.verticalCenter
              anchors.left: parent.horizontalCenter; anchors.leftMargin: 3
@@ -126,14 +126,14 @@ MuseScore {
     // ------------------------------ Apresentação ---------------------------
  Item { id: apresenta; visible: true
 
-    Text { x: 90; y: 275; font.pointSize: 19; color: "#aaa31e"; text: "Analisador de Contrapontos 0.4" }
-    Text { x: 196; y: 303; font.pointSize: 9; color: "#aaa31e"; text: "Extensão para MuseScore" }
+    Text { x: 90; y: 275; font.pointSize: 19; color: "#aaa31e"; text: qsTr("Analisador de Contrapontos 0.4") }
+    Text { x: 196; y: 303; font.pointSize: 9; color: "#aaa31e"; text: qsTr("Extensão para MuseScore") }
 
   }
     // ------------------------------ configurações, barra lateral --------------------------
  Item { id: configura; visible: true;
     Rectangle { x: 536; y: 3; width: 161; height: 595;	color: "#222222"; radius: 2
-      Text { x: 22; y: 5; color: "#d1d10a"; font.pixelSize: 18; text: "Configurações" }
+      Text { x: 22; y: 5; color: "#d1d10a"; font.pixelSize: 18; text: qsTr("Configurações") }
       Rectangle { id: tonalidade;
                   x: 3; y: 28; width: 155; height: 110;
                   color: "#101010"; radius: 2
@@ -143,7 +143,7 @@ MuseScore {
 	         width: 60
 	         menu: menuTonica
 	         x: 3; y: 3
-	         Text { x: 62; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: "Tônica/finalis" }
+	         Text { x: 62; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Tônica/finalis") }
           }
 	       Button {
 	       	id: btAcid
@@ -151,15 +151,15 @@ MuseScore {
 	         width: 50
 	         menu: menuAcid
 	         x: 3; y: 28
-	         Text { x: 52; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: "Acidente" }
+	         Text { x: 52; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Acidente") }
 	       }
 	       Button {
 	       	id: btModo
-	         text: "Maior"
+	         text: qsTr("Maior")
 	         width: 90
 	         menu: menuModo
 	         x: 3; y: 53
-	         Text { x: 92; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: "Modo" }
+	         Text { x: 92; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Modo") }
 	       }
 	       Menu {
 	       	id: menuTonica
@@ -182,18 +182,18 @@ MuseScore {
 		     Menu {
 	       	id: menuModo
           property int value: 1
-	    		    MenuItem { text: "Maior"; onTriggered: { menuModo.value = 1; btModo.text = "Maior" } }
-				    	MenuItem { text: "Menor"; onTriggered: { menuModo.value = 2; btModo.text = "Menor" } }
-				    	MenuItem { text: "Jônico"; onTriggered: { menuModo.value = 3; btModo.text = "Jônico" } }
-				    	MenuItem { text: "Dórico"; onTriggered: { menuModo.value = 4; btModo.text = "Dórico" } }
-				    	MenuItem { text: "Frígio"; onTriggered: { menuModo.value = 5; btModo.text = "Frígio" } }
-				    	MenuItem { text: "Lídio"; onTriggered: { menuModo.value = 6; btModo.text = "Lídio" } }
-				    	MenuItem { text: "Mixolídio"; onTriggered: { menuModo.value = 7; btModo.text = "Mixolídio" } }
-				    	MenuItem { text: "Eólio"; onTriggered: { menuModo.value = 8; btModo.text = "Eólio" } }
-				    	MenuItem { text: "Lócrio"; onTriggered: { menuModo.value = 9; btModo.text = "Lócrio" } }
+	    		    MenuItem { text: qsTr("Maior"); onTriggered: { menuModo.value = 1; btModo.text = "Maior" } }
+				    	MenuItem { text: qsTr("Menor"); onTriggered: { menuModo.value = 2; btModo.text = "Menor" } }
+				    	MenuItem { text: qsTr("Jônico"); onTriggered: { menuModo.value = 3; btModo.text = "Jônico" } }
+				    	MenuItem { text: qsTr("Dórico"); onTriggered: { menuModo.value = 4; btModo.text = "Dórico" } }
+				    	MenuItem { text: qsTr("Frígio"); onTriggered: { menuModo.value = 5; btModo.text = "Frígio" } }
+				    	MenuItem { text: qsTr("Lídio"); onTriggered: { menuModo.value = 6; btModo.text = "Lídio" } }
+				    	MenuItem { text: qsTr("Mixolídio"); onTriggered: { menuModo.value = 7; btModo.text = "Mixolídio" } }
+				    	MenuItem { text: qsTr("Eólio"); onTriggered: { menuModo.value = 8; btModo.text = "Eólio" } }
+				    	MenuItem { text: qsTr("Lócrio"); onTriggered: { menuModo.value = 9; btModo.text = "Lócrio" } }
 				 }
 
-         Text { x: 6; y: 86; color: "#f9ff8c"; font.pixelSize: 14; text: "Voz do C.F. :"
+         Text { x: 6; y: 86; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Voz do C.F. :")
 	         Rectangle { anchors.left: parent.right; anchors.leftMargin: 8; anchors.verticalCenter: parent.verticalCenter;
 	                     width: 25; height: 22; color: "#9c9c9c"; radius: 2
              Rectangle { x: 1; y: 1; width: 23; height: 20; color: "#050000"; radius: 2
@@ -208,7 +208,7 @@ MuseScore {
               x: 3; y: 142
               width: 155; height: 157; radius: 2
               color: "#101010"
-              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: "Tipo de contraponto:" }
+              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Tipo de contraponto:") }
 
         // CF
         Rectangle {
@@ -521,7 +521,7 @@ MuseScore {
         Rectangle {
                      id: livre
                      x: 3; y: 129
-                     property string text: "Contraponto livre"
+                     property string text: qsTr("Contraponto livre")
                      signal clicked
                      width: 149; height: bLabLivre.height + 7
                      border { width: 1; color: "#555555" }
@@ -573,12 +573,12 @@ MuseScore {
               x: 3; y: 303
               width: 155; height: 130; radius: 2
               color: "#101010"
-              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: "Aspectos:" }
+              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Aspectos:") }
               // gerais
               Rectangle {
                id: botao26
                x: 3; y: 25
-               property string text: "Gerais"
+               property string text: qsTr("Gerais")
                signal clicked
                width: 149; height: bLabel26.height + 7
                border { width: 1; color: "#555555" }
@@ -621,7 +621,7 @@ MuseScore {
               Rectangle {
                id: botao29
                x: 3; y: 51
-               property string text: "Dissonâncias"
+               property string text: qsTr("Dissonâncias")
                signal clicked
                width: 149; height: bLabel29.height + 7
                border { width: 1; color: "#555555" }
@@ -664,7 +664,7 @@ MuseScore {
               Rectangle {
                id: botao28
                x: 3; y: 77
-               property string text: "Melodia"
+               property string text: qsTr("Melodia")
                signal clicked
                width: 149; height: bLabel28.height + 7
                border { width: 1; color: "#555555" }
@@ -706,7 +706,7 @@ MuseScore {
               Rectangle {
                id: botao291
                x: 3; y: 103
-               property string text: "Intervalos"
+               property string text: qsTr("Intervalos")
                signal clicked
                width: 149; height: bLabel291.height + 7
                border { width: 1; color: "#555555" }
@@ -749,15 +749,15 @@ MuseScore {
       Rectangle { id: preConfigurações;
                  x: 3; y: 437; width: 155; height: 106
                  color: "#101010"; radius: 2
-        Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: "Pré-configurações:" }
+        Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Pré-configurações:") }
         Rectangle { x: 3; y: 25; width: 149; height: 22; color: "#9c9c9c"; radius: 2
          Rectangle { x: 1; y: 1; width: 147; height: 20; color: "#050000"; radius: 2
-          Text { id: nomePre; x: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; color: "#d1d10a"; text: "sem nome" }
+          Text { id: nomePre; x: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; color: "#d1d10a"; text: qsTr("sem nome") }
          }
         }
             Rectangle {
              id: salvarCnfiguração
-             property string text: "Salvar"
+             property string text: qsTr("Salvar")
              signal clicked
              x: 3; y: 50; width: 149; height: 25
              border { width: 1; color: "#555555" }
@@ -790,7 +790,7 @@ MuseScore {
                   }} //botão salvar
             Rectangle {
              id: carregarCnfiguração
-             property string text: "Carregar"
+             property string text: qsTr("Carregar")
              signal clicked
              x: 3; y: 77; width: 149; height: 25
              border { width: 1; color: "#555555" }
@@ -824,10 +824,10 @@ MuseScore {
       Rectangle { id: relatorio;
                  x: 3; y: 546; width: 155; height: 46
                  color: "#101010"; radius: 2
-        Text { x: 3; y: 3; color: "#f9ff8c"; font.pixelSize: 14; text: "Relatório:" }
+        Text { x: 3; y: 3; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Relatório:") }
             Rectangle {
              id: geraRel
-             property string text: "Gerar relatório"
+             property string text: qsTr("Gerar relatório")
              signal clicked
              x: 3; y: 18; width: 149; height: 25
              border { width: 1; color: "#555555" }
@@ -875,45 +875,45 @@ MuseScore {
 
 	     CheckBox { id: paralela8; checked: true; x: 5; y: 3;
 	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: "U/8ª paralela" }
-	       Text { id: par8RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
+           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("U/8ª paralela") }
+	       Text { id: par8RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
 		     TextInput { id: par8Rep; anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y;
            font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "ou mais paralela(s)" }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
 		     }
 		   }
 
 	     CheckBox { id: paralela5; checked: true; x: 5; y: 44;
 	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: "5ª paralela" }
-	       Text { id: par5RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
+           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª paralela") }
+	       Text { id: par5RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
 		     TextInput { id: par5Rep; anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y;
            font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 	         Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: "ou mais paralela(s)" }
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
 	        }
 	       }
 
 	     CheckBox { id: paralela4; checked: false; x: 245; y: 3;
 	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: "4ªJ paralela" }
-	      Text { id: par4RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
+          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("4ªJ paralela") }
+	      Text { id: par4RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
 	       TextInput { id: par4Rep; anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y;
            font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
            Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: "ou mais paralela(s)" }
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
 	       }
 	      }
 
 	     CheckBox { id: paralela36; checked: true; x: 245; y: 44;
 	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: "3ª e 6ª paralela" }
-	      Text { id: par36RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se ocorrer" }
+          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("3ª e 6ª paralela") }
+	      Text { id: par36RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
 	       TextInput { id: par36Rep; anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y;
            font.underline: true; text: "4"; font.pixelSize: 12;  color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
 	        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "ou mais paralela(s)" }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
 	       }
 	      }
 	  }
@@ -922,81 +922,81 @@ MuseScore {
 
 	     CheckBox { id: oculta8; checked: true; x: 5; y: 3;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª oculta/direta" }
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª oculta/direta") }
 	      }
 
 	     CheckBox { id: oculta5; checked: true; x: 5; y: 23;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª oculta/direta" }
+	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª oculta/direta") }
 	      }
 		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 5;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto no final" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no final") }
 		 		}
 
 		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 23;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Somente se salto na voz superior" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente se salto na voz superior") }
 		 		}
 		  }
       // 5ªs e 8ªs intermitentes
      Rectangle { x: 3; y: 138; width: 526; height: 80; color: "#1c1c1c"; radius: 2
 
        CheckBox { id: inter8; checked: true; x: 5; y: 15;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "8ª intermitente" }
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª intermitente") }
        }
        CheckBox { id: inter5; checked: true; x: 5; y: 40;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª intermitente" }
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª intermitente") }
        }
        CheckBox { id: interExTf; checked: true; x: 150; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto em tempo fraco e :" }
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco e :") }
         CheckBox { id: interExTf1; checked: false; x: 60; y: 18;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: "sincopada e"
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("sincopada e")
          CheckBox { id: interExTf2; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: "alcançada por grau conj." }}
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("alcançada por grau conj.") }}
          }
         }
        }
        CheckBox { id: interExTF; checked: true; x: 150; y: 39;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto em tempo forte com ambas notas ligadas às anteriores" }
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo forte com ambas notas ligadas às anteriores") }
        }
        CheckBox { id: interExFim; checked: true; x: 330; y: 58;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto na cadência final" }
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto na cadência final") }
        }
        CheckBox { id: interExCF; checked: true; x: 150; y: 58;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto se CF não move" }
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto se CF não move") }
        }
       }
 	     // consecutivas por movimento contrário e oblíquo
 	   Rectangle { x: 3; y: 222; width: 276; height: 50;	color: "#1c1c1c"; radius: 2
 
 	     CheckBox { id: consecObli; checked: false; x: 5; y: 3;
-	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas mov. oblíquo" }
+	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. oblíquo") }
 	      }
 
 			CheckBox { id: consecCont; checked: false; x: 5; y: 26;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "5ª e 8ª consecutivas mov. contrário" }
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. contrário") }
 		 		}
 		 }
      // cruzamento de vozes
      Rectangle { x: 283; y: 222; width: 246; height: 50; color: "#1c1c1c"; radius: 2
       CheckBox { id: cruzaVozes; checked: true; x: 5; y: 3
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Cruzamento de vozes" }
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Cruzamento de vozes") }
        }
        CheckBox { id: falsaR; checked: true; x: 5; y: 26
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Falsa relação" }
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Falsa relação") }
        }
      }
       // uníssono
 		 Rectangle { x: 3; y: 275; width: 526; height: 45; color: "#1c1c1c"; radius: 2
 	     CheckBox { id: uniss; checked: true; x: 3; y: 5;
 	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Uníssono" }
+                font.pixelSize: 14; text: qsTr("Uníssono") }
 	       CheckBox { id: unissIF; checked: true; x: 250; y: -2
 		       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 12; text: "Exceto Início/Final" }}
+                  font.pixelSize: 12; text: qsTr("Exceto Início/Final") }}
          CheckBox { id: unissTF; checked: true; x: 250; y: 18
   		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 12; text: "Exceto tempo fraco" }}
-         Text { id: unissTxt; x: 5; y: 22; color: "#e0dfc3"; font.pixelSize: 12; text: "se quantidade for maior do que" }
+                  font.pixelSize: 12; text: qsTr("Exceto tempo fraco") }}
+         Text { id: unissTxt; x: 5; y: 22; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("se quantidade for maior do que") }
 		      TextInput { id: unissQt; anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y; font.underline: true; text: "0";
                       font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}}
 		   }
@@ -1005,43 +1005,43 @@ MuseScore {
      Rectangle { x: 3; y: 323; width: 526; height: 57;	color: "#282828"; radius: 2
        CheckBox { id: primInt; checked: true; x: 3; y: 2;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: "início diferente de unís./8ªJ" }
+          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("início diferente de unís./8ªJ") }
         CheckBox { id: ex5Ji; checked: true; x: 20; y: 18;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, com a Tônica na voz inf." } }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
         CheckBox { id: ex3i; checked: true; x: 20; y: 35;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, com a Tônica na voz inf." } }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
       } // ultimo intervalo
       CheckBox { id: ultInt; checked: true; x: 260; y: 2;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: "final diferente de unís./8ªJ" }
+          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("final diferente de unís./8ªJ") }
         CheckBox { id: ex5Jf; checked: true; x: 20; y: 18;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 5ªJ, com a Tônica na voz inf." } }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
         CheckBox { id: ex3f; checked: true; x: 20; y: 35;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 3ª, com a Tônica na voz inf." } }
+            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
       }
     }
     // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente
     Rectangle { x: 3; y: 383; width: 526; height: 47;	color: "#282828"; radius: 2
        CheckBox { id: ultNotas; checked: true; x: 5; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: "Se não alcançar último intervalo por grau conj. e mov. contrário" }
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não alcançar último intervalo por grau conj. e mov. contrário") }
         CheckBox { id: quartaJi; checked: true; x: -3; y: 22;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz inf." } }
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz inf.") } }
          CheckBox { id: quartaJs; checked: true; x: 240; y: 22;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "exceto 4ªJ asc / 5ªJ desc, voz sup." } }
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz sup.") } }
       }
     }
       // distância
 		 Rectangle { x: 3; y: 433; width: 526; height: 45; color: "#282828"; radius: 2
 
 	     CheckBox { id: distancia; checked: true; x: 5; y: 3;
-	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: "Distância entre as vozes" }
-	       Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: "- se uma sequencia maior do que" }
+	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Distância entre as vozes") }
+	       Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se uma sequencia maior do que") }
 		     TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}
-		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: "intervalo(s) maior(es) do que a"
+		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalo(s) maior(es) do que a")
            TextInput { id: distInt;
              anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.underline: true; text: "10"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 8; top: 15;}
             Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter; color: "yellow"; font.pixelSize: 12; text: "ª" }}
@@ -1053,23 +1053,23 @@ MuseScore {
      Rectangle { x: 3; y: 481; width: 526; height: 27; color: "#282828"; radius: 2
       CheckBox { id: consImp; checked: true; x: 5; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: "Prioridade para Consonâncias Imperfeitas" }
+          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Prioridade para Consonâncias Imperfeitas") }
         }
       }
       // coerência harmônica
      Rectangle { x: 3; y: 511; width: 526; height: 51; color: "#282828"; radius: 2
-      Text { x: 5; y: 0; color: "#e0dfc3"; font.pixelSize: 14; text: "Coerência harmônica"}
+      Text { x: 5; y: 0; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Coerência harmônica") }
       CheckBox { id: cHarmonia; checked: true; x: 5; y: 32;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-               color: "#e0dfc3"; font.pixelSize: 12; text: "notas que não pertencem ao acorde"
+               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("notas que não pertencem ao acorde")
           CheckBox { id: cHarmoniaEx; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                   color: "#e0dfc3"; font.pixelSize: 12; text: "Exceto em tempo fraco" }}
+                   color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco") }}
         }
       }
       CheckBox { id: cHarmoniaF; checked: true; x: 5; y: 15;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-               color: "#e0dfc3"; font.pixelSize: 12; text: "ausência da fundamental"}}
+               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ausência da fundamental")}}
       // Text { x: 415; y: 4; color: "#e0dfc3"; font.pixelSize: 12; text: "Cifra:"
       //  ComboBox { id: cifraHar; anchors.left: parent.left; anchors.topMargin: 0; anchors.top: parent.bottom;
       //              width: 101; model: ["Gradual", "Funcional", "Popular"]; currentIndex: 0 }}
@@ -1082,44 +1082,44 @@ MuseScore {
       Rectangle { x: 3; y: 3; width: 520; height: 40; color: "#131313"; radius: 2 // Dissonâncias
        CheckBox { id: dissonanciasG; checked: true; x: 3; y: 3;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: "Verificar dissonâncias" }}
+             font.pixelSize: 14; text: qsTr("Verificar dissonâncias") }}
      }
      }
      Rectangle { x: 3; y: 36; width: 526; height: 525; color: "#292929"; radius: 2
       Rectangle { x: 3; y: 3; width: 520; height: 45; color: "#131313"; radius: 2 // nota de passagem
        CheckBox { id: passagemL; checked: true; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: "Nota de passagem" }
+              font.pixelSize: 14; text: qsTr("Nota de passagem") }
         CheckBox { id: passaLEx; checked: false; x: 25; y: 20
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 11; text: "somente em tempo fraco" }}
+                font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
         CheckBox { id: passaLEx2; checked: false; x: 200; y: 20
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                        font.pixelSize: 11; text: "permitir grupo de NP" }}
+                        font.pixelSize: 11; text: qsTr("permitir grupo de NP") }}
        }
       }
       Rectangle { x: 3; y: 51; width: 520; height: 45; color: "#131313"; radius: 2 // bordadura
-      Text {  x: 3; y: 3; color: "#e0dfc3"; font.pixelSize: 14; text: "Bordadura"
+      Text {  x: 3; y: 3; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura")
        CheckBox { id: bordaduraLI; checked: true; x: 80; anchors.verticalCenter: parent.verticalCenter;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 11; text: "inferior," }}
+             font.pixelSize: 11; text: qsTr("inferior,") }}
        CheckBox { id: bordaduraLS; checked: true; x: 155; anchors.verticalCenter: parent.verticalCenter;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "superior," }}
+                   font.pixelSize: 11; text: qsTr("superior,") }}
        CheckBox { id: bordaLEx; checked: false; x: 230; anchors.verticalCenter: parent.verticalCenter;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 11; text: "somente em tempo fraco" }}
+              font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
       }
-      Text { x: 3; y:25; color: "#e0dfc3"; font.pixelSize: 14; text: "Bordadura dupla"
+      Text { x: 3; y:25; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura dupla")
         CheckBox { id: bordaduraD; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 11; text: ", somente"
+                font.pixelSize: 11; text: qsTr(", somente")
         CheckBox { id: bordaLEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "em tempo fraco"
+                 font.pixelSize: 11; text: qsTr("em tempo fraco")
           CheckBox { id: bordaLEx2; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "e notas principais em tempo forte" }}}}}}
+                 font.pixelSize: 11; text: qsTr("e notas principais em tempo forte") }}}}}}
       }
 
 
@@ -1127,26 +1127,26 @@ MuseScore {
       Rectangle { x: 3; y: 98; width: 520; height: 128; color: "#131313"; radius: 2 // cambiata
        CheckBox { id: cambiataL; checked: true; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: "Cambiata";
+             font.pixelSize: 14; text: qsTr("Cambiata");
          CheckBox { id: cambiLEx1; checked: true; x: 0; y: 20
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "1ª e última nota em tempo forte" }
+                 font.pixelSize: 11; text: qsTr("1ª e última nota em tempo forte") }
          }
          CheckBox { id: cambiLEx2; checked: false; x: 0; y: 40
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "cambiata na mesma direção do CF" }
+                  font.pixelSize: 11; text: qsTr("cambiata na mesma direção do CF") }
          }
          CheckBox { id: cambiLEx3; checked: false; x: 0; y: 60
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "dissonâncias somente em tempo fraco" }
+                   font.pixelSize: 11; text: qsTr("dissonâncias somente em tempo fraco") }
          }
          CheckBox { id: cambiLEx4; checked: false; x: 0; y: 80
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                    font.pixelSize: 11; text: "2ª nota deve ser dissonânte" }
+                    font.pixelSize: 11; text: qsTr("2ª nota deve ser dissonânte") }
          }
          CheckBox { id: cambiLEx5; checked: false; x: 0; y: 100
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                    font.pixelSize: 11; text: "2ª nota com duração mais curta do que a 1ª e a última" }
+                    font.pixelSize: 11; text: qsTr("2ª nota com duração mais curta do que a 1ª e a última") }
          }
         }
        }
@@ -1154,22 +1154,22 @@ MuseScore {
       Rectangle { x: 3; y: 229; width: 520; height: 87; color: "#131313"; radius: 2 // suspensão
        CheckBox { id: suspensãoL; checked: false; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: "Suspensão";
+             font.pixelSize: 14; text: qsTr("Suspensão");
          CheckBox { id: suspeLEx1; checked: true; x: 0; y: 20
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "resolução interrompida"
+                 font.pixelSize: 11; text: qsTr("resolução interrompida")
               CheckBox { id: suspeLEx1a; checked: true; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 5;
                   Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                         font.pixelSize: 11; text: "somente por consonâncias" }}
+                         font.pixelSize: 11; text: qsTr("somente por consonâncias") }}
           }
          }
          CheckBox { id: suspeLEx2; checked: true; x: 0; y: 40
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "também a resolução ascendente (retardo)" }
+                 font.pixelSize: 11; text: qsTr("também a resolução ascendente (retardo)") }
          }
          CheckBox { id: suspeLEx3; checked: false; x: 0; y: 60
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "resolução somente em consonância imperfeita" }
+                 font.pixelSize: 11; text: qsTr("resolução somente em consonância imperfeita") }
          }
         }
        }
@@ -1177,20 +1177,20 @@ MuseScore {
       Rectangle { x: 3; y: 318; width: 520; height: 67; color: "#131313"; radius: 2 // antecipação
        CheckBox { id: antecipaL; checked: false; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Antecipação";
+               font.pixelSize: 14; text: qsTr("Antecipação");
            Text { x: 3; y: 20; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "introduzida por grau conjunto ("
+                 font.pixelSize: 11; text: qsTr("introduzida por grau conjunto (")
            CheckBox { id: antecipaEx2; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0;
             Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "descendente,"
+                   font.pixelSize: 11; text: qsTr("descendente,")
              CheckBox { id: antecipaEx3; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 5;
               Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                     font.pixelSize: 11; text: "ascendente )" }}}
+                     font.pixelSize: 11; text: qsTr("ascendente )") }}}
            }
          }
          CheckBox { id: antecipaEx4; checked: false; x: 0; y: 37
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                font.pixelSize: 11; text: "somente na cadência final" }
+                font.pixelSize: 11; text: qsTr("somente na cadência final") }
          }
         }
        }
@@ -1198,16 +1198,16 @@ MuseScore {
       Rectangle { x: 3; y: 387; width: 520; height: 86; color: "#131313"; radius: 2 // apojatura
        CheckBox { id: apojaturaL; checked: false; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Apojatura";
+               font.pixelSize: 14; text: qsTr("Apojatura");
           CheckBox { id: apojaEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em tempo forte" }}
+                   font.pixelSize: 11; text: qsTr("somente em tempo forte") }}
           CheckBox { id: apojaEx2; checked: false; x: 0; y: 40
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente se alcançada por movimento ascendente" }}
+                   font.pixelSize: 11; text: qsTr("somente se alcançada por movimento ascendente") }}
           CheckBox { id: apojaEx3; checked: false; x: 0; y: 60
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente resolução descendente" }}
+                   font.pixelSize: 11; text: qsTr("somente resolução descendente") }}
 
         }
        }
@@ -1215,20 +1215,20 @@ MuseScore {
       Rectangle { x: 3; y: 475; width: 257; height: 47; color: "#131313"; radius: 2 // escapada
        CheckBox { id: escapadaL; checked: false; x: 3; y: 3;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Escapada";
+                font.pixelSize: 14; text: qsTr("Escapada");
           CheckBox { id: escapaEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em tempo fraco" }}
+                  font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
          }
        }
       }
       Rectangle { x: 264; y: 475; width: 260; height: 47; color: "#131313"; radius: 2 // pedal
        CheckBox { id: pedal; checked: false; x: 3; y: 3;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Nota pedal";
+                font.pixelSize: 14; text: qsTr("Nota pedal");
           CheckBox { id: pedalEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "início e final em tempo forte" }}
+                  font.pixelSize: 11; text: qsTr("início e final em tempo forte") }}
          }
        }
       }
@@ -1240,22 +1240,22 @@ MuseScore {
     Rectangle { x: 3; y: 3; width: 526; height: 80; color: "#303030"; radius: 2
 		 CheckBox { id: peNota; checked: true; x: 5; y: 5;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)" }
+		   color: "#e0dfc3"; text: qsTr("Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)") }
 		 }
 
 		 CheckBox { id: ambito; checked: true; x: 5; y: 32;
 		   Text { id: ambTxt1; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Âmbito melódico não deve ser maior do que" }
+		   color: "#e0dfc3"; text: qsTr("Âmbito melódico não deve ser maior do que") }
 		   TextInput { id: ambInp; anchors.left: ambTxt1.right; anchors.leftMargin: 5; y: ambTxt1.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "12"; validator: IntValidator{bottom: 0; top: 99;}}
-		   Text { anchors.left: ambInp.right; anchors.leftMargin: 5; y: ambInp.y; font.pixelSize: 12; color: "#e0dfc3"; text: "semitons" }
+		   Text { anchors.left: ambInp.right; anchors.leftMargin: 5; y: ambInp.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("semitons") }
 		 }
 
 		 CheckBox { id: priviGC; checked: true; x: 5; y: 55;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Privilegiar graus conjuntos" }
+		   color: "#e0dfc3"; text: qsTr("Privilegiar graus conjuntos") }
 		   CheckBox { id: priviGCEx; checked: true; x: 195; y: 0;
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: "e terças" } }
+	          color: "#e0dfc3"; text: qsTr("e terças") } }
 		 }
 	  }
 
@@ -1263,22 +1263,22 @@ MuseScore {
 		 //Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Não usar os seguintes intervalos:"
 			 CheckBox { id: salt7; checked: true; x: 5; y: 3;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: "Sétimas maiores e menores" }
+			   color: "#e0dfc3"; text: qsTr("Sétimas maiores e menores") }
 			 }
 			 CheckBox { id: salt6; checked: true; x: 5; y: 22;
 		      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		      color: "#e0dfc3"; text: "Sextas maiores e menores" }
+		      color: "#e0dfc3"; text: qsTr("Sextas maiores e menores") }
 		      CheckBox { id: salt6Ex; checked: true; x: 195; y: 0;
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: "Exceto se ascendente" } }
+	          color: "#e0dfc3"; text: qsTr("Exceto se ascendente") } }
 		    }
 		    CheckBox { id: saltAum; checked: true; x: 5; y: 41;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: "Aumentados e diminutos" }
+			   color: "#e0dfc3"; text: qsTr("Aumentados e diminutos") }
 			 }
 			 CheckBox { id: saltM8; checked: true; x: 5; y: 60;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: "Maiores do que a oitava" }
+			   color: "#e0dfc3"; text: qsTr("Maiores do que a oitava") }
 			 }
 	    //}
 	  }
@@ -1286,67 +1286,67 @@ MuseScore {
 	  Rectangle { x: 3; y: 172; width: 526; height: 162; color: "#303030"; radius: 2
 	    CheckBox { id: tritono2; checked: true; x: 5; y: 3;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Trítono nas duas extremidades de movimentos melódicos" }
+		   color: "#e0dfc3"; text: qsTr("Trítono nas duas extremidades de movimentos melódicos") }
 		 }
 
 		 CheckBox { id: tritono1; checked: false; x: 5; y: 22;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Trítono em uma extremidade de movimentos melódicos" }
+		   color: "#e0dfc3"; text: qsTr("Trítono em uma extremidade de movimentos melódicos") }
 		 }
 
 		 CheckBox { id: dissoC; checked: true; x: 5; y: 41;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Dissonância composta" }
+		   color: "#e0dfc3"; text: qsTr("Dissonância composta") }
 	    }
 
       CheckBox { id: doisSaltC; checked: true; x: 5; y: 60;
        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-        color: "#e0dfc3"; text: "Dois saltos em mov. contrário" }
+        color: "#e0dfc3"; text: qsTr("Dois saltos em mov. contrário") }
        CheckBox { id: doisSaltCEx1; checked: true; x: 195; y: -7;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-          color: "#e0dfc3"; text: "Exceto se precedidos e seguidos por mov. contrário" } }
+          color: "#e0dfc3"; text: qsTr("Exceto se precedidos e seguidos por mov. contrário") } }
        CheckBox { id: doisSaltCEx2; checked: false; x: 195; y: 9
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-             color: "#e0dfc3"; text: "(e) Exceto se precedidos e seguidos grau conjunto" } }
+             color: "#e0dfc3"; text: qsTr("(e) Exceto se precedidos e seguidos grau conjunto") } }
       }
 
       CheckBox { id: doisSaltM; checked: true; x: 5; y: 97;
        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-        color: "#e0dfc3"; text: "Dois saltos na mesma direção"
+        color: "#e0dfc3"; text: qsTr("Dois saltos na mesma direção")
        CheckBox { id: doisSaltMEx; checked: true; anchors.left: parent.right; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-          color: "#e0dfc3"; text: "Exceto se formar tríade" }}
+          color: "#e0dfc3"; text: qsTr("Exceto se formar tríade") }}
         }
        }
 
 	    CheckBox { id: saltM5; checked: true; x: 5; y: 130;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Salto maior do que 5ªJ não compensado \ncom direcionamento contrário" }
+		   color: "#e0dfc3"; text: qsTr("Salto maior do que 5ªJ não compensado \ncom direcionamento contrário") }
 		   CheckBox { id: saltM5Ex1; checked: true; x: 300; y: -7;
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-	          color: "#e0dfc3"; text: "por grau conjunto" } }
+	          color: "#e0dfc3"; text: qsTr("por grau conjunto") } }
 	      CheckBox { id: saltM5Ex2; checked: true; x: 300; y: 9;
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-	          color: "#e0dfc3"; text: "por salto < 5ª" } }
+	          color: "#e0dfc3"; text: qsTr("por salto < 5ª") } }
 	    }
     }
 
     Rectangle { x: 3; y: 337; width: 526; height: 110; color: "#303030"; radius: 2
     CheckBox { id: varDir; checked: true; x: 5; y: 5;
 		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		color: "#e0dfc3"; text: "Monotonia no contorno: mais do que" }
+		color: "#e0dfc3"; text: qsTr("Monotonia no contorno: mais do que") }
 		TextInput { id: varDirQt; anchors.left: varDirTxt.right; anchors.leftMargin: 5; y: varDirTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 0; top: 99;} }
-		Text { anchors.left: varDirQt.right; anchors.leftMargin: 5; y: varDirQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "movimento(s) na mesma direção" }
+		Text { anchors.left: varDirQt.right; anchors.leftMargin: 5; y: varDirQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("movimento(s) na mesma direção") }
 	  }
 
 	  CheckBox { id: repNota; checked: true; x: 5; y: 25;
 		 Text { id: repNotaTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3";text: "Repetição de notas: mais do que" }
+		 color: "#e0dfc3";text: qsTr("Repetição de notas: mais do que") }
 		 TextInput { id: repNotaQt; anchors.left: repNotaTxt.right; anchors.leftMargin: 5; y: repNotaTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
-		 Text { anchors.left: repNotaQt.right; anchors.leftMargin: 5; y: repNotaQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "repetição(ões)"
+		 Text { anchors.left: repNotaQt.right; anchors.leftMargin: 5; y: repNotaQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("repetição(ões)")
       CheckBox { id: repeteNoutra; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-       color: "#e0dfc3";text: "sem mudar nota em outra voz" }
+       color: "#e0dfc3";text: qsTr("sem mudar nota em outra voz") }
       }
      }
 
@@ -1354,25 +1354,25 @@ MuseScore {
 
 	  CheckBox { id: repPad; checked: true; x: 5; y: 45;
 		Text { id: repPadTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		color: "#e0dfc3"; text: "Repetição de padrões: mais do que" }
+		color: "#e0dfc3"; text: qsTr("Repetição de padrões: mais do que") }
 		TextInput { id: repPadQt; anchors.left: repPadTxt.right; anchors.leftMargin: 5; y: repPadTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "0"; validator: IntValidator{bottom: 0; top: 99;} }
-		Text { anchors.left: repPadQt.right; anchors.leftMargin: 5; y: repPadQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "repetição(ões)" }
+		Text { anchors.left: repPadQt.right; anchors.leftMargin: 5; y: repPadQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("repetição(ões)") }
 	  }
 
 	  CheckBox { id: arpMel; checked: true; x: 5; y: 65;
 		  Text { id: arpMelTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: "Arpejo de acordes na linha melódica: mais do que" }
+		   color: "#e0dfc3"; text: qsTr("Arpejo de acordes na linha melódica: mais do que") }
       TextInput { id: arpMelQt; anchors.left: arpMelTxt.right; anchors.leftMargin: 5; y: arpMelTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
-	    Text { anchors.left: arpMelQt.right; anchors.leftMargin: 5; y: arpMelQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: "arpejo(s)" }
+	    Text { anchors.left: arpMelQt.right; anchors.leftMargin: 5; y: arpMelQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("arpejo(s)") }
 	  }
 
-    Text { x: 28; y: 90; font.pixelSize: 12; color: "#e0dfc3"; text: "Repetição de Ponto Focal";
+    Text { x: 28; y: 90; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("Repetição de Ponto Focal");
       CheckBox { id: melPFs; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	    	color: "#e0dfc3"; text: "Agudo"
+	    	color: "#e0dfc3"; text: qsTr("Agudo")
         CheckBox { id: melPFi; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
   		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-  		   color: "#e0dfc3"; text: "Grave" }
+  		   color: "#e0dfc3"; text: qsTr("Grave") }
   	     }
        }
 	    }
@@ -1382,21 +1382,21 @@ MuseScore {
 	  Rectangle { x: 3; y: 451; width: 526; height: 50; color: "#303030"; radius: 2
       CheckBox { id: neutA; checked: true; x: 5; y: 5;
 				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: "Se não conduzir 6° e 7° alterados" }
+				       color: "#e0dfc3"; text: qsTr("Se não conduzir 6° e 7° alterados") }
 				CheckBox { id: neutAim; checked: false; x: 220; y: 0;
 				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: "imediatamente" }}
+				         color: "#e0dfc3"; text: qsTr("imediatamente") }}
 	  	}
 	  	CheckBox { id: neutN; checked: true; x: 5; y: 25;
 				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: "Se 6°/7° naturais sem neutralizar" }
+				       color: "#e0dfc3"; text: qsTr("Se 6°/7° naturais sem neutralizar") }
 				CheckBox { id: neutNim; checked: true; x: 220; y: 0;
 				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: "a menos de"
+				         color: "#e0dfc3"; text: qsTr("a menos de")
             TextInput { id: neutNqt; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;  font.underline: true;
               font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 2; top: 99;}
               Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-    				         color: "#e0dfc3"; text: "tempos da nota alterada" }
+    				         color: "#e0dfc3"; text: qsTr("tempos da nota alterada") }
             }
           }
         }
@@ -1406,27 +1406,27 @@ MuseScore {
     Rectangle { x: 3; y: 505; width: 526; height: 50; color: "#303030"; radius: 2
      CheckBox { id: tonic; checked: true; x: 5; y:5;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "Nota inicial do CF diferente de tônica/finalis," }
+		 color: "#e0dfc3"; text: qsTr("Nota inicial do CF diferente de tônica/finalis,") }
 
 	   CheckBox { id: terça; checked: false; x: 275;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "terça," }
+		 color: "#e0dfc3"; text: qsTr("terça,") }
 	   }
 	   CheckBox { id: quinta; checked: false; x: 355;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "ou quinta" }
+		 color: "#e0dfc3"; text: qsTr("ou quinta") }
 	   }
 	  }
 	   CheckBox { id: tonicF; checked: true; x: 5; y:25;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "Nota final do CF diferente de tônica/finalis," }
+		 color: "#e0dfc3"; text: qsTr("Nota final do CF diferente de tônica/finalis,") }
 	   CheckBox { id: terçaF; checked: false; x: 270;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "terça," }
+		 color: "#e0dfc3"; text: qsTr("terça,") }
 	   }
 	   CheckBox { id: quintaF; checked: false; x: 350;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: "ou quinta" }
+		 color: "#e0dfc3"; text: qsTr("ou quinta") }
 	   }
 	  }
    }
@@ -1438,52 +1438,52 @@ MuseScore {
      Rectangle { x: 3; y: 3; width: 520; height: 144; color: "#111111"; radius: 2
       CheckBox { id: intDissT1; checked: false; x: 3; y: 3;
        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: "Uníssono, 8ªJ, etc"
+              font.pixelSize: 14; text: qsTr("Uníssono, 8ªJ, etc")
          CheckBox { id: intDissT1Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                 font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT2; checked: true; x: 3; y: 23;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                font.pixelSize: 14; text: "2ªs, 9ªs, etc"
           CheckBox { id: intDissT2Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                  font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT3; checked: false; x: 3; y: 43;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                 font.pixelSize: 14; text: "3ªs, 10ªs, etc"
            CheckBox { id: intDissT3Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                   font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT4; checked: true; x: 3; y: 63;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                  font.pixelSize: 14; text: "4ªJ, 11ªJ, etc"
             CheckBox { id: intDissT4Ex; checked: true; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                    font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                    font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT5; checked: false; x: 3; y: 83;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                   font.pixelSize: 14; text: "5ªJ, 12ªJ, etc"
              CheckBox { id: intDissT5Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                     font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT6; checked: false; x: 3; y: 103;
           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                    font.pixelSize: 14; text: "6ªs, 13ªs, etc"
               CheckBox { id: intDissT6Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
                Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                      font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
       CheckBox { id: intDissT7; checked: true; x: 3; y: 123;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                 font.pixelSize: 14; text: "7ªs, 14ªs, etc"
            CheckBox { id: intDissT7Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
+                   font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
        }}
      }
      Rectangle { x: 3; y: 150; width: 520; height: 144; color: "#111111"; radius: 2
@@ -5256,12 +5256,13 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
 
   onRun: {
 
-  //openFile('file:///home/rogerio/Documentos/UFPel/Projeto Harmonia e Contraponto/Plugins/Contraponto/config.txt');
+  openFile('file:///home/rogerio/Documentos/UFPel/Projeto Harmonia e Contraponto/Plugins/Contraponto/config.txt');
 
-  inicializaVariáveis();
+  //inicializaVariáveis();
   carregarCfg();
   function inicializaVariáveis() {
-   var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-false-false-1-10-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-12-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-4-true-0-false-true-0-true-1-true-true-false-false-false-false-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-0-false-false-false-false-false-3-10-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-16-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-5-true-1-false-true-1-true-3-true-false-false-false-false-false-2-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-1-false-false-false-false-false-3-10-true-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-19-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-5-true-2-true-true-2-true-4-true-false-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-2-false-false-false-false-false-5-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-19-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-6-true-2-true-true-2-true-5-true-false-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-2-false-false-false-false-false-3-10-true-true-true-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-19-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-5-true-2-true-true-2-true-3-true-false-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-2-false-false-false-false-false-6-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-21-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-3-true-4-true-false-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-false-0-false-false-false-false-false-6-15-true-true-true-true-true-true-false-true-true-true-true-true-false-false-true-true-false-false-false-false-true-true-false-true-false-true-true-true-false-true-false-false-false-true-true-true-true-false-false-21-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-true-true-true-true-10-true-2-true-true-3-true-5-true-false-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false";
+   var preSet = "true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-0-true-true-true-true-true-1-10-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-12-true-true-true-true-true-true-true-true-false-true-false-true-true-false-false-true-true-true-true-4-true-1-false-true-0-true-1-true-true-true-false-true-true-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-0-true-true-true-true-true-1-10-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-16-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-1-false-true-0-true-2-true-false-true-false-true-true-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-1-true-true-true-true-true-3-10-true-true-true-true-true-true-false-true-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-19-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-1-true-true-1-false-3-true-false-true-false-true-true-4-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-2-true-true-true-true-true-5-10-true-true-true-true-true-false-true-true-true-false-false-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-19-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-1-true-true-2-true-4-true-false-true-false-true-true-8-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-2-true-true-true-true-true-3-10-true-true-true-true-true-true-false-true-true-false-true-false-false-false-false-false-false-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-19-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-1-false-true-2-true-3-true-false-true-false-true-true-4-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-true-true-true-false-false-true-2-true-true-true-true-true-6-10-true-true-true-true-true-false-true-true-true-true-true-false-true-true-true-false-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-21-true-true-true-false-false-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-3-true-4-true-false-true-false-true-true-8-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-true-true-1-true-1-false-1-true-4-false-false-false-false-true-true-true-false-false-true-true-true-false-false-true-0-true-true-true-true-true-6-15-true-true-true-true-true-false-true-true-true-true-true-false-false-true-true-false-false-false-false-true-true-false-true-false-true-true-true-false-true-false-false-false-true-false-true-false-true-false-21-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-10-true-3-true-true-3-true-5-true-false-true-false-true-true-8-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false"
+
    preSet = preSet.split("-");
    for (var i=0;i<preSet.length;i++) {
     if (preSet[i] == "true") { preSet[i] = true; } else
