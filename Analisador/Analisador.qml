@@ -25,7 +25,7 @@ import MuseScore 3.0
 MuseScore {
       menuPath: qsTr("Plugins.Contraponto.Analisador")
       description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
-      version: "0.42ms3"
+      version: "0.43ms3"
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
@@ -1774,13 +1774,14 @@ MuseScore {
 // caixas de dialogo para salvar e abrir presets
 FileDialog {
     id: openFileDialog
-    nameFilters: ["All files (*)"]
+    nameFilters: ["Configuração do Analisador (*.cfA)"]
     onAccepted: openFile(openFileDialog.fileUrl)
+
 }
 FileDialog {
     id: saveFileDialog
     selectExisting: false
-    nameFilters: ["Text files (*.txt)", "All files (*)"]
+    nameFilters: ["Configuração do Analisador (*.cfA)", "All files (*)"]
     onAccepted: saveFile(saveFileDialog.fileUrl, "")
 }
 // -----------------------------------------------------------------------------------------------------------------
@@ -2669,8 +2670,10 @@ function cifra2notas(cifra,x) { // analisa uma 'cifra' e retorna a estrutura int
   };
 
   if (m != null) { d = cifra.substr(i+1); } else { d = cifra.substr(i);};
+
   var grau = cifra.slice(0, i);
   var grauM = grau.toUpperCase();
+//  console.log(m,x,d, grau);
   if (modo == "Menor" && grauM == "VI" && m == 0) { var grauF = "VI+" } else
     if (modo == "Menor" && grauM == "VII" && m == 0) { var grauF = "VII+" }
       else { var grauF = grauM; };
@@ -2754,9 +2757,9 @@ function cifra2notas(cifra,x) { // analisa uma 'cifra' e retorna a estrutura int
     default: msgErros.text += "Não foi encontrado o grau do acorde na cifra, para a verificação de Coerência Harmônica!\n";
              msgErros.estado=true; return;
    };
-
-   if (grau == grauM && !m) { notas = [0+f, 4+f, 1+f]; } else
-   if (grau != grauM && !m) { notas = [0+f, -3+f, 1+f]; } else
+//console.log(grau != grauM, m);
+   if (grau == grauM && m == null) { notas = [0+f, 4+f, 1+f]; } else
+   if (grau != grauM && m == null) { notas = [0+f, -3+f, 1+f]; } else
    if (grau != grauM && m == 0) { notas = [0+f, -3+f, -6+f]; } else
    if (grau == grauM && m == 1) { notas = [0+f, 4+f, 8+f]; };
   //console.log(grau, grauM, m, "notas:", notas);
@@ -4439,12 +4442,12 @@ function dissonanciasL() {
   var novoX;
   // procura dissonâncias
   for (var x = 0; x < vozes.length; x++) {  // percorre acordes
-  //  console.log("percorre acordes", x);
+    //console.log("percorre acordes", x);
     var acusaDissonancia = true;
-  //  console.log("cambiataL");
-    if (cambiataL.checked) { novoX = cambiata(x, "td"); if (novoX != x) { x = novoX; continue; }; };
-  //  console.log("bordadura4");
-    if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX; continue; }; };
+    //console.log("cambiataL",x);
+    if (cambiataL.checked) { novoX = cambiata(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
+    //console.log("bordadura4",x);
+    if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
     var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
     var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
     var intHarm = verificaConsonancia(vIN, vIT);
@@ -4452,27 +4455,27 @@ function dissonanciasL() {
        //procura padrão melódico de tratamento, do maior para o menor, até 3 notas. Primeiro na voz superior, depois na inferior.
        if (passagemL.checked) { //console.log("passagemL");
          if (passaLEx2.checked) { //console.log("passaLEx");
-           novoX = notaPassagem5(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
-           novoX = notaPassagem4(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
+           novoX = notaPassagem5(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
+           novoX = notaPassagem4(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
          };
-         //console.log("passagem");
          novoX = notaPassagem(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
+         //console.log("passagem");
        };
        if (suspensãoL.checked) { //console.log("suspensãoL"); console.log("----=====",novoX, x);
           novoX = suspensão3(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
-          novoX = suspensão4(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
-          novoX = suspensão5(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
+          novoX = suspensão4(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
+          novoX = suspensão5(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
        };
       // console.log("bordaduras");
-       if (bordaduraLI.checked || bordaduraLS.checked) { novoX = bordadura(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; }; };
+       if (bordaduraLI.checked || bordaduraLS.checked) { novoX = bordadura(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
       // console.log("apojaturaL");
-       if (apojaturaL.checked) { novoX = apojatura(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; }; };
+       if (apojaturaL.checked) { novoX = apojatura(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
       // console.log("antecipaL");
-       if (antecipaL.checked) { novoX = antecipação(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; }; };
+       if (antecipaL.checked) { novoX = antecipação(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
       // console.log("escapadaL");
-       if (escapadaL.checked) { novoX = escapada(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; }; };
+       if (escapadaL.checked) { novoX = escapada(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
       // console.log("pedal");
-       if (pedal.checked) { novoX = notaPedal(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; }; };
+       if (pedal.checked) { novoX = notaPedal(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
       // console.log("acusaDissonancia", acusaDissonancia);
        if (acusaDissonancia) {
         verificados++;
@@ -5257,9 +5260,9 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
 
   onRun: {
 
-  //openFile('file:///home/rogerio/Documentos/UFPel/Projeto Harmonia e Contraponto/Plugins/Contraponto/config.txt');
+  openFile('config.cfA');
 
-  inicializaVariáveis();
+//  inicializaVariáveis();
   carregarCfg();
   function inicializaVariáveis() {
    var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-false-false-1-10-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-12-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-0-false-true-0-true-1-true-true-false-false-false-false-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-false-false-true-false-false-false-true-true-false-false-true-0-true-false-true-false-false-3-10-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-16-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-1-false-true-1-true-3-true-true-false-false-false-false-2-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-true-false-false-3-10-true-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-2-true-true-2-true-4-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-true-false-false-5-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-2-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-3-10-true-true-true-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-2-true-true-2-true-3-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-6-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-21-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-3-true-4-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-6-15-true-true-true-true-true-true-false-true-true-true-true-true-false-false-true-true-false-false-false-false-true-true-false-true-false-true-true-true-false-true-false-false-false-true-true-true-true-true-false-21-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-10-true-2-true-true-3-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false"
@@ -5282,3 +5285,4 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
  } // fecha onRun
 
 } // fecha função Musescore
+// protocolo 2296284074
