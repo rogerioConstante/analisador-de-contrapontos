@@ -19,19 +19,18 @@ import QtQuick 2.3
 import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
-import FileIO 3.0
 import MuseScore 3.0
 
 MuseScore {
       menuPath: qsTr("Plugins.Contraponto.Analisador")
       description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
-      version: "0.43ms3"
+      version: "0.44ms3"
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
     id: window
     visible: true
-    title: qsTr("Analisador de Contrapontos v0.4")
+    title: qsTr("Analisador de Contrapontos v0.431")
       width: 700; height: 630
     color: "#020202"
 
@@ -76,7 +75,7 @@ MuseScore {
             MouseArea {
                   id: mArea3
                    anchors.fill: parent
-                   onClicked: { msgResult.close(); window.lower(); verificar(); }
+                   onClicked: { msgResult.close(); verificar(); }
              }
 
             Text {
@@ -235,19 +234,19 @@ MuseScore {
                   }
                   onClicked: {
                            salvarCfg();
-                           if (melodia) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (melodia) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; melodia = false;
-                                          bLabel27.color = "#000000"; }
+                                          bLabel29.color = "#000000"; melodia = false; //bLabel291.color = "#000000";
+                                          bLabel27.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabel26.color = "#000000"; bLabel28.color = "#002e77";
                            bLabLivre.color = "#000000"; bLabel25.color = "#000000";
                            bLabel24.color = "#000000"; bLabel23.color = "#000000";
                            bLabel2.color = "#000000"; bLabel1.color = "#000000";
                            bLabel27.color = "#002e77"; bLabel29.color = "#000000";
-                           bLabel291.color = "#000000";
-                           gerais.visible = false; dissonâncias.visible = false;
+                           bLabel26o.color = "#000000";// bLabel291.color = "#000000";
+                           conduz.visible = false; dissonâncias.visible = false; outros.visible = false;
                            intervalosClasse.visible = false; melodias.visible = true;
                            priEsp = false; secEsp = false; terEsp = false; quaEsp = false;
                            quiEsp = false; melodia = true; livreCP = false; }
@@ -291,11 +290,11 @@ MuseScore {
                    }
                    onClicked: {
                            salvarCfg();
-                           if (priEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (priEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; priEsp = false;
-                                          bLabel1.color = "#000000"; }
+                                          bLabel29.color = "#000000"; priEsp = false; // bLabel291.color = "#000000";
+                                          bLabel1.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabLivre.color = "#000000"; bLabel25.color = "#000000";
                            bLabel24.color = "#000000"; bLabel23.color = "#000000";
@@ -342,11 +341,11 @@ MuseScore {
                   }
                    onClicked: {
                            salvarCfg();
-                           if (secEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (secEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; secEsp = false;
-                                          bLabel2.color = "#000000"; }
+                                          bLabel29.color = "#000000"; secEsp = false; //bLabel291.color = "#000000";
+                                          bLabel2.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabLivre.color = "#000000"; bLabel25.color = "#000000";
                            bLabel24.color = "#000000"; bLabel23.color = "#000000";
@@ -392,11 +391,11 @@ MuseScore {
                   }
                    onClicked: {
                            salvarCfg();
-                           if (terEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (terEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; terEsp = false;
-                                          bLabel23.color = "#000000";}
+                                          bLabel29.color = "#000000"; terEsp = false;//bLabel291.color = "#000000";
+                                          bLabel23.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabLivre.color = "#000000"; bLabel25.color = "#000000";
                            bLabel24.color = "#000000"; bLabel23.color = "#002e77";
@@ -442,11 +441,11 @@ MuseScore {
                    }
                     onClicked: {
                            salvarCfg();
-                           if (quaEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (quaEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; quaEsp = false;
-                                          bLabel24.color = "#000000"; }
+                                          bLabel29.color = "#000000"; quaEsp = false;//bLabel291.color = "#000000";
+                                          bLabel24.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabLivre.color = "#000000"; bLabel25.color = "#000000";
                            bLabel24.color = "#002e77"; bLabel23.color = "#000000";
@@ -491,11 +490,11 @@ MuseScore {
                   }
                   onClicked: {
                            salvarCfg();
-                           if (quiEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                          melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
+                           if (quiEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
                                           bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; bLabel291.color = "#000000"; quiEsp = false;
-                                          bLabel25.color = "#000000"; }
+                                          bLabel29.color = "#000000"; quiEsp = false;//bLabel291.color = "#000000";
+                                          bLabel25.color = "#000000"; bLabel26o.color = "#000000";}
                             else  {
                            bLabLivre.color = "#000000";
                            bLabel25.color = "#002e77"; bLabel24.color = "#000000";
@@ -542,10 +541,10 @@ MuseScore {
                       }
                       onClicked: {
                                  salvarCfg();
-                                 if (livreCP) { intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = "";
-                                                melodias.visible = false; dissonâncias.visible = false; gerais.visible = false;
-                                                bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                                bLabel29.color = "#000000"; bLabel291.color = "#000000"; livreCP = false; }
+                                 if (livreCP) { intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                                                melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
+                                                bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000"; //bLabel291.color = "#000000";
+                                                bLabel29.color = "#000000";  livreCP = false; bLabel26o.color = "#000000"; }
                                   else  {
                                  bLabLivre.color = "#002e77"; bLabel25.color = "#000000";
                                  bLabel24.color = "#000000"; bLabel23.color = "#000000";
@@ -575,11 +574,11 @@ MuseScore {
               width: 155; height: 130; radius: 2
               color: "#101010"
               Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Aspectos:") }
-              // gerais
+              // conduz
               Rectangle {
                id: botao26
                x: 3; y: 25
-               property string text: qsTr("Gerais")
+               property string text: qsTr("Condução de vozes")
                signal clicked
                width: 149; height: bLabel26.height + 7
                border { width: 1; color: "#555555" }
@@ -598,11 +597,11 @@ MuseScore {
                 GradientStop { position: 1.0; color: "#343434" }
               }
               onClicked: {
-             				  if (gerais.visible) { gerais.visible = false; titulo1.text = ""; }
-                         else {
-                           gerais.visible = true; melodias.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false;
-                                bLabel26.color = "#002e77"; bLabel28.color = "#000000";
-                                bLabel29.color = "#000000"; bLabel291.color = "#000000";
+             				  if (conduz.visible) { conduz.visible = false; titulo1.text = ""; }
+                         else if (!melodia) {
+                           conduz.visible = true; melodias.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = false;
+                                bLabel26.color = "#002e77"; bLabel28.color = "#000000"; bLabel26o.color = "#000000";
+                                bLabel29.color = "#000000"; //bLabel291.color = "#000000";
                                };
                          atualizarTitulo();
               				 }
@@ -643,9 +642,9 @@ MuseScore {
               onClicked: {
                        if (dissonâncias.visible) { dissonâncias.visible = false; titulo1.text = ""; }
               				   else if (!melodia) {
-                            dissonâncias.visible = true; melodias.visible = false; gerais.visible = false; intervalosClasse.visible = false;
-                         bLabel29.color = "#002e77"; bLabel28.color = "#000000";
-                         bLabel26.color = "#000000"; bLabel291.color = "#000000";
+                            dissonâncias.visible = true; melodias.visible = false; conduz.visible = false; intervalosClasse.visible = false; outros.visible = false;
+                         bLabel29.color = "#002e77"; bLabel28.color = "#000000"; bLabel26o.color = "#000000";
+                         bLabel26.color = "#000000"; //bLabel291.color = "#000000";
                          }
                          atualizarTitulo();
                        }
@@ -685,9 +684,9 @@ MuseScore {
               }
               onClicked: {
                     if (melodias.visible) { melodias.visible = false; titulo1.text = ""; }
-                     else { melodias.visible = true; gerais.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false;
-                            bLabel28.color = "#002e77"; bLabel291.color = "#000000";
-                            bLabel26.color = "#000000"; bLabel29.color = "#000000";
+                     else { melodias.visible = true; conduz.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = false;
+                            bLabel28.color = "#002e77"; //bLabel291.color = "#000000";
+                            bLabel26o.color = "#000000"; bLabel26.color = "#000000"; bLabel29.color = "#000000";
               				   }
                          atualizarTitulo();
               				}
@@ -703,13 +702,13 @@ MuseScore {
                text: botao28.text
                     }
               }
-              // classificação de intervalos
+              // outros aspectos
               Rectangle {
-               id: botao291
+               id: botao26o
                x: 3; y: 103
-               property string text: qsTr("Intervalos")
+               property string text: qsTr("Outros aspectos")
                signal clicked
-               width: 149; height: bLabel291.height + 7
+               width: 149; height: bLabel26o.height + 7
                border { width: 1; color: "#555555" }
                smooth: true
                radius: 2
@@ -717,7 +716,7 @@ MuseScore {
                 GradientStop {
                     position: 0.0
                     color: {
-                          if (mArea291.pressed)
+                          if (mArea26o.pressed)
                               return "#888d96"
                              else
                              return "#a0a8af"
@@ -726,26 +725,69 @@ MuseScore {
                 GradientStop { position: 1.0; color: "#343434" }
               }
               onClicked: {
-                if (intervalosClasse.visible) { intervalosClasse.visible = false; titulo1.text = ""; }
-                // else if (!melodia) {
-                //        intervalosClasse.visible = true; melodias.visible = false; gerais.visible = false; dissonâncias.visible = false;
-                //        bLabel28.color = "#000000"; bLabel291.color = "#002e77";
-                //        bLabel26.color = "#000000"; bLabel29.color = "#000000";
-                //     }
-                //     atualizarTitulo();
-              		}
+             				  if (outros.visible) { outros.visible = false; titulo1.text = ""; }
+                         else {
+                           conduz.visible = false; melodias.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = true;
+                                bLabel26o.color = "#002e77"; bLabel28.color = "#000000"; bLabel26.color = "#000000";
+                                bLabel29.color = "#000000"; //bLabel291.color = "#000000";
+                               };
+                         atualizarTitulo();
+              				 }
               MouseArea {
-                    id: mArea291
+                    id: mArea26o
                      anchors.fill: parent
-                     onClicked: botao291.clicked();
+                     onClicked: botao26o.clicked();
                }
               Text {
-               id: bLabel291
-               anchors.centerIn: botao291
+               id: bLabel26o
+               anchors.centerIn: botao26o
                color: "#000000"
-               text: botao291.text
+               text: botao26o.text
                     }
               }
+      // classificação de intervalos
+              // Rectangle {
+              //  id: botao291
+              //  x: 3; y: 103
+              //  property string text: qsTr("Intervalos")
+              //  signal clicked
+              //  width: 149; height: bLabel291.height + 7
+              //  border { width: 1; color: "#555555" }
+              //  smooth: true
+              //  radius: 2
+              //  gradient: Gradient {
+              //   GradientStop {
+              //       position: 0.0
+              //       color: {
+              //             if (mArea291.pressed)
+              //                 return "#888d96"
+              //                else
+              //                return "#a0a8af"
+              //          }
+              //   }
+              //   GradientStop { position: 1.0; color: "#343434" }
+              // }
+              // onClicked: {
+              //   if (intervalosClasse.visible) { intervalosClasse.visible = false; titulo1.text = ""; }
+              //   // else if (!melodia) {
+              //   //        intervalosClasse.visible = true; melodias.visible = false; conduz.visible = false; dissonâncias.visible = false;
+              //   //        bLabel28.color = "#000000"; bLabel291.color = "#002e77";
+              //   //        bLabel26o.color = "#000000"; bLabel29.color = "#000000";
+              //   //     }
+              //   //     atualizarTitulo();
+              // 		}
+              // MouseArea {
+              //       id: mArea291
+              //        anchors.fill: parent
+              //        onClicked: botao291.clicked();
+              //  }
+              // Text {
+              //  id: bLabel291
+              //  anchors.centerIn: botao291
+              //  color: "#000000"
+              //  text: botao291.text
+              //       }
+              // }
       }
       Rectangle { id: preConfigurações;
                  x: 3; y: 437; width: 155; height: 106
@@ -866,11 +908,11 @@ MuseScore {
     }
   }
 // ------------------------------ verificações -----------------------------------
- Text { id: titulo2; x: 5; y: 6; color: "#e0dfc3"; font.pixelSize: 20; text: ""
- Text { id: titulo1; anchors.left: parent.right; anchors.leftMargin: 15; anchors.verticalCenter: parent.verticalCenter;
+ Text { id: titulo2; x: 5; y: 2; color: "#e0dfc3"; font.pixelSize: 20; text: ""
+ Text { id: titulo1; anchors.left: parent.right; anchors.leftMargin: 13; anchors.verticalCenter: parent.verticalCenter;
         color: "#e0dfc3"; font.pixelSize: 18; text: ""  }}
- Item { id: gerais; visible: false;
-   Rectangle { x: 2; y: 35; width: 532; height: 563;	color: "#3a3a3a"; radius: 2
+ Item { id: conduz; visible: false;
+   Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#3a3a3a"; radius: 2
      // paralelas
 	  Rectangle { x: 3; y: 3; width: 526; height: 83; color: "#1c1c1c"; radius: 2
 
@@ -919,79 +961,102 @@ MuseScore {
 	      }
 	  }
 	   // ocultas
-	   Rectangle { x: 3; y: 89; width: 526; height: 46; color: "#1c1c1c"; radius: 2
+	   Rectangle { x: 3; y: 89; width: 526; height: 44; color: "#1c1c1c"; radius: 2
 
-	     CheckBox { id: oculta8; checked: true; x: 5; y: 3;
+	     CheckBox { id: oculta8; checked: true; x: 5; y: 2;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª oculta/direta") }
 	      }
-
-	     CheckBox { id: oculta5; checked: true; x: 5; y: 23;
+	     CheckBox { id: oculta5; checked: true; x: 5; y: 20;
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª oculta/direta") }
 	      }
-		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 5;
+		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 2;
 		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no final") }
 		 		}
-
-		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 23;
+		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 20;
 		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente se salto na voz superior") }
 		 		}
 		  }
       // 5ªs e 8ªs intermitentes
-     Rectangle { x: 3; y: 138; width: 526; height: 80; color: "#1c1c1c"; radius: 2
+     Rectangle { x: 3; y: 136; width: 526; height: 190; color: "#1c1c1c"; radius: 2;
 
-       CheckBox { id: inter8; checked: true; x: 5; y: 15;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª intermitente") }
-       }
-       CheckBox { id: inter5; checked: true; x: 5; y: 40;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª intermitente") }
-       }
-       CheckBox { id: interExTf; checked: true; x: 150; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco e :") }
-        CheckBox { id: interExTf1; checked: false; x: 60; y: 18;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("sincopada e")
+       CheckBox { id: inter8; checked: true; x: 5; y: 3;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª/U e")
+           CheckBox { id: inter5; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                    color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª intermitente") }}
+       }}
+       CheckBox { id: interPM; checked: true; x: 30; y: 25;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Na mesma posição métrica") }}
+       CheckBox { id: interSI; checked: true; x: 30; y: 45;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Separadas por um intervalo") }}
+       CheckBox { id: interExS; checked: true; x: 30; y: 65
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto separadas por mais de")
+          TextInput { id: interExSn; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
+                     font.underline: true; text: "4"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 2; top: 99;}
+           Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalos") }
+          }
+         }
+        }
+       CheckBox { id: interExTf; checked: true; x: 30; y: 85;
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+              color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco e")
+              CheckBox { id: interExTf3; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                      color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("em tempo meio forte :") } }
+            }
+        CheckBox { id: interExTf1; checked: false; x: 60; y: 20;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("sincopada e")
          CheckBox { id: interExTf2; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("alcançada por grau conj.") }}
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                 color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("alcançada por grau conjunto") }}
          }
         }
        }
-       CheckBox { id: interExTF; checked: true; x: 150; y: 39;
+       CheckBox { id: interExTF; checked: true; x: 30; y: 125;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo forte com ambas notas ligadas às anteriores") }
        }
-       CheckBox { id: interExFim; checked: true; x: 330; y: 58;
+       CheckBox { id: interExFim; checked: true; x: 30; y: 145;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto na cadência final") }
        }
-       CheckBox { id: interExCF; checked: true; x: 150; y: 58;
+       CheckBox { id: interExCF; checked: true; x: 30; y: 165;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto se CF não move") }
        }
-      }
-	     // consecutivas por movimento contrário e oblíquo
-	   Rectangle { x: 3; y: 222; width: 276; height: 50;	color: "#1c1c1c"; radius: 2
 
-	     CheckBox { id: consecObli; checked: false; x: 5; y: 3;
+     }
+	     // consecutivas por movimento contrário e oblíquo
+	   Rectangle { x: 3; y: 330; width: 276; height: 44;	color: "#1c1c1c"; radius: 2
+
+	     CheckBox { id: consecObli; checked: false; x: 5; y: 2;
 	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. oblíquo") }
 	      }
 
-			CheckBox { id: consecCont; checked: false; x: 5; y: 26;
+			CheckBox { id: consecCont; checked: false; x: 5; y: 20;
 		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. contrário") }
 		 		}
 		 }
      // cruzamento de vozes
-     Rectangle { x: 283; y: 222; width: 246; height: 50; color: "#1c1c1c"; radius: 2
-      CheckBox { id: cruzaVozes; checked: true; x: 5; y: 3
+     Rectangle { x: 283; y: 330; width: 246; height: 44; color: "#1c1c1c"; radius: 2
+      CheckBox { id: cruzaVozes; checked: true; x: 5; y: 2
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Cruzamento de vozes") }
        }
-       CheckBox { id: falsaR; checked: true; x: 5; y: 26
+       CheckBox { id: falsaR; checked: true; x: 5; y: 20
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Falsa relação") }
        }
      }
       // uníssono
-		 Rectangle { x: 3; y: 275; width: 526; height: 45; color: "#1c1c1c"; radius: 2
-	     CheckBox { id: uniss; checked: true; x: 3; y: 5;
+		 Rectangle { x: 3; y: 377; width: 526; height: 42; color: "#1c1c1c"; radius: 2
+	     CheckBox { id: uniss; checked: true; x: 5; y: 2;
 	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                 font.pixelSize: 14; text: qsTr("Uníssono") }
-	       CheckBox { id: unissIF; checked: true; x: 250; y: -2
+	       CheckBox { id: unissIF; checked: true; x: 250; y: 0
 		       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                   font.pixelSize: 12; text: qsTr("Exceto Início/Final") }}
          CheckBox { id: unissTF; checked: true; x: 250; y: 18
@@ -1002,83 +1067,103 @@ MuseScore {
                       font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}}
 		   }
 		  }
-     // primeiro intervalo
-     Rectangle { x: 3; y: 323; width: 526; height: 57;	color: "#282828"; radius: 2
-       CheckBox { id: primInt; checked: true; x: 3; y: 2;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("início diferente de unís./8ªJ") }
-        CheckBox { id: ex5Ji; checked: true; x: 20; y: 18;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
-        CheckBox { id: ex3i; checked: true; x: 20; y: 35;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
-      } // ultimo intervalo
-      CheckBox { id: ultInt; checked: true; x: 260; y: 2;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("final diferente de unís./8ªJ") }
-        CheckBox { id: ex5Jf; checked: true; x: 20; y: 18;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
-        CheckBox { id: ex3f; checked: true; x: 20; y: 35;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
-      }
-    }
-    // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente
-    Rectangle { x: 3; y: 383; width: 526; height: 47;	color: "#282828"; radius: 2
-       CheckBox { id: ultNotas; checked: true; x: 5; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não alcançar último intervalo por grau conj. e mov. contrário") }
-        CheckBox { id: quartaJi; checked: true; x: -3; y: 22;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz inf.") } }
-         CheckBox { id: quartaJs; checked: true; x: 240; y: 22;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz sup.") } }
-      }
-    }
-      // distância
-		 Rectangle { x: 3; y: 433; width: 526; height: 45; color: "#282828"; radius: 2
-
-	     CheckBox { id: distancia; checked: true; x: 5; y: 3;
-	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Distância entre as vozes") }
-	       Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se uma sequencia maior do que") }
-		     TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}
-		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalo(s) maior(es) do que a")
-           TextInput { id: distInt;
-             anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.underline: true; text: "10"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 8; top: 15;}
-            Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter; color: "yellow"; font.pixelSize: 12; text: "ª" }}
-          }
-		     }
-		    }
-		   }
-      // consonâncias imperfeitas
-     Rectangle { x: 3; y: 481; width: 526; height: 27; color: "#282828"; radius: 2
-      CheckBox { id: consImp; checked: true; x: 5; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Prioridade para Consonâncias Imperfeitas") }
-        }
-      }
-      // coerência harmônica
-     Rectangle { x: 3; y: 511; width: 526; height: 51; color: "#282828"; radius: 2
-      Text { x: 5; y: 0; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Coerência harmônica") }
-      CheckBox { id: cHarmonia; checked: true; x: 5; y: 32;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("notas que não pertencem ao acorde")
-          CheckBox { id: cHarmoniaEx; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                   color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco") }}
-        }
-      }
-      CheckBox { id: cHarmoniaF; checked: true; x: 5; y: 15;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ausência da fundamental")}}
-      // Text { x: 415; y: 4; color: "#e0dfc3"; font.pixelSize: 12; text: "Cifra:"
-      //  ComboBox { id: cifraHar; anchors.left: parent.left; anchors.topMargin: 0; anchors.top: parent.bottom;
-      //              width: 101; model: ["Gradual", "Funcional", "Popular"]; currentIndex: 0 }}
-    }
    }
   }
+ Item { id: outros; visible: false;
+    Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#3a3a3a"; radius: 2
+     // primeiro intervalo
+     Rectangle { x: 3; y: 3; width: 526; height: 58;	color: "#282828"; radius: 2
+        CheckBox { id: primInt; checked: true; x: 3; y: 2;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("início diferente de unís./8ªJ") }
+         CheckBox { id: ex5Ji; checked: true; x: 20; y: 18;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
+         CheckBox { id: ex3i; checked: true; x: 20; y: 35;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
+       } // ultimo intervalo
+       CheckBox { id: ultInt; checked: true; x: 260; y: 2;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("final diferente de unís./8ªJ") }
+         CheckBox { id: ex5Jf; checked: true; x: 20; y: 18;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
+         CheckBox { id: ex3f; checked: true; x: 20; y: 35;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
+       }
+     }
+     // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente
+     Rectangle { x: 3; y: 64; width: 526; height: 44;	color: "#282828"; radius: 2
+        CheckBox { id: ultNotas; checked: true; x: 5; y: 2;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ;
+                color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não alcançar último intervalo por grau conj. e mov. contrário") }
+         CheckBox { id: quartaJi; checked: true; x: 18; y: 20;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz inf.") } }
+          CheckBox { id: quartaJs; checked: true; x: 260; y: 20;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz sup.") } }
+       }
+     }
+     // sensível na cadência final
+     Rectangle { x: 3; y: 112; width: 526; height: 47; color: "#282828"; radius: 2
+     CheckBox { id: sensCad; checked: true; x: 5; y: 2;
+       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+         color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não usar a sensível na cadência final")
+         CheckBox { id: sensCadR; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou se a sensível não resolver") }}
+         CheckBox { id: sensCadEx; checked: true; x: 0; y: 17;
+           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no modo Frígio") }}
+       }}
+     }
+     // distância
+     Rectangle { x: 3; y: 162; width: 526; height: 41; color: "#282828"; radius: 2
+
+        CheckBox { id: distancia; checked: true; x: 5; y: 2;
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Distância entre as vozes") }
+          Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se uma sequencia maior do que") }
+          TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}
+           Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalo(s) maior(es) do que a")
+            TextInput { id: distInt;
+              anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.underline: true; text: "10"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 8; top: 15;}
+             Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter; color: "yellow"; font.pixelSize: 12; text: "ª" }}
+           }
+          }
+         }
+        }
+     // consonâncias imperfeitas
+     Rectangle { x: 3; y: 206; width: 526; height: 27; color: "#282828"; radius: 2
+       CheckBox { id: consImp; checked: true; x: 5; y: 3;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Prioridade para Consonâncias Imperfeitas") }
+         }
+       }
+     // coerência harmônica
+     Rectangle { x: 3; y: 236; width: 526; height: 53; color: "#282828"; radius: 2
+       Text { x: 5; y: 0; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Coerência harmônica") }
+       CheckBox { id: cHarmonia; checked: true; x: 5; y: 32;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("notas que não pertencem ao acorde")
+           CheckBox { id: cHarmoniaEx; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                    color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco") }}
+         }
+       }
+       CheckBox { id: cHarmoniaF; checked: true; x: 5; y: 15;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+                color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ausência da fundamental")}}
+       // Text { x: 415; y: 4; color: "#e0dfc3"; font.pixelSize: 12; text: "Cifra:"
+       //  ComboBox { id: cifraHar; anchors.left: parent.left; anchors.topMargin: 0; anchors.top: parent.bottom;
+       //              width: 101; model: ["Gradual", "Funcional", "Popular"]; currentIndex: 0 }}
+     }
+    }
+   }
  Item { id: dissonâncias; visible: false;
-   Rectangle { x: 2; y: 35; width: 532; height: 564;	color: "#353535"; radius: 2
+   Rectangle { x: 2; y: 28; width: 532; height: 564;	color: "#353535"; radius: 2
      Rectangle { x: 3; y: 3; width: 526; height: 45; color: "#292929"; radius: 2
       Rectangle { x: 3; y: 3; width: 520; height: 40; color: "#131313"; radius: 2 // Dissonâncias
        CheckBox { id: dissonanciasG; checked: true; x: 3; y: 3;
@@ -1090,48 +1175,63 @@ MuseScore {
       Rectangle { x: 3; y: 3; width: 520; height: 45; color: "#131313"; radius: 2 // nota de passagem
        CheckBox { id: passagemL; checked: true; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: qsTr("Nota de passagem") }
+              font.pixelSize: 14; text: qsTr("Nota de passagem")
+          CheckBox { id: passaLEx2; checked: false; anchors.left: parent.right; anchors.leftMargin: 15; anchors.verticalCenter: parent.verticalCenter;
+            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                              font.pixelSize: 14; text: qsTr("e Grupo de NP") }}
+        }
         CheckBox { id: passaLEx; checked: false; x: 25; y: 20
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
-        CheckBox { id: passaLEx2; checked: false; x: 200; y: 20
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                        font.pixelSize: 11; text: qsTr("permitir grupo de NP") }}
+                font.pixelSize: 11; text: qsTr("somente em tempo fraco")
+           CheckBox { id: passaLExMF; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
+             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                        font.pixelSize: 11; text: qsTr("e em tempo meio forte") }}
+        }}
        }
       }
       Rectangle { x: 3; y: 51; width: 520; height: 45; color: "#131313"; radius: 2 // bordadura
       Text {  x: 3; y: 3; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura")
        CheckBox { id: bordaduraLI; checked: true; x: 80; anchors.verticalCenter: parent.verticalCenter;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 11; text: qsTr("inferior,") }}
-       CheckBox { id: bordaduraLS; checked: true; x: 155; anchors.verticalCenter: parent.verticalCenter;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("superior,") }}
-       CheckBox { id: bordaLEx; checked: false; x: 230; anchors.verticalCenter: parent.verticalCenter;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
-      }
-      Text { x: 3; y:25; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura dupla")
-        CheckBox { id: bordaduraD; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 11; text: qsTr(", somente")
-        CheckBox { id: bordaLEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("em tempo fraco")
-          CheckBox { id: bordaLEx2; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("e notas principais em tempo forte") }}}}}}
+             font.pixelSize: 11; text: qsTr("inferior,")
+         CheckBox { id: bordaduraLS; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                   font.pixelSize: 11; text: qsTr("superior,")
+            CheckBox { id: bordaLEx; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                     font.pixelSize: 11; text: qsTr("somente em tempo fraco")
+                CheckBox { id: bordaLExMF; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+                  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                              font.pixelSize: 11; text: qsTr("e em tempo meio forte") }}
+            }}
+          }}
+        }}
       }
 
+    CheckBox { id: bordaduraD; checked: false; x: 3; y:22;
+       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+              color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura dupla")
+        CheckBox { id: bordaLEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                 font.pixelSize: 11; text: qsTr("somente em tempo fraco ou meio forte")
+          // CheckBox { id: bordaLEx2; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
+          //  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+          //        font.pixelSize: 11; text: qsTr("e notas principais em tempo forte") }}
+        }}}
+      }
 
       }
       Rectangle { x: 3; y: 98; width: 520; height: 128; color: "#131313"; radius: 2 // cambiata
        CheckBox { id: cambiataL; checked: true; x: 3; y: 3;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
              font.pixelSize: 14; text: qsTr("Cambiata");
-         CheckBox { id: cambiLEx1; checked: true; x: 0; y: 20
+         CheckBox { id: cambiLEx1; checked: true; x: 0; y: 20;
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("1ª e última nota em tempo forte") }
+                 font.pixelSize: 11; text: qsTr("1ª e última nota em tempo forte")
+           CheckBox { id: cambiLEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
+             Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
+                         font.pixelSize: 11; text: qsTr("ou meio forte") }}
+          }
          }
          CheckBox { id: cambiLEx2; checked: false; x: 0; y: 40
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
@@ -1139,7 +1239,11 @@ MuseScore {
          }
          CheckBox { id: cambiLEx3; checked: false; x: 0; y: 60
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("dissonâncias somente em tempo fraco") }
+                   font.pixelSize: 11; text: qsTr("dissonâncias somente em tempo fraco")
+             CheckBox { id: cambiLEx3MF; checked: true; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
+               Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
+                       font.pixelSize: 11; text: qsTr("ou meio forte") }}
+          }
          }
          CheckBox { id: cambiLEx4; checked: false; x: 0; y: 80
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
@@ -1147,7 +1251,7 @@ MuseScore {
          }
          CheckBox { id: cambiLEx5; checked: false; x: 0; y: 100
           Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                    font.pixelSize: 11; text: qsTr("2ª nota com duração mais curta do que a 1ª e a última") }
+                    font.pixelSize: 11; text: qsTr("2ª nota com duração igual ou mais curta do que a 1ª e a última") }
          }
         }
        }
@@ -1202,7 +1306,11 @@ MuseScore {
                font.pixelSize: 14; text: qsTr("Apojatura");
           CheckBox { id: apojaEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente em tempo forte") }}
+                   font.pixelSize: 11; text: qsTr("somente em tempo forte")
+             CheckBox { id: apojaEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
+               Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
+                      font.pixelSize: 11; text: qsTr("ou meio forte") }}
+          }}
           CheckBox { id: apojaEx2; checked: false; x: 0; y: 40
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                    font.pixelSize: 11; text: qsTr("somente se alcançada por movimento ascendente") }}
@@ -1219,7 +1327,11 @@ MuseScore {
                 font.pixelSize: 14; text: qsTr("Escapada");
           CheckBox { id: escapaEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("somente em tempo fraco") }}
+                  font.pixelSize: 11; text: qsTr("somente em tempo fraco")
+            CheckBox { id: escapaEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
+              Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
+                     font.pixelSize: 11; text: qsTr("ou mf") }}
+          }}
          }
        }
       }
@@ -1229,7 +1341,11 @@ MuseScore {
                 font.pixelSize: 14; text: qsTr("Nota pedal");
           CheckBox { id: pedalEx1; checked: false; x: 0; y: 20
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("início e final em tempo forte") }}
+                  font.pixelSize: 11; text: qsTr("início e final em tempo forte")
+            CheckBox { id: pedalEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
+              Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
+                     font.pixelSize: 11; text: qsTr("ou mf") }}
+          }}
          }
        }
       }
@@ -1237,7 +1353,7 @@ MuseScore {
    }
  }
  Item { id: melodias; visible: false;
-   Rectangle { x: 2; y: 35; width: 532; height: 562;	color: "#5b5b5b"; radius: 2
+   Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#5b5b5b"; radius: 2
     Rectangle { x: 3; y: 3; width: 526; height: 80; color: "#303030"; radius: 2
 		 CheckBox { id: peNota; checked: true; x: 5; y: 5;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
@@ -1260,42 +1376,42 @@ MuseScore {
 		 }
 	  }
 
-	  Rectangle { x: 3; y: 86; width: 526; height: 83; color: "#303030"; radius: 2
+	  Rectangle { x: 3; y: 86; width: 526; height: 80; color: "#303030"; radius: 2
 		 //Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Não usar os seguintes intervalos:"
-			 CheckBox { id: salt7; checked: true; x: 5; y: 3;
+			 CheckBox { id: salt7; checked: true; x: 5; y: 2;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: qsTr("Sétimas maiores e menores") }
 			 }
-			 CheckBox { id: salt6; checked: true; x: 5; y: 22;
+			 CheckBox { id: salt6; checked: true; x: 5; y: 21;
 		      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		      color: "#e0dfc3"; text: qsTr("Sextas maiores e menores") }
-		      CheckBox { id: salt6Ex; checked: true; x: 195; y: 0;
+		      CheckBox { id: salt6Ex; checked: true; x: 180; y: 0;
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 	          color: "#e0dfc3"; text: qsTr("Exceto se menor ascendente") } }
 		    }
-		    CheckBox { id: saltAum; checked: true; x: 5; y: 41;
+		    CheckBox { id: saltAum; checked: true; x: 5; y: 40;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: qsTr("Aumentados e diminutos") }
 			 }
-			 CheckBox { id: saltM8; checked: true; x: 5; y: 60;
+			 CheckBox { id: saltM8; checked: true; x: 5; y: 59;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: qsTr("Maiores do que a oitava") }
 			 }
 	    //}
 	  }
 
-	  Rectangle { x: 3; y: 172; width: 526; height: 162; color: "#303030"; radius: 2
-	    CheckBox { id: tritono2; checked: true; x: 5; y: 3;
+	  Rectangle { x: 3; y: 170; width: 526; height: 195; color: "#303030"; radius: 2
+	    CheckBox { id: tritono2; checked: true; x: 5; y: 2;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: qsTr("Trítono nas duas extremidades de movimentos melódicos") }
 		 }
 
-		 CheckBox { id: tritono1; checked: false; x: 5; y: 22;
+		 CheckBox { id: tritono1; checked: false; x: 5; y: 21;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: qsTr("Trítono em uma extremidade de movimentos melódicos") }
 		 }
 
-		 CheckBox { id: dissoC; checked: true; x: 5; y: 41;
+		 CheckBox { id: dissoC; checked: true; x: 5; y: 40;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: qsTr("Dissonância composta") }
 	    }
@@ -1311,16 +1427,21 @@ MuseScore {
              color: "#e0dfc3"; text: qsTr("(e) Exceto se precedidos e seguidos grau conjunto") } }
       }
 
-      CheckBox { id: doisSaltM; checked: true; x: 5; y: 97;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-        color: "#e0dfc3"; text: qsTr("Dois saltos na mesma direção")
-       CheckBox { id: doisSaltMEx; checked: true; anchors.left: parent.right; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter;
+      CheckBox { id: doisSaltM; checked: true; x: 5; y: 86;
+
+       Text { anchors.left: parent.right; anchors.leftMargin: 2; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+              color: "#e0dfc3"; text: qsTr("Dois saltos na mesma direção")
+        CheckBox { id: doisSaltMEx; checked: true; x: 5; y: 13;
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-          color: "#e0dfc3"; text: qsTr("Exceto se formar tríade") }}
+                color: "#e0dfc3"; text: qsTr("Exceto se formar tríade")
+         CheckBox { id: doisSaltMEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+                 color: "#e0dfc3"; text: qsTr("ou 5J + 4J ou 4J + 5J") }}
+         }}
         }
        }
 
-	    CheckBox { id: saltM5; checked: true; x: 5; y: 130;
+	    CheckBox { id: saltM5; checked: true; x: 5; y: 129;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: qsTr("Salto maior do que 5ªJ não compensado \ncom direcionamento contrário") }
 		   CheckBox { id: saltM5Ex1; checked: true; x: 300; y: -7;
@@ -1330,17 +1451,28 @@ MuseScore {
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
 	          color: "#e0dfc3"; text: qsTr("por salto < 5ª") } }
 	    }
-    }
 
-    Rectangle { x: 3; y: 337; width: 526; height: 110; color: "#303030"; radius: 2
-    CheckBox { id: varDir; checked: true; x: 5; y: 5;
+      CheckBox { id: saltoTF; checked: false; x: 5; y: 158;
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+              color: "#e0dfc3"; text: qsTr("Salto de tempo forte (")
+       CheckBox { id: saltoTmF; checked: false; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+               color: "#e0dfc3"; text: qsTr("e de tempo meio forte) para o tempo fraco") }}
+         CheckBox { id: saltoTFEx; checked: false; x: 5; y: 12;
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
+                 color: "#e0dfc3"; text: qsTr("Somente se ascendente") }}
+      }}
+     }
+
+    Rectangle { x: 3; y: 368; width: 526; height: 106; color: "#303030"; radius: 2
+    CheckBox { id: varDir; checked: true; x: 5; y: 2;
 		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: qsTr("Monotonia no contorno: mais do que") }
 		TextInput { id: varDirQt; anchors.left: varDirTxt.right; anchors.leftMargin: 5; y: varDirTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 0; top: 99;} }
 		Text { anchors.left: varDirQt.right; anchors.leftMargin: 5; y: varDirQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("movimento(s) na mesma direção") }
 	  }
 
-	  CheckBox { id: repNota; checked: true; x: 5; y: 25;
+	  CheckBox { id: repNota; checked: true; x: 5; y: 22;
 		 Text { id: repNotaTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3";text: qsTr("Repetição de notas: mais do que") }
 		 TextInput { id: repNotaQt; anchors.left: repNotaTxt.right; anchors.leftMargin: 5; y: repNotaTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
@@ -1353,21 +1485,21 @@ MuseScore {
 
     }
 
-	  CheckBox { id: repPad; checked: true; x: 5; y: 45;
+	  CheckBox { id: repPad; checked: true; x: 5; y: 42;
 		Text { id: repPadTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		color: "#e0dfc3"; text: qsTr("Repetição de padrões: mais do que") }
 		TextInput { id: repPadQt; anchors.left: repPadTxt.right; anchors.leftMargin: 5; y: repPadTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "0"; validator: IntValidator{bottom: 0; top: 99;} }
 		Text { anchors.left: repPadQt.right; anchors.leftMargin: 5; y: repPadQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("repetição(ões)") }
 	  }
 
-	  CheckBox { id: arpMel; checked: true; x: 5; y: 65;
+	  CheckBox { id: arpMel; checked: true; x: 5; y: 62;
 		  Text { id: arpMelTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		   color: "#e0dfc3"; text: qsTr("Arpejo de acordes na linha melódica: mais do que") }
       TextInput { id: arpMelQt; anchors.left: arpMelTxt.right; anchors.leftMargin: 5; y: arpMelTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
 	    Text { anchors.left: arpMelQt.right; anchors.leftMargin: 5; y: arpMelQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("arpejo(s)") }
 	  }
 
-    Text { x: 28; y: 90; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("Repetição de Ponto Focal");
+    Text { x: 28; y: 86; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("Repetição de Ponto Focal");
       CheckBox { id: melPFs; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
 		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 	    	color: "#e0dfc3"; text: qsTr("Agudo")
@@ -1380,15 +1512,15 @@ MuseScore {
     }
    }
 
-	  Rectangle { x: 3; y: 451; width: 526; height: 50; color: "#303030"; radius: 2
-      CheckBox { id: neutA; checked: true; x: 5; y: 5;
+	  Rectangle { x: 3; y: 478; width: 526; height: 44; color: "#303030"; radius: 2
+      CheckBox { id: neutA; checked: true; x: 5; y: 2;
 				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 				       color: "#e0dfc3"; text: qsTr("Se não conduzir 6° e 7° alterados") }
 				CheckBox { id: neutAim; checked: false; x: 220; y: 0;
 				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
 				         color: "#e0dfc3"; text: qsTr("imediatamente") }}
 	  	}
-	  	CheckBox { id: neutN; checked: true; x: 5; y: 25;
+	  	CheckBox { id: neutN; checked: true; x: 5; y: 22;
 				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 				       color: "#e0dfc3"; text: qsTr("Se 6°/7° naturais sem neutralizar") }
 				CheckBox { id: neutNim; checked: true; x: 220; y: 0;
@@ -1404,8 +1536,8 @@ MuseScore {
 	  	}
 	 }
 
-    Rectangle { x: 3; y: 505; width: 526; height: 50; color: "#303030"; radius: 2
-     CheckBox { id: tonic; checked: true; x: 5; y:5;
+    Rectangle { x: 3; y: 526; width: 526; height: 42; color: "#303030"; radius: 2
+     CheckBox { id: tonic; checked: true; x: 5; y:1;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("Nota inicial do CF diferente de tônica/finalis,") }
 
@@ -1418,7 +1550,7 @@ MuseScore {
 		 color: "#e0dfc3"; text: qsTr("ou quinta") }
 	   }
 	  }
-	   CheckBox { id: tonicF; checked: true; x: 5; y:25;
+	   CheckBox { id: tonicF; checked: true; x: 5; y:22;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("Nota final do CF diferente de tônica/finalis,") }
 	   CheckBox { id: terçaF; checked: false; x: 270;
@@ -1434,7 +1566,7 @@ MuseScore {
   }
  }
  Item { id: intervalosClasse; visible: false;
-   Rectangle { x: 2; y: 35; width: 532; height: 551;	color: "#5a5a5a"; radius: 2
+   Rectangle { x: 2; y: 28; width: 532; height: 551;	color: "#5a5a5a"; radius: 2
     Rectangle { x: 3; y: 3; width: 526; height: 545; color: "#333333"; radius: 2
      Rectangle { x: 3; y: 3; width: 520; height: 144; color: "#111111"; radius: 2
       CheckBox { id: intDissT1; checked: false; x: 3; y: 3;
@@ -1818,15 +1950,16 @@ function atualizarTitulo() {
   if (livreCP) { titulo2.text = "Contraponto livre:"; tipoCP = 6;};
   if (melodias.visible) { titulo1.text = "construção melódica" };
   if (dissonâncias.visible) { titulo1.text = "tratamento de dissonâncias" };
-  if (gerais.visible) { titulo1.text = "condução de vozes e outros aspectos" };
+  if (conduz.visible) { titulo1.text = "condução de vozes" };
+  if (outros.visible) { titulo1.text = "outros aspectos" };
   if (intervalosClasse.visible) { titulo1.text = "Seleção de intervalos dissonântes" };
 }
 
 function salvarCfg() {
 
-   var j = 172 * tipoCP;
+   var j = 187 * tipoCP;
 //console.log("salvarCfg ", tipoCP," j = ", j);
- // ---------------- gerais -----------
+ // ---------------- conduz -----------
    if(primInt.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(ex5Ji.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(ex3i.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -1850,12 +1983,17 @@ function salvarCfg() {
    if(ocultSalto.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(inter8.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(inter5.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(interPM.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(interSI.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExTf.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExTf1.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExTf2.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(interExTf3.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExTF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExFim.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExCF.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(interExS.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   config[j] = interExSn.text; j++;
    if(consecObli.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(consecCont.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(uniss.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -1864,6 +2002,10 @@ function salvarCfg() {
    if(unissTF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cruzaVozes.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(falsaR.checked){ config[j] = true; } else { config[j] = false; }; j++;
+// ---------------- Outros ---------------
+   if(sensCad.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(sensCadR.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(sensCadEx.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(distancia.checked){ config[j] = true; } else { config[j] = false; }; j++;
    config[j] = distQt.text; j++;
    config[j] = distInt.text; j++;
@@ -1876,16 +2018,19 @@ function salvarCfg() {
    if(passagemL.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(passaLEx.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(passaLEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(passaLExMF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(bordaduraLI.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(bordaduraLS.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(bordaduraD.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(bordaLEx.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(bordaLExMF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(bordaLEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
-   if(bordaLEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiataL.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiLEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(cambiLEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiLEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiLEx3.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(cambiLEx3MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiLEx4.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(cambiLEx5.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(suspensãoL.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -1899,12 +2044,15 @@ function salvarCfg() {
    if(antecipaEx4.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaturaL.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(apojaEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaEx3.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(escapadaL.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(escapaEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(escapaEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(pedal.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(pedalEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(pedalEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
  // -------------- melodia -------------
    if(peNota.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(ambito.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -1922,6 +2070,7 @@ function salvarCfg() {
    if(doisSaltC.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(doisSaltM.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(doisSaltMEx.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(doisSaltMEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(doisSaltCEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(doisSaltCEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(saltM5.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -2006,9 +2155,9 @@ function salvarCfg() {
 
 function carregarCfg() {
 
-   var j = 172 * tipoCP;
+   var j = 187 * tipoCP;
 
-   // ---------------- gerais -----------
+   // ---------------- conduz -----------
      primInt.checked = config[j]; j++;
      ex5Ji.checked = config[j]; j++;
      ex3i.checked = config[j]; j++;
@@ -2032,12 +2181,17 @@ function carregarCfg() {
      ocultSalto.checked = config[j]; j++;
      inter8.checked = config[j]; j++;
      inter5.checked = config[j]; j++;
+     interPM.checked = config[j]; j++;
+     interSI.checked = config[j]; j++;
      interExTf.checked = config[j]; j++;
      interExTf1.checked = config[j]; j++;
      interExTf2.checked = config[j]; j++;
+     interExTf3.checked = config[j]; j++;
      interExTF.checked = config[j]; j++;
      interExFim.checked = config[j]; j++;
      interExCF.checked = config[j]; j++;
+     interExS.checked = config[j]; j++;
+     interExSn.text = config[j]; j++;
      consecObli.checked = config[j]; j++;
      consecCont.checked = config[j]; j++;
      uniss.checked = config[j]; j++;
@@ -2046,6 +2200,10 @@ function carregarCfg() {
      unissTF.checked = config[j]; j++;
      cruzaVozes.checked = config[j]; j++;
      falsaR.checked = config[j]; j++;
+  // --------------- outros -----------------
+     sensCad.checked = config[j]; j++;
+     sensCadR.checked = config[j]; j++;
+     sensCadEx.checked = config[j]; j++;
      distancia.checked = config[j]; j++;
      distQt.text = config[j]; j++;
      distInt.text = config[j]; j++;
@@ -2058,16 +2216,19 @@ function carregarCfg() {
      passagemL.checked = config[j]; j++;
      passaLEx.checked = config[j]; j++;
      passaLEx2.checked = config[j]; j++;
+     passaLExMF.checked = config[j]; j++;
      bordaduraLI.checked = config[j]; j++;
      bordaduraLS.checked = config[j]; j++;
      bordaduraD.checked = config[j]; j++;
      bordaLEx.checked = config[j]; j++;
+     bordaLExMF.checked = config[j]; j++;
      bordaLEx1.checked = config[j]; j++;
-     bordaLEx2.checked = config[j]; j++;
      cambiataL.checked = config[j]; j++;
      cambiLEx1.checked = config[j]; j++; //
+     cambiLEx1MF.checked = config[j]; j++; //
      cambiLEx2.checked = config[j]; j++;
      cambiLEx3.checked = config[j]; j++;
+     cambiLEx3MF.checked = config[j]; j++;
      cambiLEx4.checked = config[j]; j++;
      cambiLEx5.checked = config[j]; j++;
      suspensãoL.checked = config[j]; j++;
@@ -2081,12 +2242,15 @@ function carregarCfg() {
      antecipaEx4.checked = config[j]; j++;
      apojaturaL.checked = config[j]; j++;
      apojaEx1.checked = config[j]; j++;
+     apojaEx1MF.checked = config[j]; j++;
      apojaEx2.checked = config[j]; j++;
      apojaEx3.checked = config[j]; j++;
      escapadaL.checked = config[j]; j++;
      escapaEx1.checked = config[j]; j++;
+     escapaEx1MF.checked = config[j]; j++;
      pedal.checked = config[j]; j++;
      pedalEx1.checked = config[j]; j++;
+     pedalEx1MF.checked = config[j]; j++;
    // -------------- melodia -------------
      peNota.checked = config[j]; j++;
      ambito.checked = config[j]; j++;
@@ -2104,6 +2268,7 @@ function carregarCfg() {
      doisSaltC.checked = config[j]; j++;
      doisSaltM.checked = config[j]; j++;
      doisSaltMEx.checked = config[j]; j++;
+     doisSaltMEx1.checked = config[j]; j++;
      doisSaltCEx1.checked = config[j]; j++;
      doisSaltCEx2.checked = config[j]; j++;
      saltM5.checked = config[j]; j++;
@@ -2291,10 +2456,10 @@ function removeRepetição(tpc) {  //
   return acordeX;
 }
 
-function verificaGrauMelodico(nota,x) {
-  texto2tonica(vozes[x].tom);
+function verificaGrauMelodico(tonal,i) {
+  texto2tonica(vozes[i].tom);
   var tom = tonicaTPC(btTonica.text, btAcid.text);
-  var x = nota - tom;
+  var x = tonal - tom;
  	var modo = btModo.text;
 
   switch(modo) {
@@ -2330,6 +2495,7 @@ function verificaGrauMelodico(nota,x) {
   	 	case 2: return 2;
   	 	case 4: return 3;
   	 	case -1: return 4;
+      case 6: return "4+";
   	 	case 1: return 5;
   	 	case 3: return 6;
   	 	case 5: return 7;
@@ -2342,6 +2508,7 @@ function verificaGrauMelodico(nota,x) {
   	 	case 0: return 1;
   	 	case 2: return 2;
   	 	case -3: return 3;
+      case 4: return "3+";
   	 	case -1: return 4;
   	 	case 1: return 5;
   	 	case 3: return 6;
@@ -2355,6 +2522,7 @@ function verificaGrauMelodico(nota,x) {
   	 switch (x) {
   	 	case 0: return 1;
   	 	case -5: return 2;
+      case 2: return "2+";
   	 	case -3: return 3;
   	 	case -1: return 4;
   	 	case 1: return 5;
@@ -2388,6 +2556,7 @@ function verificaGrauMelodico(nota,x) {
   	 	case 1: return 5;
   	 	case 3: return 6;
   	 	case -2: return 7;
+      case 5: return "7+";
   	 };
      msgErros.text += "Verificação de Grau Melódico não encontrou resultado!\n";
      msgErros.estado=true; return "NA";
@@ -2413,6 +2582,7 @@ function verificaGrauMelodico(nota,x) {
   	 	case -3: return 3;
   	 	case -1: return 4;
   	 	case -6: return 5;
+      case 1: return "5+";
   	 	case -4: return 6;
       case 3: return "6+";
   	 	case -2: return 7;
@@ -2430,15 +2600,15 @@ function verificaTempoForte(tempo,metrica) {
     case 2:
     case 3: if (tempo == 1) { return "F"; } else { return "f"; };
       break;
-    case 4: if (tempo == 1 || tempo == 3) { return "F"; } else { return "f"; };
+    case 4: if (tempo == 1) { return "F"; } else if (tempo == 3) { return "mF"; } else { return "f"; };
       break;
-    case 6: if (tempo == 1 || tempo == 4) { return "F"; } else { return "f"; };
+    case 6: if (tempo == 1) { return "F"; } else if (tempo == 4) { return "mF"; } else { return "f"; };
       break;
-    case 8: if (tempo == 1 || tempo == 3 || tempo == 5 || tempo == 7) { return "F"; } else { return "f"; };
+    case 8: if (tempo == 1) { return "F"; } else if (tempo == 3 || tempo == 5 || tempo == 7) { return "mF"; } else { return "f"; };
       break;
-    case 9: if (tempo == 1 || tempo == 4 || tempo == 7) { return "F"; } else { return "f"; };
+    case 9: if (tempo == 1) { return "F"; } else if (tempo == 4 || tempo == 7) { return "mF"; } else { return "f"; };
       break;
-    case 12: if (tempo == 1 || tempo == 4 || tempo == 7 || tempo == 10) { return "F"; } else { return "f"; };
+    case 12: if (tempo == 1) { return "F"; } else if (tempo == 4 || tempo == 7 || tempo == 10) { return "mF"; } else { return "f"; };
       break;
    };
 
@@ -2490,7 +2660,7 @@ function tonicaPC(nome,acidente) {
    switch (nome) {
      case "Dó": a = 0; break;
      case "Ré": a = 2; break;
-     case "Mi": a = 3; break;
+     case "Mi": a = 4; break;
      case "Fá": a = 5; break;
      case "Sol": a = 7; break;
      case "Lá": a = 9; break;
@@ -2822,7 +2992,8 @@ function verificar() {
  if (melodia && (tonic.checked || tonicF.checked)) { notaIniFin(); };
  if (doisSaltM.checked) { doisSaltosMdireção(); };
  if (doisSaltC.checked) { doisSaltosMContra(); };
- // --------------- gerais ------------
+ if (saltoTF.checked) { saltoTempoForte(); };
+ // --------------- conduz ------------
  if (!melodia && (paralela5.checked || paralela8.checked)) { quintasOitavas(); };
  if (!melodia && paralela4.checked) { quartas(); };
  if (!melodia && paralela36.checked) { terçasSextas(); };
@@ -2835,6 +3006,7 @@ function verificar() {
  if (!melodia && distancia.checked) { espaçamento(); };
  if (!melodia && (primInt.checked || ultInt.checked)) { primUltIntervalo(); };
  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
+ if (!melodia && sensCad.checked) { sensivelCadencia(); };
  if (!melodia && consImp.checked) { consonancias(); };
  if (cHarmonia.checked) { coerenciaHarmonica(); };
  if (cHarmoniaF.checked) { coerHarmFund(); };
@@ -3812,13 +3984,13 @@ function doisSaltosMdireção() {
 
    if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de Saltos consecutivos na mesma direção!\n";
                          msgErros.estado=true; return; };
-   var vozInicial = 0, vozFinal = vozes[1].tonal.length-1, triade = false;
+   var vozInicial = 0, vozFinal = vozes[1].tonal.length-1, triade = false, justos = false;
    for (var voz = vozInicial; voz <= vozFinal; voz++) {
      if ((melodia && voz != vozCF) || (!melodia && !livreCP && voz == vozCF)) { continue; };
      var novaVoz = [];
     for (var x=0;x<vozes.length;x++) {
       if (!vozes[x].ligadura[voz]) {
-        novaVoz.push({ nota: vozes[x].nota[voz], pos: x}) ;
+        novaVoz.push({ nota: vozes[x].nota[voz], tonal: vozes[x].tonal[voz], pos: x}) ;
        };
      };
 
@@ -3827,13 +3999,16 @@ function doisSaltosMdireção() {
 
      var int1 = Math.abs(novaVoz[x-1].nota - novaVoz[x-2].nota);
      var int2 = Math.abs(novaVoz[x].nota - novaVoz[x-1].nota);
+     var intT1 = Math.abs(novaVoz[x-1].tonal - novaVoz[x-2].tonal);
+     var intT2 = Math.abs(novaVoz[x].tonal - novaVoz[x-1].tonal);
      var dir1 = direção(novaVoz[x-1].nota - novaVoz[x-2].nota);
      var dir2 = direção(novaVoz[x].nota - novaVoz[x-1].nota);
-     if (((int1 == 3 || int1 == 4) && (int2 == 3 || int2 == 4)) ||
-         ((int1 == 3 || int1 == 4) && (int2 == 5 || int2 == 6)) ||
-         ((int1 == 5 || int1 == 6) && (int2 == 3 || int2 == 4))) { triade = true; } else { triade = false; };
+     if ((((int1 == 3 || int1 == 4) && (int2 == 3 || int2 == 4)) && ((intT1 == 3 || intT1 == 4) && (intT2 == 3 || intT2 == 4))) ||
+         (((int1 == 3 || int1 == 4) && (int2 == 5 || int2 == 6)) && ((intT1 == 3 || intT1 == 4) && (intT2 == 1 || intT2 == 6))) ||
+         (((int1 == 5 || int1 == 6) && (int2 == 3 || int2 == 4)) && ((intT1 == 1 || intT1 == 6) && (intT2 == 3 || intT2 == 4)))) { triade = true; } else { triade = false; };
+     if (((int1 == 5 && intT1 == 1) && (int2 == 7 && intT2 == 1)) || ((int1 == 7 && intT1 == 1) && (int2 == 5 && intT2 == 1))) { justos = true; } else { justos = false; };
      if (int1 > 2 && int2 > 2 && dir1 == dir2 && dir1 != 0) {
-        if (doisSaltMEx.checked && triade) { continue; };
+        if ((doisSaltMEx.checked && triade) || (doisSaltMEx1.checked && justos)) { continue; };
         var posIni = (novaVoz[x].pos - novaVoz[x-2].pos) + 1
         verificados++;
         criaResultado(verificados, novaVoz[x].pos, voz, voz, "2 saltos na mesma direção", posIni, 1);
@@ -3888,111 +4063,78 @@ function doisSaltosMContra() {
    };
 }
 
-// --------------------- Gerais: condução de vozes e outros aspectos ------------
-function primUltIntervalo() {
+function saltoTempoForte() {
 
- if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de intervalo inicial e final!\n";
-                       msgErros.estado=true; return; };
- texto2tonica(vozes[0].tom);
- var tonica1 = tonicaPC(btTonica.text, btAcid.text);
- texto2tonica(vozes[vozes.length-1].tom);
- var tonica2 = tonicaPC(btTonica.text, btAcid.text);
- var notaInferior1 = vozes[0].nota[1];
- var notaInferior2 =  vozes[vozes.length-1].nota[1];
- var intI = (Math.abs(vozes[0].nota[0] - notaInferior1)) % 12;
- var intF = (Math.abs(vozes[vozes.length-1].nota[0] - notaInferior2)) % 12;
- var inicio = false, finale = false;
-
- if (intI != 0) { // se inicio não for U ou 8ª
-   if (ex5Ji.checked && (intI == 7 && tonica1 == notaInferior1%12)) { inicio = true; } else // se for 5ª com tonica na voz inferior
-   if (ex3i.checked && ((intI == 3 || intI == 4) && tonica1 == notaInferior1%12)) { inicio = true; }; // se for 3ª com tonica na voz inferior
-   if (!inicio) {
-   	verificados++;
-	  criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); };
- };
-
- if (intF != 0) { // se final não for U ou 8ª
-   if (ex5Jf.checked && (intF == 7 && tonica2 == notaInferior2%12)) { finale = true; } else // se for 5ª com tonica na voz inferior
-   if (ex3f.checked && ((intF == 3 || intF == 4) && tonica2 == notaInferior2%12)) { finale = true; }; // se for 3ª com tonica na voz inferior
-   if (!finale) {
-    verificados++;
-    criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2); };
- };
-}
-
-function alcançarMovContra() {
-
- if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
+  if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de Saltos de tempo forte para tempo fraco!\n";
                        msgErros.estado=true; return; };
 
- var intS = vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]
- var intI = vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1];
+   var vozInicial = 0, vozFinal = vozes[1].tonal.length-1;
+   for (var voz = vozInicial; voz <= vozFinal; voz++) {
+     if ((melodia && voz != vozCF) || (!melodia && !livreCP && voz == vozCF)) { continue; };
+     var novaVoz = [];
+     for (var x=0;x<vozes.length;x++) {
+      if (!vozes[x].ligadura[voz]) {
+          novaVoz.push({ nota: vozes[x].nota[voz], pos: x}) ;
+      };
+    };
+    for (var x=1;x<novaVoz.length;x++) { // percorre acordes
+      if (!novaVoz[x].nota || !novaVoz[x-1].nota) { break; };
 
- var dir1 = direção(vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]);
- var dir2 = direção(vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1]);
-
- if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) {
-
-   if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
-	      verificados++;
-	      criaResultado(verificados, vozes.length-2, 0, 1, "alcança intervalo final", 1, 2);
-       };
-}
-
-function consonancias() {
-
-  var cP = 0, cI = 0;
-  for (var x=0;x<vozes.length;x++) { // percorre acordes
-   var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
-   var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
-   var int1 = verificaConsonancia(vIN, vIT);
-   if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; }
-  };
-//  console.log("consonancias:", cP, cI);
-  if (cP > cI) {
-  	 verificados++;
-     var resultado = "cons. imperfeita não é maioria (p=" + cP + ", i=" + cI + ")";
-	 criaResultado(verificados, vozes.length-1, 0, 1, resultado, vozes.length, "null");
+      var int1 = Math.abs(novaVoz[x].nota - novaVoz[x-1].nota);
+      var dir1 = direção(novaVoz[x].nota - novaVoz[x-1].nota);
+      var pos1 = novaVoz[x-1].pos;
+      var pos2 = novaVoz[x].pos;
+      var met1 = verificaTempoForte(vozes[pos1].tempo[voz], vozes[pos1].formula[voz]);
+      var met2 = verificaTempoForte(vozes[pos2].tempo[voz], vozes[pos2].formula[voz]);
+console.log(x, int1, dir1, pos1, pos2, met1, met2, saltoTmF.checked);
+      if (int1 > 2 && (met1 == "F" || (saltoTmF.checked && met1 == "mF")) &&
+          (met2 == "f" || met2 == "c") && (!saltoTFEx.checked || dir1 == 1)) {
+         var posIni = pos2 - pos1 + 1
+         verificados++;
+         criaResultado(verificados, pos2, voz, voz, "salto de tempo forte para tempo fraco", posIni, 1);
+      };
+    };
   };
 }
 
+// --------------------- conduz: condução de vozes ------------
 function quintasOitavas() {
    var par5Status = true, par8Status = true;
    var acorAnt = 1;
    var qtdpar8Rep = parseInt(par8Rep.text), qtdpar5Rep = parseInt(par5Rep.text);
 
-     for (var voz=0; voz < 10; voz++) { // percorre vozes
+     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
        var vozAnt = voz;
 
-       for (var i=voz+1; i < 10; i++) { //  percorre outras vozes
+       for (var i=voz+1; i < vozes[1].nota.length; i++) { //  percorre outras vozes
    		 var vozAtual = i;
    		 var par5 = 0, par8 = 0;
 
 	       for (var x=1;x<=vozes.length;x++) { // percorre acordes
 	         if (x==vozes.length) { verificou58(); continue ; };
-	         if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { continue ; };
+	        // if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { continue ; };
 
          var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
          var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-
          var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
          var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
+         var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
+         var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
 
          if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
-              if (Math.abs(intAtual%12) == 7 && intAtual == intAnt && paralela5.checked) { //testa 5ª paralela
+              if (Math.abs(intAtual%12) == 7 && intT1 == 1 && intT2 == 1 && intAtual == intAnt && paralela5.checked) { //testa 5ª paralela
 
                  if (vozAnt == voz) { var qtdPar5 = par5 + 1; }
-
-                  if (par5 == 0) { par5 = 2; } else { par5++; };
-                  par5Status = true;
-                  vozAnt = voz, vozAtual = i;
-                  acorAnt = x;
-                  par8 = 0, par8Status = false;
+                 if (par5 == 0) { par5 = 2; } else { par5++; };
+                 par5Status = true;
+                 vozAnt = voz, vozAtual = i;
+                 acorAnt = x;
+                 par8 = 0, par8Status = false;
 
               } else if (par5Status) { verificou58(); };
 
-               if (Math.abs(intAtual%12) == 0 && intAtual == intAnt && paralela8.checked) {  // testa 8ª paralela
+               if (Math.abs(intAtual%12) == 0 && intT1 == 0 && intT2 == 0 && intAtual == intAnt && paralela8.checked) {  // testa 8ª paralela
 
                  if (vozAnt == voz) { var qtdPar8 = par8 + 1;}
 
@@ -4034,22 +4176,23 @@ function quartas() {
 
   // console.log("par4Rep : "+ qtdpar4Rep)
 
-     for (var voz=0; voz < 10; voz++) { // percorre vozes
+     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
        var vozAnt = voz;
-       for (var i=voz+1; i < 10; i++) { // percorre outras vozes
+       for (var i=voz+1; i < vozes[1].nota.length; i++) { // percorre outras vozes
          var vozAtual = i;
          var par4 = 0;
 	       for (var x=1;x<vozes.length;x++) { // percorre acordes
 
-	         if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { verificou4(); continue; };
+	        // if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { verificou4(); continue; };
 
-	         var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
+	          var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
             var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-
             var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
             var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
+            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
+            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
 
-            if (Math.abs(intAtual%12) == 5 && intAtual == intAnt && dir1 == dir2 && dir1 != 0) { //testa por 4ª paralela
+            if (Math.abs(intAtual%12) == 5 && intAtual == intAnt && intT1 == 1 && intT2 == 1 && dir1 == dir2 && dir1 != 0) { //testa por 4ª paralela
 
                  if (vozAnt == voz) { var qtdPar4 = par4 + 1;}
 
@@ -4081,10 +4224,10 @@ function terçasSextas() {
    var acorAnt = 1;
    var qtdpar36Rep = parseInt(par36Rep.text);
 
-     for (var voz=0; voz < 10; voz++) { // percorre vozes
+     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
        var vozAnt = voz;
 
-       for (var i=voz+1; i < 10; i++) { // percorre outras vozes
+       for (var i=voz+1; i < vozes[1].nota.length; i++) { // percorre outras vozes
    		 var vozAtual = i;
    		 var par3 = 0, par6 = 0;
 
@@ -4098,16 +4241,18 @@ function terçasSextas() {
 
 	         };
 
-	         var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
+	          var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
             var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-
             var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
             var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
+            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
+            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
 
             if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
               if ((Math.abs(intAtual%12) == 3 || Math.abs(intAtual%12) == 4) &&   //testa por 3ª paralela --
-                  (Math.abs(intAnt%12) == 3 || Math.abs(intAnt%12) == 4)) {
+                  (Math.abs(intAnt%12) == 3 || Math.abs(intAnt%12) == 4) &&
+                  ((intT1 == 3 || intT1 == 4) && (intT2 == 3 || intT2 == 4))) {
 
                  if (vozAnt == voz) { var qtdPar3 = par3 + 1; }
 
@@ -4165,13 +4310,13 @@ function ocultas() {
       for (i=voz+1; i < vozes[x].nota.length; i++) { // percorre outras vozes
 
          var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-
          var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
          var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
+         var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
 
          if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
-           if (Math.abs(intAtual%12) == 7 && intAtual != intAnt && oculta5.checked) {             // testa ocultas
+           if (Math.abs(intAtual%12) == 7 && intAtual != intAnt && intT1 == 1 && oculta5.checked) {             // testa ocultas
              // testa condições
              if (!ocultEx.checked || (ocultEx.checked && x != vozes.length-1)) {
                if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozes[x-1].nota[0] - vozes[x].nota[0]) > 2)) {
@@ -4181,7 +4326,7 @@ function ocultas() {
              };
            };
 
-           if (Math.abs(intAtual%12) == 0 && intAtual != intAnt && oculta8.checked) { // testa ocultas
+           if (Math.abs(intAtual%12) == 0 && intAtual != intAnt && intT1 == 0 && oculta8.checked) { // testa ocultas
              // testa consições
              if (!ocultEx.checked || (ocultEx.checked && x != vozes.length-1)) {
                if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozes[x-1].nota[0] - vozes[x].nota[0]) > 2)) {
@@ -4208,14 +4353,16 @@ function consecutivas() {
          for (i=voz+1; i < vozes[x].nota.length; i++) { // percorre outras vozes
 
             var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-
             var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
             var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
+            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
+            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
 
             // consecutivas
 
              if ((Math.abs(intAtual%12) == 7 || Math.abs(intAtual%12) == 0) &&
-                 (Math.abs(intAnt%12) == 7 || Math.abs(intAnt%12) == 0))  {
+                 (Math.abs(intAnt%12) == 7 || Math.abs(intAnt%12) == 0) &&
+                 (intT1 == 1 || intT1 == 0) && (intT2 == 1 || intT2 == 0))  {
 
                if ((consecObli.checked && (dir1 == 0 || dir2 == 0)) || (consecCont.checked && (dir1 != 0 && dir2 != 0 && dir1 != dir2))) {
                    verificados++;
@@ -4229,38 +4376,46 @@ function consecutivas() {
 
 function intermitentes() {
   var voz = 1 - vozCF;
+  var separa = parseInt(interExSn.text);
    for (var x=0;x<vozes.length-2;x++) { // percorre acordes
+    var tF = verificaTempoForte(vozes[x].tempo[0], vozes[x].formula[0]); // verifica posição métrica
     for (var y=x+2;y<vozes.length;y++) { // percorre acordes
-      var tF = verificaTempoForte(vozes[x].tempo[0], vozes[x].formula[0]); // verifica posição métrica
+      var ac = y - x + 1; // calcula qtd de acordes entre x e y
+      var tF2 = verificaTempoForte(vozes[y].tempo[0], vozes[y].formula[0]); // verifica posição métrica
       var alc = Math.abs(vozes[y].nota[voz] - vozes[y-1].nota[voz]); // calcula intervalo melódico que alcança a intermitente
-      if (interExTf.checked && tF != "F" && // verifica exceção de tempo fraco
+      if (interExTf.checked && ((interExTf3.checked && tF != "F" && tF2 != "F") || // verifica exceção de tempo fraco e meio fraco
+           (!interExTf3.checked && tF != "F" && tF != "mF" && tF2 != "F" && tF2 != "mF")) && // verifica exceção de tempo fraco
            (!interExTf2.checked || (alc < 3 && alc != 0)) && // alcançada por grau conjunto
            (!interExTf1.checked || vozes[x+1].ligadura[voz])) { continue; }; // verifica sincopada
       if (interExTF.checked && tF == "F" && vozes[x].ligadura[voz] && vozes[y].ligadura[voz]) { continue; }; // verifica exceção de tempo forte
       if (interExFim.checked && y == vozes.length-1) { continue; }; // verifica a exceção de cadência final
+      if (interExS.checked && ac-2 > separa) { continue; }; // verifica qtd de notas que separam
       var notasIguais = true; // verifica a exceção de CF parado
       for (var j=x+1;j<=y;j++){ if (vozes[x].nota[vozCF] != vozes[j].nota[vozCF]) { notasIguais = false; }; };
       if (interExCF.checked && notasIguais) { continue; }
       var int1 = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]); // calcula intervalo x
       var int2 = Math.abs(vozes[y].nota[0] - vozes[y].nota[1]); // calcula intervalo y
-      var ac = y - x + 1; // calcula qtd de acordes entre x e y
-      if (vozes[x].compasso+1 == vozes[y].compasso && vozes[x].tempo[0] == vozes[y].tempo[0]) { //mesma posição métrica
-          if (int1%12 == 7 && int1 == int2 && inter5.checked) {
+      var intT1 = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
+      var intT2 = Math.abs(vozes[y].tonal[0] - vozes[y].tonal[1]);
+
+      if (interPM.checked && vozes[x].compasso+1 == vozes[y].compasso && vozes[x].tempo[0] == vozes[y].tempo[0]) { //mesma posição métrica
+          if (int1%12 == 7 && int1 == int2 && intT1 == 1 && intT2 == 1 && inter5.checked) {
 	         verificados++;
-		       criaResultado(verificados, y, 0, 1, "5ª intermitente", ac, "in"); } else
-	        if (int1%12 == 0 && int1 == int2 && inter8.checked) {
-	         verificados++;
-		       criaResultado(verificados, y, 0, 1, "8ª intermitente", ac, "in");
-          };
-        } else if (y-x == 2) { // separadas por uma nota
-          if (int1%12 == 7 && int1 == int2 && inter5.checked) {
-	         verificados++;
-		       criaResultado(verificados, y, 0, 1, "5ª intermitente", ac, "in"); } else
-	        if (int1%12 == 0 && int1 == int2 && inter8.checked) {
+		       criaResultado(verificados, y, 0, 1, "5ª intermitente", ac, "in"); };
+	        if (int1%12 == 0 && int1 == int2 && intT1 == 0 && intT2 == 0 && inter8.checked) {
 	         verificados++;
 		       criaResultado(verificados, y, 0, 1, "8ª intermitente", ac, "in");
           };
         };
+      if (interSI.checked && y-x == 2) { // separadas por uma nota
+        if (int1%12 == 7 && int1 == int2 && intT1 == 1 && intT2 == 1 && inter5.checked) {
+	        verificados++;
+		      criaResultado(verificados, y, 0, 1, "5ª intermitente", ac, "in"); };
+	      if (int1%12 == 0 && int1 == int2 && intT1 == 0 && intT2 == 0 && inter8.checked) {
+	        verificados++;
+		      criaResultado(verificados, y, 0, 1, "8ª intermitente", ac, "in");
+        };
+      };
      };
     };
 }
@@ -4278,8 +4433,9 @@ function unissono() {
    if (!unissTF.checked || pMetric != "f") {
     for (var voz=1;voz<vozes[x].nota.length;voz++) {
       var int1 = vozes[x].nota[voz-1] - vozes[x].nota[voz];
-      if (int1 == 0) { uni++; };
-      if (int1 == 0 && uni > unissono) {
+      var intT1 = vozes[x].tonal[voz-1] - vozes[x].tonal[voz];
+      if (int1 == 0 && intT1 == 0) { uni++; };
+      if (int1 == 0 && intT1 == 0 && uni > unissono) {
         verificados++;
     	  criaResultado(verificados, x, voz-1, voz, "uníssono", 1, 2); };
     };
@@ -4320,6 +4476,102 @@ function falsaRelação() {
 
       };
     };
+  };
+}
+
+// ------------- outros aspectos -------------
+function primUltIntervalo() {
+
+ if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de intervalo inicial e final!\n";
+                       msgErros.estado=true; return; };
+ texto2tonica(vozes[0].tom);
+ var tonica1 = tonicaPC(btTonica.text, btAcid.text);
+ texto2tonica(vozes[vozes.length-1].tom);
+ var tonica2 = tonicaPC(btTonica.text, btAcid.text);
+ var notaInferior1 = vozes[0].nota[1];
+ var notaInferior2 =  vozes[vozes.length-1].nota[1];
+ var intI = (Math.abs(vozes[0].nota[0] - notaInferior1)) % 12;
+ var intF = (Math.abs(vozes[vozes.length-1].nota[0] - notaInferior2)) % 12;
+ var inicio = false, finale = false;
+//console.log("teste Intervalo inicial:",intI);
+ if (intI != 0) { // se inicio não for U ou 8ª
+//   console.log(ex5Ji.checked, ex3i.checked, tonica1, notaInferior1%12);
+   if (ex5Ji.checked && (intI == 7 && tonica1 == notaInferior1%12)) { inicio = true; } else // se for 5ª com tonica na voz inferior
+   if (ex3i.checked && ((intI == 3 || intI == 4) && tonica1 == notaInferior1%12)) { inicio = true; }; // se for 3ª com tonica na voz inferior
+   if (!inicio) {
+   	verificados++;
+	  criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); };
+ };
+
+ if (intF != 0) { // se final não for U ou 8ª
+   if (ex5Jf.checked && (intF == 7 && tonica2 == notaInferior2%12)) { finale = true; } else // se for 5ª com tonica na voz inferior
+   if (ex3f.checked && ((intF == 3 || intF == 4) && tonica2 == notaInferior2%12)) { finale = true; }; // se for 3ª com tonica na voz inferior
+   if (!finale) {
+    verificados++;
+    criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2); };
+ };
+}
+
+function alcançarMovContra() {
+
+ if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
+                       msgErros.estado=true; return; };
+
+ var intS = vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]
+ var intI = vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1];
+
+ var dir1 = direção(vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]);
+ var dir2 = direção(vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1]);
+
+ if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) {
+
+   if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
+	      verificados++;
+	      criaResultado(verificados, vozes.length-2, 0, 1, "alcança intervalo final", 1, 2);
+       };
+}
+
+function sensivelCadencia(){
+
+   if (btModo.text == "Frígio") { return; };
+   if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de sensível na cadência final!\n";
+                         msgErros.estado=true; return; };
+   var tom = tonicaTPC(btTonica.text, btAcid.text);
+   var achou = false;
+   var c = (vozes[vozes.length-1].compasso) - 1; // penúltimo compasso
+   for (var voz=0;voz<vozes[1].nota.length;voz++) { // percorre vozes
+     var x = vozes.length-2;
+//  console.log(voz, vozes[x].compasso, c);
+     while (vozes[x].compasso >= c && x >= 0) { // procura sensível no penúltimo compasso
+       var intM = Math.abs(vozes[vozes.length-1].nota[voz] - vozes[x].nota[voz]); // intervalo melódico na nota final para a nota X
+//console.log(voz, sensCadR.checked, vozes[vozes.length-1].tonal[voz], tom, intM, vozes[x].tonal[voz]);
+       if ((!sensCadR.checked || (vozes[vozes.length-1].tonal[voz] == tom && intM == 1)) && // resolve sensível?
+            vozes[x].tonal[voz] == tom+5) { achou = true; break; }; // achou a sensível?
+       x--;
+     };
+     if (achou) { break; };
+   };
+   if (!achou) {
+  	 verificados++;
+     var n = (vozes.length - x) - 1;
+  	 criaResultado(verificados, vozes.length-1, 0, 1, "cadência final sem a sensível", n, 2);
+   };
+}
+
+function consonancias() {
+
+  var cP = 0, cI = 0;
+  for (var x=0;x<vozes.length;x++) { // percorre acordes
+   var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
+   var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
+   var int1 = verificaConsonancia(vIN, vIT);
+   if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; }
+  };
+//  console.log("consonancias:", cP, cI);
+  if (cP > cI) {
+  	 verificados++;
+     var resultado = "cons. imperfeita não é maioria (p=" + cP + ", i=" + cI + ")";
+	 criaResultado(verificados, vozes.length-1, 0, 1, resultado, vozes.length, "null");
   };
 }
 
@@ -4377,7 +4629,7 @@ function coerenciaHarmonica() {
       //console.log("===========----------------===========", x, acorde, nota);
       var pertence = sePertence(acorde, nota);
       //console.log("nota não pertence ao acorde?", pertence, cHarmoniaEx.checked, notaAcento);
-      if (!pertence && (!cHarmoniaEx.checked || notaAcento == "F")) {
+      if (!pertence && ((!cHarmoniaEx.checked && notaAcento == "f") || notaAcento == "F" || notaAcento == "mF")) {
         //console.log("compasso:", vozes[x].compasso, x);
         novoX = cambiata(x, "ch"); if (novoX != x) { continue; };
         novoX = bordadura4(x, "ch"); if (novoX != x) { continue; };
@@ -4436,6 +4688,7 @@ function coerHarmFund() {
     };
  };
 }
+
 // ------------------------Dissonâncias ------------
 function dissonanciasL() {
   //relator += "================ função dissonanciasL ================\n";
@@ -4447,7 +4700,7 @@ function dissonanciasL() {
     //console.log("cambiataL",x);
     if (cambiataL.checked) { novoX = cambiata(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
     //console.log("bordadura4",x);
-    if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
+    if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX; continue; }; };
     var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
     var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
     var intHarm = verificaConsonancia(vIN, vIT);
@@ -4455,8 +4708,8 @@ function dissonanciasL() {
        //procura padrão melódico de tratamento, do maior para o menor, até 3 notas. Primeiro na voz superior, depois na inferior.
        if (passagemL.checked) { //console.log("passagemL");
          if (passaLEx2.checked) { //console.log("passaLEx");
-           novoX = notaPassagem5(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
-           novoX = notaPassagem4(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
+           novoX = notaPassagem5(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
+           novoX = notaPassagem4(x, "td"); if (novoX != x) { x = novoX; acusaDissonancia = false; continue; };
          };
          novoX = notaPassagem(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
          //console.log("passagem");
@@ -4491,13 +4744,13 @@ function suspensão3(x, tipo) { // console.log(x,"=============== função suspe
    if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
             else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
    for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
-    var p = x, r = x;
+    var p = x-1, r = x;
     while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
       var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
       var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
       var notaPrepara = verificaConsonancia(vIN, vIT);
+      var pos1 = vozes[x].posição[voz];
       if (notaPrepara != "D") { break; };
-      var pos1 = vozes[p].posição[voz];
       p--; if (p < 0) { p++; break; }; };
     while (vozes[x].nota[voz] == vozes[r].nota[voz]) { r++; if (r >= vozes.length-1) { break; }; }; // procura nota posterior
     if (!vozes[r]) { return x; };
@@ -4516,11 +4769,11 @@ function suspensão3(x, tipo) { // console.log(x,"=============== função suspe
     var dur1 = pos1 - vozes[p].posição[voz];
     var dur2 = vozes[r].posição[voz] - pos1;
     if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-  //console.log(p, x, r, "duração:", dur1, dur2, dur3);
+//  console.log(p, x, r, "duração:", dur1, dur2, dur3);
     if (mov1 == 0 && mov2 != 0 && intM < 3 && // desenho melódico, intervalos
-        (dur2 <= dur1*2 && dur2 <= dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
+        //(dur2 <= dur1*2 && dur2 <= dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
         (notaResolve != "D" || tipo == "ch") && (notaPrepara != "D" || tipo == "ch") // e consonâncias em t.f.
-        && p < x && r > x && (notaAcento == "F" || (notaAcento == "f" && notaAcentoR == "c")) && // dissonância métrica forte
+        && p < x && r > x && (notaAcento == "F" || ((notaAcento == "f" || notaAcento == "mF")&& notaAcentoR == "c")) && // dissonância métrica forte
         (!suspeLEx3.checked || notaResolve == "CI" || tipo == "ch") && // resolução somente em consonância perfeita
         (suspeLEx2.checked || mov2 == -1 || tipo == "ch")) { // permitir também resolução ascendente
 
@@ -4537,13 +4790,13 @@ function suspensão4(x, tipo) { //console.log(x,"=============== função suspen
    if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
             else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
    for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
-    var p = x, i = x;
+    var p = x-1, i = x;
     while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
       var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
       var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
       var notaPrepara = verificaConsonancia(vIN, vIT);
+      var pos1 = vozes[x].posição[voz];
       if (notaPrepara != "D") { break; };
-      var pos1 = vozes[p].posição[voz];
       p--; if (p < 0) { p++; break; }; };
     while (vozes[x].nota[voz] == vozes[i].nota[voz]) { // procura nota interrompe
       i++; if (i >= vozes.length) { i = vozes.length-1; break; }; };
@@ -4578,7 +4831,7 @@ function suspensão4(x, tipo) { //console.log(x,"=============== função suspen
     if (mov1 == 0 && mov2 != 0 && intM < 3 &&
        (dur2 <= dur1*2 && dur2 <= dur4*2 && dur3 <= dur4) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch") // desenho melódico, intervalos e consonâncias em t.f.
-        && p < x && r > i && i > x && (notaAcento == "F" || (notaAcento == "f" && notaAcentoR == "c")) && // dissonância métrica forte
+        && p < x && r > i && i > x && (notaAcento == "F" || ((notaAcento == "f" || notaAcento == "mF") && notaAcentoR == "c")) && // dissonância métrica forte
         mov3 != mov4 && mov3 != 0 && mov4 != 0 && intM2 < 8 && intM3 < 8 && (!suspeLEx1a.checked || notaInterrompe != "D") && suspeLEx1.checked && // resolução interrompida
         (!suspeLEx3.checked || notaResolve == "CI" || tipo == "ch") && // resolução somente em consonância perfeita
         (suspeLEx2.checked || mov2 == -1 || tipo == "ch")) { // permitir também resolução ascendente
@@ -4595,13 +4848,13 @@ function suspensão5(x, tipo) { //console.log(x,"=============== função suspen
    if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
             else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
    for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
-    var p = x, i = x;
+    var p = x-1, i = x;
     while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
       var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
       var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
       var notaPrepara = verificaConsonancia(vIN, vIT);
+      var pos1 = vozes[x].posição[voz];
       if (notaPrepara != "D") { break; };
-      var pos1 = vozes[p].posição[voz];
       p--; if (p < 0) { p++; break; }; };
     while (vozes[x].nota[voz] == vozes[i].nota[voz]) { // procura 1ª nota interrompe
       i++; if (i >= vozes.length) { i = vozes.length-1; break; }; };
@@ -4644,7 +4897,7 @@ function suspensão5(x, tipo) { //console.log(x,"=============== função suspen
     if (mov1 == 0 && mov2 != 0 && intM < 3 &&
        (dur2 <= dur1*2 && dur2 <= dur5*2 && dur3 <= dur5 && dur4 <= dur5) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch") // desenho melódico, intervalos e consonâncias em t.f.
-        && p < x && r > i2 && i2 > i && i > x && (notaAcento == "F" || (notaAcento == "f" && notaAcentoR == "c")) && // dissonância métrica forte
+        && p < x && r > i2 && i2 > i && i > x && (notaAcento == "F" || ((notaAcento == "f" || notaAcento == "mF") && notaAcentoR == "c")) && // dissonância métrica forte
         mov3 != mov4 && mov3 != 0 && mov4 != 0 && intM2 < 8 && intM3 < 8 && intM4 < 3 && intM5 < 3 &&
         (!suspeLEx1a.checked || notaInterrompe != "D" || tipo == "ch") && suspeLEx1.checked && // resolução interrompida
         (!suspeLEx3.checked || notaResolve == "CI" || tipo == "ch") && // resolução somente em consonância perfeita
@@ -4713,11 +4966,13 @@ function cambiata(x, tipo) { //console.log(x,"=============== função cambiata 
 //console.log(x,np1,np2,np3,r,", mov:", mov0, mov1, mov2, mov3, mov4, ", ints:", intM0, intM1, intM2, intM3, intM4,", acentos:", notaAcento, notaAcento1, notaAcento2, notaAcento3, notaAcentoR, ", cons:", notaInicial, diss1, diss2, diss3, notaResolve);
     if (mov0 == mov1 && mov1 != 0 && mov2 == mov1*-1 && mov3 == mov2 && // contorno melódico
         intM0 < 3 && (intM1 == 3 || intM1 == 4) && intM2 < 3 && intM3 < 3 && // intervalos melódicos
-        (notaAcento == "F" && notaAcentoR == "F" || !cambiLEx1.checked) && // posição métrica 1ª e última nota
-        (((!diss1 || notaAcento1 != "F") && (!diss2 || notaAcento2 != "F" ) && // dissonancia em tempo fraco
-         (!diss3 || notaAcento3 != "F")) || !cambiLEx3.checked) &&
+        ((notaAcento == "F" || (cambiLEx1MF.checked && notaAcento == "mF")) &&
+         (notaAcentoR == "F" || (cambiLEx1MF.checked && notaAcentoR == "mF")) || !cambiLEx1.checked) && // posição métrica 1ª e última nota
+        (((!diss1 || (notaAcento1 != "F" && (cambiLEx3MF.checked || notaAcento1 != "mF"))) &&
+          (!diss2 || (notaAcento2 != "F" && (cambiLEx3MF.checked || notaAcento2 != "mF")) ) && // dissonancia em tempo fraco
+          (!diss3 || (notaAcento3 != "F" && (cambiLEx3MF.checked || notaAcento3 != "mF")))) || !cambiLEx3.checked) &&
         (diss1 || !cambiLEx4.checked || tipo == "ch") && // 2ª nota deve ser dissonante
-        ((vozes[np1].duração[voz] < vozes[x].duração[voz] && vozes[np1].duração[voz] < vozes[r].duração[voz]) || !cambiLEx5.checked) && // duração 2ª nota < 1ª e última
+        ((vozes[np1].duração[voz] <= vozes[x].duração[voz] && vozes[np1].duração[voz] <= vozes[r].duração[voz]) || !cambiLEx5.checked) && // duração 2ª nota < 1ª e última
         (dirCF == mov4 || !cambiLEx2.checked) && // cambiata na mesma direção do CF
         dCounter < 3 && // quantidade de dissonâncias
         notaInicial != "D" && notaResolve != "D" && // consonâncias
@@ -4760,7 +5015,7 @@ function bordadura(x, tipo) { //console.log(x,"=============== função bordadur
     if (mov1 != 0 && mov1 == mov2*-1 && intM1 < 3 && intM2 < 3 &&
        (dur2 < dur1*2 && dur2 < dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch")
-        && p < x && r > x && (notaAcento != "F" || !bordaLEx.checked) &&
+        && p < x && r > x && ((notaAcento != "F" && (bordaLExMF.checked || notaAcento != "mF")) || !bordaLEx.checked) &&
         ((mov1 > 0 && bordaduraLS.checked) || (mov1 < 0 && bordaduraLI.checked) || tipo == "ch")) {
       var testaVozMove = true;
       for (var d = x+1; d < r; d++) {
@@ -4818,8 +5073,9 @@ function bordadura4(x, tipo) { //console.log(x,"=============== função bordadu
         intM1 < 3 && intM3 < 3 && (intM2 == 3 || intM2 == 4) &&
         (notaBorda1 == "D" || notaBorda2 == "D" || tipo == "ch") &&
         notaPrepara != "D" && notaResolve != "D" && p < x && r > x+1 &&
-        ((notaAcento0 == "F" && notaAcento3 == "F") || !bordaLEx2.checked || tipo == "ch") &&
-        ((notaAcento1 != "F" && notaAcento2 != "F") || !bordaLEx1.checked || tipo == "ch")) {
+        //(((notaAcento0 != "F" || notaAcento0 != "mF") && (notaAcento3 != "F" || notaAcento3 != "mF")) || !bordaLEx2.checked || tipo == "ch") && // notas principais em tempo forte
+        (((notaAcento1 != "F" && (bordaLExMF.checked || notaAcento1 != "mF")) &&
+          (notaAcento2 != "F" && (bordaLExMF.checked || notaAcento2 != "mF"))) || !bordaLEx1.checked || tipo == "ch")) { // em tempo fraco
       var testaVozMove = true;
       if (testaVozMove) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Bordadura dupla -"; avalia += 0.5; } else
@@ -4853,15 +5109,21 @@ function notaPassagem(x, tipo) { //console.log(x,"=============== função NP ==
     var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
     var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
     var intM2 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
+    var intMT1 = Math.abs(parseInt(verificaGrauMelodico(vozes[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozes[p].tonal[voz], p)));
+    var intMT2 = Math.abs(parseInt(verificaGrauMelodico(vozes[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozes[r].tonal[voz], r)));
+    if (intMT1 == 6) { intMT1 = 1; };
+    if (intMT2 == 6) { intMT2 = 1; };
+  //  console.log(p, x, r, intMT1, intMT2);
     var dur1 = pos1 - vozes[p].posição[voz];
     var dur2 = vozes[r].posição[voz] - pos1;
     if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//console.log(p,x,r,"NP:", notaPrepara, notaResolve, notaAcento, mov1, mov2, intM1, intM2, dur1, dur2, dur3);
-    if (mov1 == mov2 && mov1 != 0 && intM1 < 3 && intM2 < 3 &&
+ //console.log(p,x,r,"NP:", notaPrepara, notaResolve, notaAcento, mov1, mov2, intM1, intM2, intMT1, intMT2, dur1, dur2, dur3, passaLExMF.checked);
+    if (mov1 == mov2 && mov1 != 0 && intM1 < 4 && intM2 < 4 && intMT1 == 1 && intMT2 == 1 &&// contorno melódico e graus conjuntos
        (dur2 < dur1*2 && dur2 <= dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
-        (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch")
-        && p < x && r > x && (notaAcento != "F" || !passaLEx.checked || tipo == "ch")) {
-        if (tipo == "td") { var nome = "- Tratamento de dissonância: Nota de passagem -"; avalia += 0.3; } else
+        (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch") // prepara e resolve em consonâncias
+        && p < x && r > x && ((notaAcento != "F" && (passaLExMF.checked || notaAcento != "mF")) || !passaLEx.checked || tipo == "ch")) {
+        if (tipo == "td") { var nome = "- Tratamento de dissonância: Nota de passagem -";
+                            if (terEsp || quiEsp || livreCP) { avalia += 0.2; } else { avalia += 0.3;}; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Nota de passagem -"; };
           if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
@@ -4914,7 +5176,7 @@ function notaPassagem4(x, tipo) { //console.log(x,"=============== função NP4 
         intM1 < 3 && intM3 < 3 && intM2 < 3 &&
         ((notaPassa1 == "D" && notaPassa2 == "D") || tipo == "ch") &&
         notaPrepara != "D" && notaResolve != "D" && p < x && r > np1 &&
-        ((notaAcento1 != "F" && notaAcento2 != "F") || !passaLEx.checked || tipo == "ch")) {
+        (((notaAcento1 != "F" && (passaLExMF.checked || notaAcento1 != "mF")) && (notaAcento2 != "F" && (passaLExMF.checked || notaAcento2 != "mF"))) || !passaLEx.checked || tipo == "ch")) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: NP grupo 2 -"; avalia += 0.4; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: NP grupo 2 -"; };
         if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";; };
@@ -4982,9 +5244,10 @@ function notaPassagem5(x, tipo) { //console.log(x,"=============== função NP5 
         intM1 < 3 && intM3 < 3 && intM2 < 3 && intM3 < 3 &&
         ((notaPassa1 == "D" && notaPassa2 == "D" && notaPassa3 == "D") || tipo == "ch") &&
         notaPrepara != "D" && notaResolve != "D" && p < x && r > np1 &&
-        ((notaAcento1 != "F" && notaAcento2 != "F" && notaAcento3 != "F") || !passaLEx.checked || tipo == "ch")) {
+        (((notaAcento1 != "F" && (passaLExMF.checked || notaAcento1 != "mF")) &&
+          (notaAcento2 != "F" && (passaLExMF.checked || notaAcento2 != "mF")) &&
+          (notaAcento3 != "F" && (passaLExMF.checked || notaAcento3 != "mF"))) || !passaLEx.checked || tipo == "ch")) {
       var testaVozMove = true;
-
       if (testaVozMove) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: NP grupo 3 -"; avalia += 0.4; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: NP grupo 3 -"; };
@@ -5020,7 +5283,7 @@ function apojatura(x, tipo) { //console.log(x,"=============== função apojatur
         (dur2 <= dur1*2 && dur2 <= dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
         (mov1 != 0 && (!apojaEx2.checked || mov1 == 1 || tipo == "ch")) &&  // introduzida por movimento ascendente
         (mov2 != 0 && (!apojaEx3.checked || mov2 == -1 || tipo == "ch")) && // resolução descendente
-        (!apojaEx1.checked || (notaAcento == "F" || (notaAcento == "f" && notaAcentoR == "c")) || tipo == "ch")) {
+        (!apojaEx1.checked || (notaAcento == "F" || (apojaEx1MF.checked && notaAcento == "mF") || (notaAcento == "f" && notaAcentoR == "c")) || tipo == "ch")) {
       var testaVozMove = true;
       for (var d = x+1; d < r; d++) {
         var vozmove1 = verificaConsonancia(Math.abs(vozes[d].nota[0] - vozes[d].nota[1]),
@@ -5062,7 +5325,7 @@ function antecipação(x, tipo) { //console.log(x,"=============== função ante
     if (!vozes[r+1]) { var dur2 = dur1; } else { var dur2 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
     if (mov1 == 0 && (notaResolve != "D" || tipo == "ch") && r > x &&
         (dur1 <= dur2*2) && // proporção entre as durações de dissonâncias e consonâncias
-        (notaAcentoR == "F" || (notaAcentoR == "f" && notaAcento == "c") || tipo == "ch") &&
+        (notaAcentoR == "F" || ((notaAcentoR == "f" || notaAcentoR == "mF") && notaAcento == "c") || tipo == "ch") &&
         ((antecipaEx2.checked && antecipaEx3.checked && ((int1 > -3 && int1 < 0) || (int1 < 3 && int1 > 0))) ||
             (antecipaEx2.checked && !antecipaEx3.checked && (int1 > -3 && int1 < 0)) ||
             (!antecipaEx2.checked && antecipaEx3.checked && (int1 < 3 && int1 > 0)) ||
@@ -5115,7 +5378,7 @@ function escapada(x, tipo){ //console.log(x,"=============== função escapada =
         (dur2 <= dur1 && dur2 <= dur3) && // proporção entre as durações de dissonâncias e consonâncias
         (notaResolve != "D" || tipo == "ch") &&  (notaPrepara != "D" || tipo == "ch") &&
          mov1 != 0 &&  (mov2 != 0 && mov2 != mov1) && notaAcentoR != "c" && notaAcentoP != "c" &&
-         (!escapaEx1.checked || (notaAcento == "f" || notaAcento == "c"))) {
+         (!escapaEx1.checked || (escapaEx1MF.checked && notaAcento == "mF") || (notaAcento == "f" || notaAcento == "c"))) {
        var testaVozMove = true;
        for (var d = x+1; d < r; d++) {
          var vozmove1 = verificaConsonancia(Math.abs(vozes[d].nota[0] - vozes[d].nota[1]),
@@ -5139,8 +5402,9 @@ function escapada(x, tipo){ //console.log(x,"=============== função escapada =
 function notaPedal(x, tipo) { //console.log(x,"=============== função nota pedal =============");
   if (x == 0) { return x; };
   var qtVozes, vozIni;
-  if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-           else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
+  //if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
+           //else {
+             vozIni = 0; qtVozes = vozes[x].nota.length-1; //};
   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
     var p = x, r = x;
     while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
@@ -5164,11 +5428,14 @@ function notaPedal(x, tipo) { //console.log(x,"=============== função nota ped
     var metrResolve = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
     var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
     var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-  //console.log("voz",voz, "|", p, x, r,") notas:", vozes[p].nota[voz], vozes[x].nota[voz], vozes[r].nota[voz], "| mov:", mov1, mov2, "| metro:", metrPrepara, metrResolve, "| cons:", notaPrepara, notaResolve);
+//  console.log("voz",voz, "|", p, x, r,") notas:", vozes[p].nota[voz], vozes[x].nota[voz], vozes[r].nota[voz],
+      //        "| mov:", mov1, mov2, "| metro:", metrPrepara, metrResolve, pedalEx1MF.checked,
+      //        "| cons:", notaPrepara, notaResolve);
     if (mov1 == 0 && mov2 == 0 &&  // desenho melódico
         (notaResolve != "D" || tipo == "ch") && (notaPrepara != "D" || tipo == "ch") // consonâncias
         && p < x && r > x &&
-        ((metrPrepara == "F" && metrResolve == "F") || !pedalEx1.checked)) { // dissonância métrica forte
+        (((metrPrepara == "F" || (pedalEx1MF.checked && metrPrepara == "mF")) &&
+          (metrResolve == "F" || (pedalEx1MF.checked && metrResolve == "mF"))) || !pedalEx1.checked)) { // dissonância métrica forte
         if (tipo == "td") { var nome = "- Tratamento de dissonância: nota pedal -"; avalia += 0.2; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: nota pedal -"; }
           if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
@@ -5232,21 +5499,23 @@ if (tipo == "não conduz para finalis por grau conj." || // melodia
     tipo == "repetição de padrão mel." ||
     tipo == "arpejo de acorde" ||
     tipo == "repete ponto focal superior" ||
-    tipo == "repete ponto focal inferior" ||
+  //  tipo == "repete ponto focal inferior" ||
     tipo == "alteração 6º e/ou 7º" ||
     tipo == "neutralização 6º e/ou 7º" ||
     tipo.substring(0, 12) == "Nota inicial" ||
     tipo.substring(0, 10) == "Nota final" ||
     tipo == "2 saltos na mesma direção" ||
     tipo == "2 saltos em mov. contrário" ||
+    tipo.slice(0, 14) == "salto de tempo" ||
     tipo == "intervalo inicial" || // Gerais ----------
     tipo == "intervalo final" ||
     tipo == "alcança intervalo final" ||
+    tipo.slice(0, 8) == "cadência" ||
     tipo.substring(0, 12) == "cons. imperf" ||
     tipo.slice(0, 9) == "distância" ||
     tipo == "5ª ou 8ª consecutivas" ||
     tipo == "uníssono" ||
-    tipo == "cruzamento" ||
+  //  tipo == "cruzamento" ||
     tipo == "falsa relação") { avalia -= 1; } else
 if (tipo.slice(-6) == "oculta" ||
     tipo.slice(-12) == "intermitente") { avalia -= 2; } else
