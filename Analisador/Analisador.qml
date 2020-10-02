@@ -2393,7 +2393,7 @@ console.log("Salvou presets:", config.length);
 }
 
 function gerarRelatorio() {
-  var ajuste;
+  var ajuste = 0;
   if (secEsp) { ajuste =  0.6; } else
   if (terEsp) { ajuste =  1.1; } else
   if (quaEsp) { ajuste =  1.2; } else
@@ -2409,7 +2409,7 @@ function gerarRelatorio() {
   relator += "===========================\n";
   relator += "===    sugestão de nota: " + avalFinal + "    ===\n";
   relator += "===========================\n";
-  msgRelatorio.height = Math.round(relator.length/30)*15;
+  msgRelatorio.height = Math.round(relator.length/30)*15+25;
   lRelatorio.text = relator;
   msgRelatorio.visible = true;
 }
@@ -2996,7 +2996,7 @@ function verificar() {
  msgResult.height = 40;
  relator = "";
  avalia = 0;
-
+console.log("- verificar ---------");
  if (!priEsp && !secEsp && !terEsp && !quaEsp && !quiEsp && !melodia && !livreCP) {
           msgErros.text += "Erro! \n Nenhuma tipo de contraponto selecionado!\n Utilize a barra laterial para selecionar.";
                        msgErros.visible=true; return; };
@@ -3044,12 +3044,12 @@ function verificar() {
  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
  if (!melodia && sensCad.checked) { sensivelCadencia(); };
  if (!melodia && consImp.checked) { consonancias(); };
- if (cHarmonia.checked) { coerenciaHarmonica(); };
+ if (cHarmonia.checked) { coerenciaHarmonica(); console.log("coerência checada");};
  if (cHarmoniaF.checked) { coerHarmFund(); };
  // --------------- dissonâncias --------------
  if (!melodia && dissonanciasG.checked) { dissonanciasL(); };
  // ----------------------------------------------
-
+  Qt.quit();
   resultado = removeRepetição(resultado);
   for (var i=0;i<verificados;i++) {
   	mensagem[i] = component.createObject(msgResult);
@@ -3075,9 +3075,9 @@ function carregarNotas() {
      msgErros.text = "Erro! \n Nenhuma partitura encontrada!";
                        msgErros.visible=true; finaliza = true; return; };
 
-  curScore.startCmd(); // atualizar a leitura dos texto de harmonia ------------
-  cmd("transpose-up"); cmd("transpose-down"); cmd("undo"); cmd("undo");
-  curScore.endCmd(); //  (don't know if it's necessary to restart cmd)
+  // curScore.startCmd(); // atualizar a leitura dos texto de harmonia ------------
+  // cmd("transpose-up"); cmd("transpose-down"); cmd("undo"); cmd("undo");
+  // curScore.endCmd(); //  (don't know if it's necessary to restart cmd)
   //----------------------------------------------------------------------------
   vozCF = parseInt(vozCantusFirmus.text) - 1;
   //procura por uma seleção
@@ -3179,7 +3179,6 @@ function carregarNotas() {
              // Passo 1: ler as notas e guardar em "vozes"
                for (trilha = trilhaInicial; trilha < trilhaFinal; trilha++) {
                	cursor.track = trilha;
-
             	  if (segmento.elementAt(trilha)) {
             	  	 if (segmento.elementAt(trilha).type == Element.REST) { //console.log(seg, "tipo pausa", trilha, segmento.tick);
             	  	 	 if (seg == 0) { pausa = true; //console.log("seg 0, voz", voz, "ligadura true");
@@ -4669,7 +4668,7 @@ function espaçamento() {
 }
 
 function coerenciaHarmonica() {
-  //relator = relator + "================ Coerência Harmônica =================\n";
+//  console.log( "================ Coerência Harmônica =================\n")
   var novoX;
   for (var x=0;x<vozes.length;x++) {
     //console.log(x, vozes[x].tom);
@@ -4688,21 +4687,22 @@ function coerenciaHarmonica() {
       var pertence = sePertence(acorde, nota);
       //console.log("nota não pertence ao acorde?", pertence, cHarmoniaEx.checked, notaAcento);
       if (!pertence && ((!cHarmoniaEx.checked && notaAcento == "f") || notaAcento == "F" || notaAcento == "mF")) {
-        //console.log("compasso:", vozes[x].compasso, x);
-        novoX = cambiata(x, "ch"); if (novoX != x) { continue; };
-        novoX = bordadura4(x, "ch"); if (novoX != x) { continue; };
-        novoX = suspensão5(x, "ch"); if (novoX != x) { continue; };
-        novoX = notaPassagem5(x, "ch"); if (novoX != x) { continue; };
-        novoX = suspensão4(x, "ch"); if (novoX != x) { continue; };
-        novoX = notaPassagem4(x, "ch"); if (novoX != x) { continue; };
-        novoX = suspensão3(x, "ch"); if (novoX != x) { continue; };
-        novoX = bordadura(x, "ch"); if (novoX != x) { continue; };
-        novoX = notaPassagem(x, "ch"); if (novoX != x) { continue; };
-        novoX = apojatura(x, "ch"); if (novoX != x) { continue; };
-        novoX = antecipação(x, "ch"); if (novoX != x) { continue; };
-        novoX = escapada(x, "ch"); if (novoX != x) { continue; };
-        novoX = notaPedal(x, "ch"); if (novoX != x) { continue; };
-
+        if (!priEsp) {
+          //console.log("compasso:", vozes[x].compasso, x);
+          novoX = cambiata(x, "ch"); if (novoX != x) { continue; };
+          novoX = bordadura4(x, "ch"); if (novoX != x) { continue; };
+          novoX = suspensão5(x, "ch"); if (novoX != x) { continue; };
+          novoX = notaPassagem5(x, "ch"); if (novoX != x) { continue; };
+          novoX = suspensão4(x, "ch"); if (novoX != x) { continue; };
+          novoX = notaPassagem4(x, "ch"); if (novoX != x) { continue; };
+          novoX = suspensão3(x, "ch"); if (novoX != x) { continue; };
+          novoX = bordadura(x, "ch"); if (novoX != x) { continue; };
+          novoX = notaPassagem(x, "ch"); if (novoX != x) { continue; };
+          novoX = apojatura(x, "ch"); if (novoX != x) { continue; };
+          novoX = antecipação(x, "ch"); if (novoX != x) { continue; };
+          novoX = escapada(x, "ch"); if (novoX != x) { continue; };
+          novoX = notaPedal(x, "ch"); if (novoX != x) { continue; };
+        };
         verificados++;
         criaResultado(verificados, x, voz, voz, "nota não pertence ao acorde", 1, 1);
      };
@@ -5577,12 +5577,12 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
 
   onRun: {
 
-  openFile('config.cfA');
+//  openFile('config.cfA');
 
-//  inicializaVariáveis();
+  inicializaVariáveis();
   carregarCfg();
   function inicializaVariáveis() {
-   var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-false-false-1-10-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-12-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-4-true-0-false-true-0-true-1-true-true-false-false-false-false-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-false-false-true-false-false-false-true-true-false-false-true-0-true-false-true-false-false-3-10-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-16-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-1-false-true-1-true-3-true-true-false-false-false-false-2-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-true-false-false-3-10-true-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-2-true-true-2-true-4-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-true-false-false-5-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-2-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-3-10-true-true-true-true-true-true-false-false-true-true-false-false-false-false-false-false-false-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-19-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-5-true-2-true-true-2-true-3-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-6-10-true-true-true-true-true-true-false-true-true-true-true-false-false-false-true-true-false-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-21-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-6-true-2-true-true-3-true-4-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-false-false-false-true-true-false-false-true-0-true-true-false-false-false-6-15-true-true-true-true-true-true-false-true-true-true-true-true-false-false-true-true-false-false-false-false-true-true-false-true-false-true-true-true-false-true-false-false-false-true-true-true-true-true-false-21-true-true-true-true-true-true-true-false-false-false-false-true-true-false-false-true-true-true-true-10-true-2-true-true-3-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false"
+   var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-0-false-false-false-false-false-false-false-false-false-1-10-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-12-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-0-false-true-0-true-1-true-true-false-false-false-false-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-0-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-1-false-true-1-true-3-true-true-false-false-false-false-2-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-1-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-5-true-1-true-true-2-true-4-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-3-15-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-7-true-1-true-true-2-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-true-true-false-false-true-true-false-true-false-false-false-false-false-false-false-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-1-true-true-2-true-3-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-3-15-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-7-true-1-true-true-2-true-4-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-0-false-false-true-true-false-true-true-true-true-5-15-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-false-false-false-true-true-true-true-false-true-true-true-false-true-true-true-true-true-false-false-false-false-false-false-false-false-21-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-10-true-2-true-true-3-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false"
 
    preSet = preSet.split("-");
    for (var i=0;i<preSet.length;i++) {
