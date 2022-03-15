@@ -1,5 +1,5 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.45.4                                                     \\
+//  Analisador de Contrapontos v0.45.5                                                     \\
 //                                                                                         \\
 //  Copyright (C)2020 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -3840,13 +3840,13 @@ function melodiaPF() {
  };
 
   for (var x=1;x<vozes.length-1;x++) { // percorre acordes
-   var distMax = (1920/vozes[x].formula[1]) * 2;
+   var distMax = (1920/vozes[x].formula[1]) * 2; // define distância máxima para considerar como o mesmo PF. = 2 tempos
    if (vozSup[x] == pfSs) { pfSsc++; // contagem dos pontos focais superiores;
      var distS = vozes[x].posição[voz] - vozes[pfAntS].posição[voz]; //distância para o PF anterior
      if (vozSup[x-1] == pfSs || // não conta se nota anterior é ponto focal
-         (distS <= distMax) || // não conte se distância entre os PFs for <= a dois tempos
-         (vozes[x].compasso == 1 || vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp) // não conta se é primeiro, penúltimo ou último compasso
-       ) { pfSsc--; } else
+         ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == 1)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
+         distS <= distMax // não conte se distância entre os PFs for <= a dois tempos
+        ) { pfSsc--; } else
      if (melPFs.checked && pfSsc > 1) { verificados++; criaResultado(verificados, x, voz, voz, "repete ponto focal superior", 1, 1); } else
       { pfAntS = x; };
    };
@@ -3854,8 +3854,8 @@ function melodiaPF() {
      var distI = vozes[x].posição[voz] - vozes[pfAntI].posição[voz]; //distância para o PF anterior
     // console.log(voz, x, distMax, distI, pfAntI);
      if (vozSup[x-1] == pfSi || // não conta se nota anterior é ponto focal
-         (distI <= distMax) || // não conte se distância entre os PFs for <= a dois tempos
-         (vozes[x].compasso == 1 || vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp) // não conta se é primeiro, penúltimo ou último compasso
+        ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == 1)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
+         distI <= distMax // não conte se distância entre os PFs for <= a dois tempos
         ) { pfSic--; } else
      if (melPFi.checked && pfSic > 1) { verificados++; criaResultado(verificados, x, voz, voz, "repete ponto focal inferior", 1, 1); } else
       { pfAntI = x; };
