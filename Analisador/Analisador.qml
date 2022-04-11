@@ -1,5 +1,5 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.45.5                                                     \\
+//  Analisador de Contrapontos v0.46                                                     \\
 //                                                                                         \\
 //  Copyright (C)2020 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,13 +24,13 @@ import MuseScore 3.0
 MuseScore {
       menuPath: qsTr("Plugins.Contraponto.Analisador")
       description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
-      version: "0.45.4ms3"
+      version: "0.46ms3"
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
     id: window
     visible: true
-    title: qsTr("Analisador de Contrapontos v0.45")
+    title: qsTr("Analisador de Contrapontos v0.46")
       width: 700; height: 630
     color: "#020202"
 
@@ -1875,6 +1875,7 @@ MuseScore {
           id: msgClick
           anchors.fill: parent
           onClicked: { colorir(parent.value); }
+          onDoubleClicked: { explicarMsg(parent.value); }
           }
        } // retângulo msg
 	  } // componente
@@ -1909,6 +1910,17 @@ MuseScore {
 
       visible: false;
 } // msgErros
+//------------------------------------------------------------------------------
+  MessageDialog {
+     id: msgExplica
+     title: "Dica!"
+     text: "-"
+     property bool estado: false
+     onAccepted: {
+           msgExplica.visible=false;
+     }
+     visible: false;
+  } // msg de Explicação
 // -----------------------------------------------------------------------------------------------------------------
 // caixas de dialogo para salvar e abrir presets
 FileDialog {
@@ -2419,8 +2431,43 @@ function gerarRelatorio() {
   msgRelatorio.visible = true;
 }
 
-function colorir(valor) {
+function explicarMsg(valor) {
 
+  if (valor >= 10) { var n = 4; } else { var n = 3; };
+  var explica = "----";
+  if (resultado[valor][0].slice(0+n, 10+n) == "não conduz") { explica = "Para criar um sentido de conclusão mais acentuado, a melodia deve finalizar conduzindo para a finalis por grau conjunto." } else // melodia
+  if (resultado[valor][0].slice(0+n, 9+n) == "penúltima") { explica = "Para criar uma expectativa de resolução e conclusão na nota final, a penúltima nota da melodia deve pertencer ao acorde do V ou do vii° grau." } else
+  if (resultado[valor][0].slice(0+n, 6+n) == "Âmbito") { explica = "O âmbito melódico (intervalo entre a nota mais grave e a mais aguda da melodia), ultrapassou o limite estabelecido." } else
+  if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 7ª") { explica = "Intervalo melódico de 7ª prejudica a fluência melódica e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 6ª") { explica = "Intervalo melódico de 6ª prejudica a fluência melódica." } else
+  if (resultado[valor][0].slice(0+n, 28+n) == "intervalo melódico aumentado") { explica = "Intervalo melódico aumentado ou diminuto prejudica a fluência melódica e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 8ª") { explica = "Intervalo melódico maior do que a 8ª prejudica a fluência melódica e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 13+n) == "trítono nas 2") { explica = "O intervalo de trítono entre as notas das duas extremidades de um segmento melódico de intervalos na mesma direção coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono, em alguns contextos, o trítono nas duas extremidades também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 13+n) == "trítono em 1") { explica = "O intervalo de trítono entre uma nota da extremidade de um segmento melódico de intervalos na mesma direção e outra nota deste mesmo segmento coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono e do que o trítono nas duas extremidades, em alguns contextos, o trítono em uma extremidade também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 20+n) == "dissonância composta") { explica = "A dissonância composta (dois saltos que, somados, geram um intervalo melódico de 7ª ou 9ª) prejudica a fluência melódica e dificulta a execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 5ª") { explica = "O intervalo melódico maior do que a quinta deve ser compensado por movimento em direção contrária e movimento menor do que o do salto de quinta (preferencialmente por grau conjunto). Isso beneficia a fluência e direcionamento melódico." } else
+  if (resultado[valor][0].slice(0+n, 19+n) == "movimentos na mesma") { explica = "O excesso de movimentos na mesma direção e em sequência pode gerar monotonia na melodia, por ser muito previsível." } else
+  if (resultado[valor][0].slice(0+n, 18+n) == "repetição de notas") { explica = "A repetição de notas (sem a mudança de nota na outra voz) tende a gerar monotonia." } else
+  if (resultado[valor][0].slice(0+n, 19+n) == "repetição de padrão") { explica = "A repetição seguida de padrões melódicos curtos pode gerar monotonia." } else
+  if (resultado[valor][0].slice(0+n, 6+n) == "arpejo") { explica = "O excesso de arpejos na melodia prejudica a fluência e o direcionamento." } else
+  if (resultado[valor][0].slice(0+n, 20+n) == "repete ponto focal s") { explica = "A repetição de Ponto Focal superior (a nota mais aguda da melodia), em trechos diferentes, enfraquece a definição do clímax da melodia e o direcionamento melódico." } else
+  if (resultado[valor][0].slice(0+n, 20+n) == "repete ponto focal i") { explica = "A repetição de Ponto Focal inferior (a nota mais grave da melodia), em trechos diferentes, enfraquece a definição do clímax da melodia e o direcionamento melódico." } else
+  if (resultado[valor][0].slice(0+n, 9+n) == "alteração") { explica = "O uso frequente da sensível é indispensável para a definição de tonalidades, no modo menor. A alteração do 7º grau melódico (sensível) pode exigir também a alteração ascendente do 6º grau, para evitar o intervalo melódico aumentado de 2ª." } else
+  if (resultado[valor][0].slice(0+n, 9+n) == "neutraliz") { explica = "Em tonalidades menores, as tendências melódicas do 6º e 7º graus devem ser neutralizadas através da sua resolução nas notas subsequentes. O 6º grau melódico, quando alterado, deve seguir para o 7º grau também alterado. O 7º grau alterado (sensível), deve resolver na tônica. Os 6º e 7º graus naturais resolvem por grau conjunto descendente, no 5º e 6º graus, respectivamente." } else
+  if (resultado[valor][0].slice(0+n, 12+n) == "Nota inicial") { explica = "A nota inicial da melodia é, frequentemente, importante para a definição tonal/modal (principalmente no Cantus Firmus). O uso da tônica/finalis como primeira nota, em uma posição métrica forte, é a forma mais eficiente para determinar o tom/modo já no início da melodia." } else
+  if (resultado[valor][0].slice(0+n, 11+n) == "2 saltos na") { explica = "2 ou mais saltos seguidos, na mesma direção, prejudicam a fluência melódica." } else
+  if (resultado[valor][0].slice(0+n, 11+n) == "2 saltos em") { explica = "2 ou mais saltos seguidos, em direção contrária, podem criar ruptura e prejudicar a fluência melódica." } else
+  if (resultado[valor][0].slice(0+n, 8+n) == "salto de") { explica = "A ênfase melódica na nota alcançada por salto pode gerar um deslocamento do acento métrico." } // else
+
+  //explica = resultado[valor][0].slice(0+n, 9+n);
+
+  msgExplica.text = explica;
+  msgExplica.estado = true;
+  msgExplica.visible = true; return;
+}
+
+function colorir(valor) {
+console.log("colorir = ", valor, resultado[valor][0]);
      curScore.startCmd();
 
       apagaCor();
@@ -3051,7 +3098,7 @@ console.log("- verificar ---------");
  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
  if (!melodia && sensCad.checked) { sensivelCadencia(); };
  if (!melodia && consImp.checked) { consonancias(); };
- if (cHarmonia.checked) { coerenciaHarmonica(); console.log("coerência checada");};
+ if (cHarmonia.checked) { coerenciaHarmonica(); };
  if (cHarmoniaF.checked) { coerHarmFund(); };
  // --------------- dissonâncias --------------
  if (!melodia && dissonanciasG.checked) { dissonanciasL(); };
@@ -3069,6 +3116,7 @@ console.log("- verificar ---------");
   msgResult.visible = true;
   msgResult.raise(); msgResult.raise();
   msgResult.raise(); msgResult.raise();
+
 
   if (msgErros.estado) { msgErros.visible = true; };
 }
@@ -3152,7 +3200,7 @@ function carregarNotas() {
             var tempo = ((segmento.tick - tickComp[compasso]) / (1920 / denominador)) + 1;
             var voz = 0;
             var cifras, tom;
-            for (var cif = 0; cif < segmento.annotations.length; cif++) { console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
+            for (var cif = 0; cif < segmento.annotations.length; cif++) { //console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
                  if (segmento.annotations[cif].subStyle == 29) {
                   //console.log("compasso", compasso, ":", segmento.annotations[cif]);
                   cifras = segmento.annotations[cif].text;
@@ -3439,7 +3487,7 @@ function melodiaAum() {
        (intervalo == 3 && intCT == 9) || // 2ªa
        (intervalo == 8 && intCT == 8)) { // 5ªa
       verificados++;
-      criaResultado(verificados, x, voz, voz, "intervalo melódico aumentado", 2, 1);
+      criaResultado(verificados, x, voz, voz, "intervalo melódico aumentado ou diminuto", 2, 1);
     };
   };
  };
@@ -3635,7 +3683,7 @@ function melodia5() {
    if (int1 > 7) {
      if (dir3 != dir2 && dir3 != 0 && int2 < compensa) { continue; } else {
       verificados++;
-      criaResultado(verificados, novaVoz[x-1].pos, voz, voz, "intervalo melódico > 5ªJ", 2, 1);
+      criaResultado(verificados, novaVoz[x-1].pos, voz, voz, "intervalo melódico > 5ª", 2, 1);
      };
    };
   };
@@ -4143,7 +4191,7 @@ function saltoTempoForte() {
       var pos2 = novaVoz[x].pos;
       var met1 = verificaTempoForte(vozes[pos1].tempo[voz], vozes[pos1].formula[voz]);
       var met2 = verificaTempoForte(vozes[pos2].tempo[voz], vozes[pos2].formula[voz]);
-console.log(x, int1, dir1, pos1, pos2, met1, met2, saltoTmF.checked);
+//console.log(x, int1, dir1, pos1, pos2, met1, met2, saltoTmF.checked);
       if (int1 > 2 && (met1 == "F" || (saltoTmF.checked && met1 == "mF")) &&
           (met2 == "f" || met2 == "c") && (!saltoTFEx.checked || dir1 == 1)) {
          var posIni = pos2 - pos1 + 1
@@ -4687,14 +4735,14 @@ function coerenciaHarmonica() {
       var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
       var nota = vozes[x].tonal[voz] - tom;
       //console.log("==========", x, vozes[x].cifras);
-      var acorde = cifra2notas(vozes[x].cifras, x); console.log(x, "Acorde:", acorde);
+      var acorde = cifra2notas(vozes[x].cifras, x); //console.log(x, "Acorde:", acorde);
       if (!acorde) { //console.log(x,") var acorde = indefinido!!");
                     continue; };
       //console.log("===========----------------===========", x, acorde, nota);
       var pertence = sePertence(acorde, nota);
       var mudaAcorde = true;
       if (acordeAnterior && acorde.toString() == acordeAnterior.toString()) { mudaAcorde = false; };
-      console.log("nota pertence ao acorde?", pertence, acorde.toString(), acordeAnterior, mudaAcorde, notaAcento);
+      //console.log("nota pertence ao acorde?", pertence, acorde.toString(), acordeAnterior, mudaAcorde, notaAcento);
       if (!pertence &&
                 ( notaAcento == "F" || mudaAcorde ||
                  (!cHarmoniaEx.checked && notaAcento == "f") ||
@@ -4809,7 +4857,8 @@ function dissonanciasL() {
 
        if (acusaDissonancia) {
         verificados++;
-        criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2);
+        if (priEsp) { criaResultado(verificados, x, 0, 1, "dissonância", 1, 2); } else
+              { criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2); };
        };
     } else { acusaDissonancia = false; };
   };
