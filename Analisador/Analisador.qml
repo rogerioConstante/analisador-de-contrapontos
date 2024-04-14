@@ -1,5 +1,5 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.5                                                     \\
+//  Analisador de Contrapontos v0.47                                                     \\
 //                                                                                         \\
 //  Copyright (C)2020 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,13 +24,21 @@ import MuseScore 3.0
 MuseScore {
       menuPath: qsTr("Plugins.Contraponto.Analisador")
       description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
-      version: "0.5ms3"
+      version: "0.47"
+
+       Component.onCompleted: {
+        if (mscoreMajorVersion >= 4) {
+            title = qsTr("Analisador de Contrapontos")
+            thumbnailName = "interface042.png"
+            categoryCode = "Contraponto"
+        }
+      }
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
     id: window
     visible: true
-    title: qsTr("Analisador de Contrapontos v0.5")
+    title: qsTr("Analisador de Contrapontos v0.46")
       width: 700; height: 630
     color: "#020202"
 
@@ -47,7 +55,7 @@ MuseScore {
 
         Text { x: 6; y: 4; font.pointSize: 7; color: "#aaa31e"; text: "criado por" }
         Text { x: 5; y: 13; font.pointSize: 9; color: "#aaa31e"; text: "Rogério Tavares Constante" }
-        Text { x: 665; y: 10; font.pointSize: 9; color: "#aaa31e"; text: "2023" }
+        Text { x: 665; y: 10; font.pointSize: 9; color: "#aaa31e"; text: "2019" }
 
        Rectangle {
              id: btVerifica
@@ -112,7 +120,7 @@ MuseScore {
             MouseArea {
                   id: mArea4
                    anchors.fill: parent
-                   onClicked: { Qt.quit(); window.close(); msgResult.close(); msgRelatorio.close(); }
+                   onClicked: { (typeof(quit) === 'undefined' ? Qt.quit : quit)(); window.close(); msgResult.close(); msgRelatorio.close(); }
              }
 
             Text {
@@ -745,7 +753,49 @@ MuseScore {
                text: botao26o.text
                     }
               }
-
+      // classificação de intervalos
+              // Rectangle {
+              //  id: botao291
+              //  x: 3; y: 103
+              //  property string text: qsTr("Intervalos")
+              //  signal clicked
+              //  width: 149; height: bLabel291.height + 7
+              //  border { width: 1; color: "#555555" }
+              //  smooth: true
+              //  radius: 2
+              //  gradient: Gradient {
+              //   GradientStop {
+              //       position: 0.0
+              //       color: {
+              //             if (mArea291.pressed)
+              //                 return "#888d96"
+              //                else
+              //                return "#a0a8af"
+              //          }
+              //   }
+              //   GradientStop { position: 1.0; color: "#343434" }
+              // }
+              // onClicked: {
+              //   if (intervalosClasse.visible) { intervalosClasse.visible = false; titulo1.text = ""; }
+              //   // else if (!melodia) {
+              //   //        intervalosClasse.visible = true; melodias.visible = false; conduz.visible = false; dissonâncias.visible = false;
+              //   //        bLabel28.color = "#000000"; bLabel291.color = "#002e77";
+              //   //        bLabel26o.color = "#000000"; bLabel29.color = "#000000";
+              //   //     }
+              //   //     atualizarTitulo();
+              // 		}
+              // MouseArea {
+              //       id: mArea291
+              //        anchors.fill: parent
+              //        onClicked: botao291.clicked();
+              //  }
+              // Text {
+              //  id: bLabel291
+              //  anchors.centerIn: botao291
+              //  color: "#000000"
+              //  text: botao291.text
+              //       }
+              // }
       }
       Rectangle { id: preConfigurações;
                  x: 3; y: 437; width: 155; height: 106
@@ -3061,7 +3111,7 @@ console.log("- verificar ---------");
  // --------------- dissonâncias --------------
  if (!melodia && dissonanciasG.checked) { dissonanciasL(); };
  // ----------------------------------------------
-  Qt.quit();
+  (typeof(quit) === 'undefined' ? Qt.quit : quit)();
   resultado = removeRepetição(resultado);
   for (var i=0;i<verificados;i++) {
   	mensagem[i] = component.createObject(msgResult);
@@ -3296,7 +3346,7 @@ function carregarNotas() {
            };
 
    if (seg == 0) { msgErros.text += "Nenhum acorde carregado!!\n";
-                        msgErros.estado=true; Qt.quit(); };
+                        msgErros.estado=true; (typeof(quit) === 'undefined' ? Qt.quit : quit)(); };
  for (var x=0;x<vozes.length;x++) { //console.log(x, vozes[x].nota);
    if (vozes[x].nota[0] == 0 || vozes[x].nota[1] == 0) { vozes.splice(0, 1); x--; };
  };
@@ -4780,7 +4830,7 @@ function dissonanciasL() {
     if (cambiataL.checked) { novoX = cambiata(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
       //  console.log("bordadura4",x);
     if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX; continue; }; };
-    var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
+        var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
     var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
     var intHarm = verificaConsonancia(vIN, vIT);
     if (intHarm == "D") { //console.log("Dissonância em", x);
