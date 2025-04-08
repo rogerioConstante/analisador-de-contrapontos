@@ -1,7 +1,7 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.4.7                                                      \\
+//  Analisador de Contrapontos v0.5                                                        \\
 //                                                                                         \\
-//  Copyright (C)2024 Rogério Tavares Constante                                            \\
+//  Copyright (C)2025 Rogério Tavares Constante                                            \\
 //                                                                                         \\
 //  Este programa é um software livre: você pode redistribuir e/ou  modificar              \\
 //  ele nos termos da GNU General Public License como publicada pela                       \\
@@ -22,27 +22,28 @@ import QtQuick.Window 2.1
 import MuseScore 3.0
 
 MuseScore {
-      menuPath: qsTr("Plugins.Contraponto.Analisador")
-      description: qsTr("Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto.")
-      version: "0.4.7"
+      menuPath: "Plugins.Contraponto.Analisador"
+      description: "Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto."
+      version: "0.5"
 
       //4.4 title: "Analisador de Contrapontos"
       //4.4 thumbnailName: "interface042.png"
       //4.4 categoryCode: "Contraponto"
 
        Component.onCompleted: {
-        if (mscoreMajorVersion >= 4) {
+         if (mscoreMajorVersion >= 4) {
             title = qsTr("Analisador de Contrapontos")
             thumbnailName = "interface042.png"
             categoryCode = "Contraponto"
+          }
         }
-      }
+
 
 // ----------------------------- janela principal -----------------------
   ApplicationWindow {
     id: window
     visible: true
-    title: qsTr("Analisador de Contrapontos v0.4.7")
+    title: qsTr("Analisador de Contrapontos v0.5")
       width: 700; height: 630
     color: "#020202"
 
@@ -59,7 +60,7 @@ MuseScore {
 
         Text { x: 6; y: 4; font.pointSize: 7; color: "#aaa31e"; text: "criado por" }
         Text { x: 5; y: 13; font.pointSize: 9; color: "#aaa31e"; text: "Rogério Tavares Constante" }
-        Text { x: 665; y: 10; font.pointSize: 9; color: "#aaa31e"; text: "2019" }
+        Text { x: 660; y: 10; font.pointSize: 9; color: "#aaa31e"; text: "(c)2025" }
 
        Rectangle {
              id: btVerifica
@@ -138,7 +139,7 @@ MuseScore {
     // ------------------------------ Apresentação ---------------------------
  Item { id: apresenta; visible: true
 
-    Text { x: 90; y: 275; font.pointSize: 19; color: "#aaa31e"; text: qsTr("Analisador de Contrapontos 0.4") }
+    Text { x: 90; y: 275; font.pointSize: 19; color: "#aaa31e"; text: qsTr("Analisador de Contrapontos 0.5") }
     Text { x: 196; y: 303; font.pointSize: 9; color: "#aaa31e"; text: qsTr("Extensão para MuseScore") }
 
   }
@@ -983,11 +984,14 @@ MuseScore {
 	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
 	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª oculta/direta") }
 	      }
-		 	  CheckBox { id: ocultEx; checked: true; x: 190; y: 2;
+		 	  CheckBox { id: ocultEx; checked: true; x: 160; y: 2;
 		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no final") }
 		 		}
-		 	  CheckBox { id: ocultSalto; checked: true; x: 190; y: 20;
+		 	  CheckBox { id: ocultSalto; checked: true; x: 160; y: 20;
 		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente se salto na voz superior") }
+		 		}
+        CheckBox { id: ocultExt; checked: true; x: 295; y: 2;
+		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente nas vozes externas") }
 		 		}
 		  }
       // 5ªs e 8ªs intermitentes
@@ -1041,10 +1045,30 @@ MuseScore {
        CheckBox { id: interExCF; checked: true; x: 30; y: 165;
         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto se CF não move") }
        }
+       CheckBox { id: interExt; checked: true; x: 295; y: 165;
+        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente nas vozes externas") }
+       }
 
      }
+     // movimentos similares
+     Rectangle { x: 3; y: 330; width: 526; height: 44;	color: "#1c1c1c"; radius: 2
+       CheckBox { id: movContObli; checked: true; x: 5; y: 2;
+          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+          font.pixelSize: 14; text: qsTr("priorizar mov. contrário e oblíquo") }
+        }
+       CheckBox { id: movSim; checked: true; x: 5; y: 20
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
+              color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Qtd máxima de ")
+         TextInput { id: qtdMovSim; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
+                    font.underline: true; text: "4"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 2; top: 99;}
+                 Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
+                 color: "#e0dfc3"; font.pixelSize: 12; text: qsTr(" movimentos similares, em sequência, em todas as vozes") }
+         }
+        }
+       }
+     }
 	     // consecutivas por movimento contrário e oblíquo
-	   Rectangle { x: 3; y: 330; width: 276; height: 44;	color: "#1c1c1c"; radius: 2
+	   Rectangle { x: 3; y: 378; width: 276; height: 44;	color: "#1c1c1c"; radius: 2
 
 	     CheckBox { id: consecObli; checked: false; x: 5; y: 2;
 	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. oblíquo") }
@@ -1055,7 +1079,7 @@ MuseScore {
 		 		}
 		 }
      // cruzamento de vozes
-     Rectangle { x: 283; y: 330; width: 246; height: 44; color: "#1c1c1c"; radius: 2
+     Rectangle { x: 283; y: 378; width: 246; height: 44; color: "#1c1c1c"; radius: 2
       CheckBox { id: cruzaVozes; checked: true; x: 5; y: 2
          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Cruzamento de vozes") }
        }
@@ -1064,7 +1088,7 @@ MuseScore {
        }
      }
       // uníssono
-		 Rectangle { x: 3; y: 377; width: 526; height: 42; color: "#1c1c1c"; radius: 2
+		 Rectangle { x: 3; y: 426; width: 526; height: 42; color: "#1c1c1c"; radius: 2
 	     CheckBox { id: uniss; checked: true; x: 5; y: 2;
 	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                 font.pixelSize: 14; text: qsTr("Uníssono") }
@@ -1332,10 +1356,16 @@ MuseScore {
           }}
           CheckBox { id: apojaEx2; checked: false; x: 0; y: 40
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente se alcançada por movimento ascendente") }}
+                   font.pixelSize: 11; text: qsTr("somente preparação ascendente") }}
           CheckBox { id: apojaEx3; checked: false; x: 0; y: 60
             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
                    font.pixelSize: 11; text: qsTr("somente resolução descendente") }}
+          CheckBox { id: apojaEx4; checked: false; x: 230; y: 60
+            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                   font.pixelSize: 11; text: qsTr("somente resolução na direção contrária") }}
+          CheckBox { id: apojaEx5; checked: false; x: 230; y: 40
+            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                   font.pixelSize: 11; text: qsTr("preparação é obrigatória") }}
 
         }
        }
@@ -1411,12 +1441,15 @@ MuseScore {
 		    CheckBox { id: saltAum; checked: true; x: 5; y: 40;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: qsTr("Aumentados e diminutos") }
-			 }
-			 CheckBox { id: saltM8; checked: true; x: 5; y: 59;
+			  }
+        CheckBox { id: saltTrit; checked: true; x: 180; y: 40;
+         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
+         color: "#e0dfc3"; text: qsTr("Exceto trítono com tratamento") }
+        }
+			  CheckBox { id: saltM8; checked: true; x: 5; y: 59;
 			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 			   color: "#e0dfc3"; text: qsTr("Maiores do que a oitava") }
-			 }
-	    //}
+			  }
 	  }
 
 	  Rectangle { x: 3; y: 170; width: 526; height: 195; color: "#303030"; radius: 2
@@ -1558,25 +1591,25 @@ MuseScore {
     Rectangle { x: 3; y: 526; width: 526; height: 42; color: "#303030"; radius: 2
      CheckBox { id: tonic; checked: true; x: 5; y:1;
 		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("Nota inicial do CF diferente de tônica/finalis,") }
+		 color: "#e0dfc3"; text: qsTr("Nota inicial diferente de tônica/finalis,") }
 
-	   CheckBox { id: terça; checked: false; x: 275;
+	   CheckBox { id: terça; checked: false; x: 255;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("terça,") }
 	   }
-	   CheckBox { id: quinta; checked: false; x: 355;
+	   CheckBox { id: quinta; checked: false; x: 335;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("ou quinta") }
 	   }
 	  }
 	   CheckBox { id: tonicF; checked: true; x: 5; y:22;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("Nota final do CF diferente de tônica/finalis,") }
-	   CheckBox { id: terçaF; checked: false; x: 270;
+		 color: "#e0dfc3"; text: qsTr("Nota final diferente de tônica/finalis,") }
+	   CheckBox { id: terçaF; checked: false; x: 250;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("terça,") }
 	   }
-	   CheckBox { id: quintaF; checked: false; x: 350;
+	   CheckBox { id: quintaF; checked: false; x: 330;
 		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
 		 color: "#e0dfc3"; text: qsTr("ou quinta") }
 	   }
@@ -1786,8 +1819,9 @@ MuseScore {
       id: msgResult
 	    visible: false;
 	    title: "Resultado"
-	    width: 450; height: 40
+	    width: 550; height: 70
 	    color: "#343530"
+      flags: Qt.WindowStaysOnTopHint
 
 	    Rectangle {
           id: btResult
@@ -1795,7 +1829,7 @@ MuseScore {
           signal clicked
           visible: true
           width: 100; height: 25
-          x: 110
+          x: 140
           border { width: 1; color: "#555555" }
           smooth: true
           radius: 3
@@ -1821,7 +1855,7 @@ MuseScore {
          MouseArea {
           id: mArea6
           anchors.fill: parent
-          onClicked: { window.raise(); msgResult.close(); apagaCor(); return }
+          onClicked: { window.raise(); msgResult.close(); apagaCor(); }
          } // mouseArea
        } // Rectangle btResult
 
@@ -1831,7 +1865,7 @@ MuseScore {
           signal clicked
           visible: true
           width: 100; height: 25
-          x: 240
+          x: 300
           border { width: 1; color: "#555555" }
           smooth: true
           radius: 3
@@ -1857,9 +1891,100 @@ MuseScore {
          MouseArea {
           id: mArea61
           anchors.fill: parent
-          onClicked: { msgResult.close(); apagaCor(); verificar(); }
+          onClicked: { msgResult.close(); apagaCor(); verificar() }
          } // mouseArea
        } // Rectangle btAtualiza
+
+       Rectangle {
+            id: btAvança
+            property alias text: avanText.text
+            signal clicked
+            visible: true
+            width: 50; height: 20
+            x: 500
+            border { width: 1; color: "#555444" }
+            smooth: true
+            radius: 3
+            gradient: Gradient {
+                GradientStop { position: 0.0
+                    color: {
+                          if (mAreaAvan.pressed)
+                              return "#888d96"
+                             else
+                             return "#a0a7ae"
+                       }
+                }
+                GradientStop { position: 1.0; color: "#035b25" }
+              }
+
+           Text {
+             id: avanText
+             anchors.centerIn: parent
+             text: ">>"
+             color: "#aaf0e1"
+           }
+
+           MouseArea {
+            id: mAreaAvan
+            anchors.fill: parent
+            onClicked: { apresentaResultado(1); return }
+           } // mouseArea
+         } // Rectangle btResult
+
+         Rectangle {
+              id: btVolta
+              property alias text: voltaText.text
+              signal clicked
+              visible: true
+              width: 50; height: 20
+              x: 0
+              border { width: 1; color: "#555444" }
+              smooth: true
+              radius: 3
+              gradient: Gradient {
+                  GradientStop { position: 0.0
+                      color: {
+                            if (mAreaVolta.pressed)
+                                return "#888d96"
+                               else
+                               return "#a0a7ae"
+                         }
+                  }
+                  GradientStop { position: 1.0; color: "#035b25" }
+                }
+
+             Text {
+               id: voltaText
+               anchors.centerIn: parent
+               text: "<<"
+               color: "#aaf0e1"
+             }
+
+             MouseArea {
+              id: mAreaVolta
+              anchors.fill: parent
+              onClicked: { apresentaResultado(-1); return }
+             } // mouseArea
+           } // Rectangle btVolta
+
+           Rectangle { x: 0; y: 25; width: 550; height: 30; color: "#131313"; radius: 2 // Resultado Filtro
+             CheckBox { id: cxCond; checked: true; x: 5; y: 3;
+               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                     font.pixelSize: 12; text: qsTr("Condução Vozes")}
+             }
+             CheckBox { id: cxDiss; checked: true; x: 150; y: 3
+               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                      font.pixelSize: 12; text: qsTr("Dissonância") }
+             }
+             CheckBox { id: cxMelo; checked: true; x: 270; y: 3
+               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                     font.pixelSize: 12; text: qsTr("Melodia")}
+             }
+             CheckBox { id: cxOutr; checked: true; x: 390; y: 3
+               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+                      font.pixelSize: 11; text: qsTr("Outros") }
+             }
+           } // Rectangle Filtro
 
 	  Component {
 	    id: component
@@ -1869,7 +1994,7 @@ MuseScore {
           property int value: 0
           signal clicked
           visible: true
-          width: 450; height: 21
+          width: 550; height: 21
           border { width: 1; color: "#000000" }
           smooth: true
           radius: 3
@@ -1897,7 +2022,7 @@ MuseScore {
   ApplicationWindow {
      id: msgRelatorio
      title: "Relatório"
-     width: 550; height: 40
+     width: 650; height: 40
      color: "#343530"
      visible: false
       Text {
@@ -1952,9 +2077,13 @@ FileDialog {
 
       property bool processaTudo: false;
       property var vozes: [];
+      property var vozesT: [];
+      property var vS: 0;
+      property var vI: 1;
       property var relator: "";
       property var avalia: 0;
       property var resultado: [];
+      property var resultadoFiltro: [];
       property var mensagem: [];
       property var verificados: 0;
       property var acordeGrau: [];
@@ -1969,6 +2098,7 @@ FileDialog {
       property bool finaliza: false;
       property var config: [];
       property var tipoCP: null;
+      property var pag: 0;
 
 // ----------- funções ---------
 function atualizarTitulo() {
@@ -2012,6 +2142,7 @@ function salvarCfg() {
    if(oculta5.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(ocultEx.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(ocultSalto.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(ocultExt.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(inter8.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(inter5.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interPM.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -2023,8 +2154,12 @@ function salvarCfg() {
    if(interExTF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExFim.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExCF.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(interExt.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(interExS.checked){ config[j] = true; } else { config[j] = false; }; j++;
    config[j] = interExSn.text; j++;
+   if(movContObli.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(movSim.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   config[j] = qtdMovSim.text; j++;
    if(consecObli.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(consecCont.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(uniss.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -2080,6 +2215,8 @@ function salvarCfg() {
    if(apojaEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaEx2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(apojaEx3.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(apojaEx4.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(apojaEx5.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(escapadaL.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(escapaEx1.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(escapaEx1MF.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -2096,6 +2233,7 @@ function salvarCfg() {
    if(salt6.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(salt6Ex.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(saltAum.checked){ config[j] = true; } else { config[j] = false; }; j++;
+   if(saltTrit.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(saltM8.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(tritono2.checked){ config[j] = true; } else { config[j] = false; }; j++;
    if(tritono1.checked){ config[j] = true; } else { config[j] = false; }; j++;
@@ -2212,6 +2350,7 @@ function carregarCfg() {
      oculta5.checked = config[j]; j++;
      ocultEx.checked = config[j]; j++;
      ocultSalto.checked = config[j]; j++;
+     ocultExt.checked = config[j]; j++;
      inter8.checked = config[j]; j++;
      inter5.checked = config[j]; j++;
      interPM.checked = config[j]; j++;
@@ -2223,8 +2362,12 @@ function carregarCfg() {
      interExTF.checked = config[j]; j++;
      interExFim.checked = config[j]; j++;
      interExCF.checked = config[j]; j++;
+     interExt.checked = config[j]; j++;
      interExS.checked = config[j]; j++;
      interExSn.text = config[j]; j++;
+     movContObli.checked = config[j]; j++;
+     movSim.checked = config[j]; j++;
+     qtdMovSim.text = config[j]; j++;
      consecObli.checked = config[j]; j++;
      consecCont.checked = config[j]; j++;
      uniss.checked = config[j]; j++;
@@ -2280,6 +2423,8 @@ function carregarCfg() {
      apojaEx1MF.checked = config[j]; j++;
      apojaEx2.checked = config[j]; j++;
      apojaEx3.checked = config[j]; j++;
+     apojaEx4.checked = config[j]; j++;
+     apojaEx5.checked = config[j]; j++;
      escapadaL.checked = config[j]; j++;
      escapaEx1.checked = config[j]; j++;
      escapaEx1MF.checked = config[j]; j++;
@@ -2296,6 +2441,7 @@ function carregarCfg() {
      salt6.checked = config[j]; j++;
      salt6Ex.checked = config[j]; j++;
      saltAum.checked = config[j]; j++;
+     saltTrit.checked = config[j]; j++;
      saltM8.checked = config[j]; j++;
      tritono2.checked = config[j]; j++;
      tritono1.checked = config[j]; j++;
@@ -2444,7 +2590,7 @@ function gerarRelatorio() {
 }
 
 function explicarMsg(valor) {
-
+  console.log("explicaMsg:", valor);
   if (valor >= 10) { var n = 4; } else { var n = 3; };
   var explica = "----";
   if (resultado[valor][0].slice(0+n, 10+n) == "não conduz") { explica = "Para criar um sentido de conclusão mais acentuado, a melodia deve finalizar conduzindo para a finalis por grau conjunto." } else // melodia
@@ -2478,43 +2624,45 @@ function explicarMsg(valor) {
   msgExplica.visible = true; return;
 }
 
-function colorir(valor) {
-console.log("colorir = ", valor, resultado[valor][0]);
-     curScore.startCmd();
-
-      apagaCor();
-
-      mensagem[valor-1].color = "#6b6746";
-
-      for (var z=1;z<resultado[valor].length;z++) {
-            if (resultado[valor][z]) { resultado[valor][z].color = "red"; };
-         };
-
-      curScore.endCmd();
-
-      msgResult.raise();
-   }
-
-function apagaCor() {
-
-      for (var x=1;x<=verificados;x++) { // apaga seleções anteriores e botões
-
-	         mensagem[x-1].color = "#6c6d6d";
-
-	      for (var z=1;z<resultado[x].length;z++) {
-            if (resultado[x][z]) { resultado[x][z].color = "black"; };
-         };
-
-	    };
-
-   }
-
 function destroirMsg() {
-    for (var i=0;i<verificados;i++) {
+  //console.log("destrói", mensagem.length)
+    for (var i=0;i<mensagem.length;i++) {
      if (mensagem[i]) {
      	mensagem[i].destroy();
      };
 	 };
+}
+
+function colorir(valor) {
+  //console.log("colorir = ", valor, mensagem[valor-1].text);
+  curScore.startCmd();
+  apagaCor();
+  if (mensagem[valor-1]) { // Verifica se mensagem[x] existe
+    mensagem[valor-1].color = "#6b6746";
+  };
+  if (Array.isArray(resultado[valor])) { // Garante que resultado[x] é um array
+    for (var z=1;z<resultado[valor].length;z++) {
+      if (resultado[valor][z]) { resultado[valor][z].color = "red"; };
+    };
+  };
+  curScore.endCmd();
+  //msgResult.raise();
+}
+
+function apagaCor() {
+
+  for (var x=0;x<=resultado.length;x++) { // apaga seleções anteriores e botões
+    if (mensagem[x]) { // Verifica se mensagem[x] existe
+      mensagem[x].color = "#6c6d6d"; // Ajusta a cor para "#6c6d6d"
+    };
+    if (Array.isArray(resultado[x])) { // Garante que resultado[x] é um array
+      for (var z = 0; z < resultado[x].length; z++) { // Corrige índices baseados em 0
+        if (resultado[x][z]) { // Verifica se resultado[x][z] existe
+            resultado[x][z].color = "black"; // Ajusta a cor para "black"
+        };
+      };
+    };
+  };
 }
 
 function removeRepetição(tpc) {  //
@@ -2528,7 +2676,7 @@ function removeRepetição(tpc) {  //
 }
 
 function verificaGrauMelodico(tonal,i) {
-  texto2tonica(vozes[i].tom);
+  if (vozesT[i]) { texto2tonica(vozesT[i].tom); } else { texto2tonica(vozes[i].tom); }
   var tom = tonicaTPC(btTonica.text, btAcid.text);
   var x = tonal - tom;
  	var modo = btModo.text;
@@ -2702,11 +2850,15 @@ function verificaTempoForte(tempo,metrica) {
 
 }
 
-function verificaConsonancia(vIN, vIT) {
+function verificaConsonancia(vIN, vIT) { //console.log("== verificaConsonancia ==");
   vIN = vIN % 12;
-  if ((vIN == 0 && vIT == 0) || (vIN == 7 && vIT == 1)) { return "CP"; } else
-  if ((vIN == 3 && vIT == 3) || (vIN == 4 && vIT == 4) ||
-      (vIN == 8 && vIT == 4) || (vIN == 9 && vIT == 3)) { return "CI"; } else { return "D" };
+  //console.log(vIN, vIT); console.log("vI:", vI, "baixo:", vozes[0].nota.length-1);
+  if ((vIN == 0 && vIT == 0) || (vIN == 7 && vIT == 1)) { return "CP"; }
+    else if ((vIN == 3 && vIT == -3) || (vIN == 4 && vIT == 4) ||
+             (vIN == 8 && vIT == -4) || (vIN == 9 && vIT == 3) ||
+             (vIN == 5 && vIT == -1 && vI != vozes[0].nota.length-1) ||
+             (vIN == 6 && (vIT == 6 || vIT == -6) && vI != vozes[0].nota.length-1)) { return "CI"; }
+    else { return "D" };
 }
 
 function direção(x) {
@@ -2936,11 +3088,11 @@ function cifra2notas(cifra,x) { // analisa uma 'cifra' e retorna a estrutura int
 
   var grau = cifra.slice(0, i);
   var grauM = grau.toUpperCase();
-//  console.log(m,x,d, grau);
+//console.log(m,x,d, grau);
   if (modo == "Menor" && grauM == "VI" && m == 0) { var grauF = "VI+" } else
     if (modo == "Menor" && grauM == "VII" && m == 0) { var grauF = "VII+" }
       else { var grauF = grauM; };
-    //  console.log("modo e grauF:", x, modo, grauF);
+    //console.log("modo e grauF:", x, modo, grauF);
   switch (grauF) { // define fundamental
     case "V/IV":
     case "I": f = 0; break;
@@ -3034,7 +3186,7 @@ function cifra2notas(cifra,x) { // analisa uma 'cifra' e retorna a estrutura int
    if (grau != grauM && m == null) { notas = [0+f, -3+f, 1+f]; } else
    if (grau != grauM && m == 0) { notas = [0+f, -3+f, -6+f]; } else
    if (grau == grauM && m == 1) { notas = [0+f, 4+f, 8+f]; };
-//  console.log(x, idx3, grau, grauM, m, "notas:", notas);
+//console.log(x, idx3, grau, grauM, m, "notas:", notas);
    switch (d) {
      case "7": notas.push(-2+f); break;
      case "7+":
@@ -3047,15 +3199,83 @@ function cifra2notas(cifra,x) { // analisa uma 'cifra' e retorna a estrutura int
 
 function vCantusFirmus() {
   if (vozes[1].nota.length == 1) { vozCF = 0; }
-   else {	vozCF = parseInt(vozCantusFirmus.text) - 1; };
+   else { vozCF = parseInt(vozCantusFirmus.text) - 1; };
 
   if (vozCF >= vozes[vozes.length-1].nota.length || vozCF < 0) {
           msgErros.text = "Erro! \n voz do Cantus Firmus não detectado! \n Por favor, insira um valor válido.";
                        msgErros.visible=true; finaliza = true; return; };
 }
+
+function apresentaResultado(p) { //console.log("======== Apresenta Resultado () =============");
+  mensagem = [];
+  var total = resultado.length - 1;
+  var linhas = 0;
+  const totalPagVer = Math.floor(total/20);
+  pag = pag + p;
+  if (pag < 0) { pag = 0 } else
+  if (pag > totalPagVer) { pag = totalPagVer; };
+  const itemAtual = pag * 20;
+  const itemFinal = itemAtual + 20;
+  if (itemFinal > total) { itemFinal = total; };
+  for (var i=itemAtual;i<itemFinal;i++) {
+    if (!resultado) { return ; };
+    console.log(">>", resultado[i+1][0])
+    if ((cxCond.checked &&
+        (resultado[i+1][0].indexOf("paralela") !== -1 ||
+        resultado[i+1][0].indexOf("oculta") !== -1 ||
+        resultado[i+1][0].indexOf("consecutivas") !== -1 ||
+        resultado[i+1][0].indexOf("intermitente") !== -1 ||
+        resultado[i+1][0].indexOf("movimentos cont.") !== -1 ||
+        resultado[i+1][0].indexOf("movimentos similares") !== -1 ||
+        resultado[i+1][0].indexOf("uníssono") !== -1 ||
+        resultado[i+1][0].indexOf("cruzamento") !== -1 ||
+        resultado[i+1][0].indexOf("falsa") !== -1)) ||
+        (cxDiss.checked && resultado[i+1][0].indexOf("dissonância") !== -1) ||
+        (cxMelo.checked &&
+         (resultado[i+1][0].indexOf("penúltima nota") !== -1 ||
+          resultado[i+1][0].indexOf("não conduz") !== -1 ||
+          resultado[i+1][0].indexOf("Âmbito") !== -1 ||
+          resultado[i+1][0].indexOf("privilegia graus conj.") !== -1 ||
+          resultado[i+1][0].indexOf("intervalo melódico") !== -1 ||
+          resultado[i+1][0].indexOf("trítono") !== -1 ||
+          resultado[i+1][0].indexOf("dissonância composta") !== -1 ||
+          resultado[i+1][0].indexOf("movimentos na mesma") !== -1 ||
+          resultado[i+1][0].indexOf("repetição de notas") !== -1 ||
+          resultado[i+1][0].indexOf("repetição de padrão") !== -1 ||
+          resultado[i+1][0].indexOf("arpejo") !== -1 ||
+          resultado[i+1][0].indexOf("ponto focal") !== -1 ||
+          resultado[i+1][0].indexOf("alteração") !== -1 ||
+          resultado[i+1][0].indexOf("neutralização") !== -1 ||
+          resultado[i+1][0].indexOf("Nota final") !== -1 ||
+          resultado[i+1][0].indexOf("Nota inicial") !== -1 ||
+          resultado[i+1][0].indexOf("2 saltos") !== -1 ||
+          resultado[i+1][0].indexOf("salto") !== -1)) ||
+          (cxOutr.checked &&
+          (resultado[i+1][0].indexOf("intervalo") !== -1 ||
+          resultado[i+1][0].indexOf("alcança") !== -1 ||
+          resultado[i+1][0].indexOf("cadência") !== -1 ||
+          resultado[i+1][0].indexOf("cons. imperfeita") !== -1 ||
+          resultado[i+1][0].indexOf("distância") !== -1 ||
+          resultado[i+1][0].indexOf("não pertence") !== -1 ||
+          resultado[i+1][0].indexOf("fundamental") !== -1))){
+          	mensagem[i] = component.createObject(msgResult);
+          	mensagem[i].y = (linhas-itemAtual) * 25 + 55;
+          	mensagem[i].text = resultado[i+1][0];
+          	mensagem[i].value = linhas+1;
+            linhas++;
+          };
+  };
+  if (linhas < 1) { msgResult.height = 56; } else { msgResult.height = mensagem[mensagem.length-1].y + 25; };
+  msgResult.visible = true;
+  //msgResult.raise();
+
+  if (msgErros.estado) { msgErros.visible = true; };
+}
+
 //-----------------------------------------------
 function verificar() {
  vozCF = null;
+ vozesT = [];
  finaliza = false;
  msgErros.text = "";
  msgErros.estado = false;
@@ -3064,16 +3284,24 @@ function verificar() {
  avalia = 0;
 console.log("- verificar ---------");
  if (!priEsp && !secEsp && !terEsp && !quaEsp && !quiEsp && !melodia && !livreCP) {
-          msgErros.text += "Erro! \n Nenhuma tipo de contraponto selecionado!\n Utilize a barra laterial para selecionar.";
+          msgErros.text += "Erro! \n Nenhum tipo de contraponto selecionado!\n Utilize a barra laterial para selecionar.";
                        msgErros.visible=true; return; };
-
  destroirMsg();
  resultado = [];
  carregarNotas();
  if (finaliza) { return; };
  vCantusFirmus();
+ analisaMelodia(); // função para analisar uma só voz da textura
+ analisaTodas(); // função para analisar todas as vozes da textura
+ vTextura(); // função para analisar a textura em pares de vozes
+ console.log("resultado.length - antes:", resultado.length)
+ resultado = removeRepetição(resultado); // função para apresentar o resultado em uma nova janela
+ console.log("resultado.length - depois:", resultado.length)
+ apresentaResultado(0);
+}
 
- // --------------- melodia --------------------
+function analisaMelodia() {
+   // --------------- melodia --------------------
  if (peNota.checked) { penultimaNota(); };
  if (ambito.checked) { ambitoMelodico(); };
  if (priviGC.checked) { privilegiaConj(); };
@@ -3095,270 +3323,332 @@ console.log("- verificar ---------");
  if (doisSaltM.checked) { doisSaltosMdireção(); };
  if (doisSaltC.checked) { doisSaltosMContra(); };
  if (saltoTF.checked) { saltoTempoForte(); };
+}
+
+function analisaTodas() {
+  if (!melodia && (primInt.checked || ultInt.checked)) { primUltIntervalo(); };
+  if (!melodia && ultNotas.checked) { alcançarMovContra(); };
+  if (!melodia && sensCad.checked) { sensivelCadencia(); };
+  if (!melodia && distancia.checked) { espaçamento(); };
+  if (!melodia && movSim.checked) { quantidadeMovSim(); };
+  if (cHarmonia.checked) { coerenciaHarmonica(); };
+  if (cHarmoniaF.checked) { coerHarmFund(); };
+}
+
+function analisaDuplas() {
  // --------------- conduz ------------
  if (!melodia && (paralela5.checked || paralela8.checked)) { quintasOitavas(); };
  if (!melodia && paralela4.checked) { quartas(); };
  if (!melodia && paralela36.checked) { terçasSextas(); };
- if (!melodia && (oculta5.checked || oculta8.checked)) { ocultas(); };
+ if (!melodia && (oculta5.checked || oculta8.checked) && ((ocultExt.checked && vS == 0 && vI == vozes[0].nota.length-1) || !ocultExt.checked)) { ocultas(); };
  if (!melodia && (consecObli.checked || consecCont.checked)) { consecutivas(); };
- if (!melodia && (inter5.checked || inter8.checked)) { intermitentes(); };
+ if (!melodia && (inter5.checked || inter8.checked) && ((interExt.checked && vS == 0 && vI == vozes[0].nota.length-1) || !interExt.checked)) { intermitentes(); };
+ if (!melodia && movSim.checked) { priorizaContObli(); };
  if (!melodia && uniss.checked) { unissono(); };
  if (!melodia && cruzaVozes.checked) { cruzamento(); };
  if (!melodia && falsaR.checked) { falsaRelação(); };
- if (!melodia && distancia.checked) { espaçamento(); };
- if (!melodia && (primInt.checked || ultInt.checked)) { primUltIntervalo(); };
- if (!melodia && ultNotas.checked) { alcançarMovContra(); };
- if (!melodia && sensCad.checked) { sensivelCadencia(); };
  if (!melodia && consImp.checked) { consonancias(); };
- if (cHarmonia.checked) { coerenciaHarmonica(); };
- if (cHarmoniaF.checked) { coerHarmFund(); };
- // --------------- dissonâncias --------------
+ // // --------------- dissonâncias --------------
  if (!melodia && dissonanciasG.checked) { dissonanciasL(); };
- // ----------------------------------------------
-  (typeof(quit) === 'undefined' ? Qt.quit : quit)();
-  resultado = removeRepetição(resultado);
-  for (var i=0;i<verificados;i++) {
-  	mensagem[i] = component.createObject(msgResult);
-  	mensagem[i].y = i*25 + 40;
-  	mensagem[i].text = resultado[i+1][0];
-  	mensagem[i].value = i+1;
-  	msgResult.height = i*25 + 70;
-  };
-
-  msgResult.visible = true;
-  msgResult.raise(); msgResult.raise();
-  msgResult.raise(); msgResult.raise();
-
-
-  if (msgErros.estado) { msgErros.visible = true; };
 }
 //---------------------------------------
 function carregarNotas() {
 
-  console.log("Contraponto .............................................. Rogério Tavares Constante - 2019(c)")
+  console.log("Contraponto .............................................. Rogério Tavares Constante - 2025(c)")
 
   if (typeof curScore == 'undefined' || curScore == null) { // verifica se há partitura
      console.log("nenhuma partitura encontrada");
      msgErros.text = "Erro! \n Nenhuma partitura encontrada!";
                        msgErros.visible=true; finaliza = true; return; };
 
-  // curScore.startCmd(); // atualizar a leitura dos texto de harmonia ------------
+  //curScore.startCmd(); // atualizar a leitura dos texto de harmonia ------------
   // cmd("transpose-up"); cmd("transpose-down"); cmd("undo"); cmd("undo");
-  // curScore.endCmd(); //  (don't know if it's necessary to restart cmd)
+  //curScore.endCmd(); //  (don't know if it's necessary to restart cmd)
   //----------------------------------------------------------------------------
+  var cursor = curScore.newCursor();
   vozCF = parseInt(vozCantusFirmus.text) - 1;
-  //procura por uma seleção
   var pautaInicial;
   var pautaFinal;
   var posFinal;
   var posInicial;
   processaTudo = false;
   vozes = [];
-  var cursor = curScore.newCursor();
 
   cursor.rewind(1);
-
-    if (!cursor.segment) {
-       // no selection
-       console.log("nenhuma seleção: processando toda partitura");
-       processaTudo = true;
-       if (melodia) { pautaInicial = vozCF; pautaFinal = vozCF + 1}
-               else { pautaInicial = 0; pautaFinal = curScore.nstaves; };
-     } else {
-       pautaInicial = cursor.staffIdx;
-       posInicial = cursor.tick;
-       cursor.rewind(2);
-       pautaFinal = cursor.staffIdx + 1;
-       posFinal = cursor.tick;
-          if(posFinal == 0) {  // se seleção vai até o final da partitura, a posição do fim da seleção (rewind(2)) é 0.
-          							// para poder calcular o tamanho do segmento, pega a última posição da partitura (lastSegment.tick) e adiciona 1.
-          posFinal = curScore.lastSegment.tick + 1;
-          }
-       cursor.rewind(1);
+  //procura por uma seleção
+  if (!cursor.segment) {
+     // no selection
+     console.log("nenhuma seleção: processando toda partitura");
+     processaTudo = true;
+     if (melodia) { pautaInicial = vozCF; pautaFinal = vozCF + 1}
+             else { pautaInicial = 0; pautaFinal = curScore.nstaves; };
+   } else {
+     pautaInicial = cursor.staffIdx;
+     posInicial = cursor.tick;
+     cursor.rewind(2);
+     pautaFinal = cursor.staffIdx + 1;
+     posFinal = cursor.tick;
+      if(posFinal == 0) {  // se seleção vai até o final da partitura, a posição do fim da seleção (rewind(2)) é 0.
+      							// para poder calcular o tamanho do segmento, pega a última posição da partitura (lastSegment.tick) e adiciona 1.
+      posFinal = curScore.lastSegment.tick + 1;
+      }
+     cursor.rewind(1);
+  };
+  // procura voz do cantus firmus
+  if (cursor.segment) { cursor.rewind(1); } else { cursor.rewind(0); };
+  var cantus;
+  for (var cf = 0; cf < cursor.segment.annotations.length; cf++) {
+    if (cursor.segment.annotations[cf].type == 41 ||
+        cursor.segment.annotations[cf].type == 42) { //console.log("Anotações:", cursor.segment.annotations[cf].text);
+        cantus = cursor.segment.annotations[cf].text.toUpperCase();
+        if (cantus == "CF" || cantus == "C.F." ||
+            cantus == "CANTUS FIRMUS" || cantus == "CANTUS") {
+            if (cursor.segment.annotations[cf].track == 0) { //console.log("CF está no track 0")
+              vozCantusFirmus.text = 1;
+            } else { //console.log("CF não está no track 0")
+              vozCantusFirmus.text = (cursor.segment.annotations[cf].track/4)+1;
+            };
+        }; //console.log("track:", cursor.segment.annotations[cf].track, vozCantusFirmus.text)
     };
+  };
 
   // ------------------ inicializa variáveis de dados
 
-            var seg = 0;
-            var carregou;
-            verificados = 0;
-            var trilha;
-            var trilhaInicial = pautaInicial * 4;
-            var trilhaFinal = pautaFinal * 4;
-            var compasso = 0;
-            var compassoAtual = null;
-            var tiqueComp = 0;
-            var tickComp = [];  // posição de início dos compassos
+        var seg = 0;
+        var carregou;
+        verificados = 0;
+        var trilha;
+        var trilhaInicial = pautaInicial * 4;
+        var trilhaFinal = pautaFinal * 4;
+        var compasso = 0;
+        var compassoAtual = null;
+        var tiqueComp = 0;
+        var tickComp = [];  // posição de início dos compassos
 
-            cursor.rewind(0);
-            while (cursor.segment && (processaTudo || cursor.segment.tick < posFinal)) { // cria array com as formulas de compasso
-              compasso++;
-              tickComp[compasso] = cursor.segment.tick;
-              cursor.nextMeasure();
-            };
+        cursor.rewind(0);
 
-          // lê as informações da seleção (ou do documento inteiro, caso não haja seleção)
+        while (cursor.segment && (processaTudo || cursor.segment.tick < posFinal)) { // cria array com as formulas de compasso
+          compasso++;
+          tickComp[compasso] = cursor.segment.tick;
+          cursor.nextMeasure();
+        };
 
-            if(processaTudo) { cursor.rewind(0); } else { cursor.rewind(1); }; // posiciona o cursor no início
-            var segmento = cursor.segment;
-            var pausa = false;
-            for (var c=1;c<tickComp.length;c++) { // atualiza 'compasso' para posição do segmento
-              if (tickComp[c] >= segmento.tick) { compasso = c; break; };
-            };
-           while (segmento && (processaTudo || segmento.tick < posFinal)) {
-            carregou = false;
-            var denominador = cursor.measure.timesigActual.denominator;
-            var numerador = cursor.measure.timesigActual.numerator;
-            var tempo = ((segmento.tick - tickComp[compasso]) / (1920 / denominador)) + 1;
-            var voz = 0;
-            var cifras, tom;
-            for (var cif = 0; cif < segmento.annotations.length; cif++) { //console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
-                 if (segmento.annotations[cif].subStyle == 29) {
-                  //console.log("compasso", compasso, ":", segmento.annotations[cif]);
-                  cifras = segmento.annotations[cif].text;
-                  console.log("cif", cif, cifras);
-               } else if ((segmento.annotations[cif].type == 41 ||
-                           segmento.annotations[cif].type == 42) &&
-                           segmento.annotations[cif].text.length > 4) {
-                  var textoTom = segmento.annotations[cif].text;
-                  textoTom = textoTom.toUpperCase();
-                  textoTom = textoTom.replace(/DO/g, "DÓ");
-                  textoTom = textoTom.replace("RE", "RÉ");
-                  textoTom = textoTom.replace("MÍ", "MI");
-                  textoTom = textoTom.replace("FA", "FÁ");
-                  textoTom = textoTom.replace("SÓL", "SOL");
-                  textoTom = textoTom.replace("LA", "LÁ");
-                  textoTom = textoTom.replace("SÍ", "SI");
-                  textoTom = textoTom.replace("JO", "JÔ");
-                  textoTom = textoTom.replace("FRI", "FRÍ");
-                  textoTom = textoTom.replace("LID", "LÍD");
-                  textoTom = textoTom.replace("EO", "EÓ");
-                  textoTom = textoTom.replace("LO", "LÓ");
-                  if ( textoTom.substr(0, 2) == "DÓ" || textoTom.substr(0, 2) == "RÉ" ||
-                       textoTom.substr(0, 2) == "MI" || textoTom.substr(0, 2) == "FÁ" ||
-                       textoTom.substr(0, 2) == "SO" || textoTom.substr(0, 2) == "LÁ" ||
-                       textoTom.substr(0, 2) == "SI") { tom = textoTom; };
-              };
-            };
+      // lê as informações da seleção (ou do documento inteiro, caso não haja seleção)
 
-            vozes[seg] = { nota: [], tonal: [], posição: [], duração: [], trilha: [], objeto: [], ligadura: [], tempo: [], cifras: [], tom: [] };
+        if(!cursor.segment) { cursor.rewind(0); } else { cursor.rewind(1); }; // posiciona o cursor no início
+        var segmento = cursor.segment;
+        var pausa = false;
+        for (var c=1;c<tickComp.length;c++) { // atualiza 'compasso' para posição do segmento
+          if (tickComp[c] >= segmento.tick) { compasso = c; break; };
+        };
+       while (segmento && (processaTudo || segmento.tick < posFinal)) {
+        carregou = false;
+        var denominador = cursor.measure.timesigActual.denominator;
+        var numerador = cursor.measure.timesigActual.numerator;
+        var tempo = ((segmento.tick - tickComp[compasso]) / (1920 / denominador)) + 1;
+        var voz = 0;
+        var cifras, tom;
+        for (var cif = 0; cif < segmento.annotations.length; cif++) { //console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
+             if (segmento.annotations[cif].subStyle == 29) {
+              //console.log("compasso", compasso, ":", segmento.annotations[cif]);
+              cifras = segmento.annotations[cif].text;
+              //console.log("cif", cif, cifras);
+           } else if ((segmento.annotations[cif].type == 41 ||
+                       segmento.annotations[cif].type == 42) &&
+                       segmento.annotations[cif].text.length > 4) {
+              var textoTom = segmento.annotations[cif].text;
+              textoTom = textoTom.toUpperCase();
+              textoTom = textoTom.replace(/DO/g, "DÓ");
+              textoTom = textoTom.replace("RE", "RÉ");
+              textoTom = textoTom.replace("MÍ", "MI");
+              textoTom = textoTom.replace("FA", "FÁ");
+              textoTom = textoTom.replace("SÓL", "SOL");
+              textoTom = textoTom.replace("LA", "LÁ");
+              textoTom = textoTom.replace("SÍ", "SI");
+              textoTom = textoTom.replace("JO", "JÔ");
+              textoTom = textoTom.replace("FRI", "FRÍ");
+              textoTom = textoTom.replace("LID", "LÍD");
+              textoTom = textoTom.replace("EO", "EÓ");
+              textoTom = textoTom.replace("LO", "LÓ");
+              if ( textoTom.substr(0, 2) == "DÓ" || textoTom.substr(0, 2) == "RÉ" ||
+                   textoTom.substr(0, 2) == "MI" || textoTom.substr(0, 2) == "FÁ" ||
+                   textoTom.substr(0, 2) == "SO" || textoTom.substr(0, 2) == "LÁ" ||
+                   textoTom.substr(0, 2) == "SI") { tom = textoTom; };
+          };
+        };
 
-             // Passo 1: ler as notas e guardar em "vozes"
-               for (trilha = trilhaInicial; trilha < trilhaFinal; trilha++) {
-               	cursor.track = trilha;
-            	  if (segmento.elementAt(trilha)) {
-            	  	 if (segmento.elementAt(trilha).type == Element.REST) { //console.log(seg, "tipo pausa", trilha, segmento.tick);
-            	  	 	 if (seg == 0) { pausa = true; //console.log("seg 0, voz", voz, "ligadura true");
-                       vozes[seg].nota[voz] = 0;
-                       vozes[seg].tonal[voz] = 12;
-                       vozes[seg].trilha[voz] = trilha;
-                       vozes[seg].posição[voz] = segmento.tick;
-                       vozes[seg].duração[voz] = segmento.elementAt(trilha).duration.ticks;
-                       vozes[seg].compasso = compasso;
-                       vozes[seg].formula = [numerador, denominador];
-                       vozes[seg].objeto[voz] = segmento.elementAt(trilha).rest;
-                       vozes[seg].ligadura[voz] = true;
-                       vozes[seg].tempo[voz] = tempo;
-                       vozes[seg].cifras = cifras;
-                       vozes[seg].tom = tom;
+        vozes[seg] = { nota: [], tonal: [], posição: [], duração: [], trilha: [], objeto: [], ligadura: [], tempo: [], cifras: [], tom: [] };
 
-                       voz++;
-                       carregou = true;
-                       continue;
-                     } else { //console.log("seg != 0, voz", voz, "ligadura true");
-                        vozes[seg].nota[voz] = vozes[seg-1].nota[voz];
-                        vozes[seg].tonal[voz] = vozes[seg-1].tonal[voz];
-                        vozes[seg].trilha[voz] = vozes[seg-1].trilha[voz];
-                        vozes[seg].posição[voz] = segmento.tick;
-                        vozes[seg].duração[voz] = segmento.elementAt(trilha).duration.ticks;
-                        vozes[seg].compasso = compasso;
-                        vozes[seg].formula = [numerador, denominador];
-                        vozes[seg].objeto[voz] = segmento.elementAt(trilha).rest;
-                        vozes[seg].ligadura[voz] = true;
-                        vozes[seg].tempo[voz] = tempo;
-                        vozes[seg].cifras = cifras;
-                        vozes[seg].tom = tom;
-
-                        voz++;
-                        carregou = true;
-            	  	      continue; };
-
-            	  	 } else if (segmento.elementAt(trilha).type == Element.CHORD) { //console.log(seg, "tipo CHORD", trilha, segmento.tick);
-                     var duração = segmento.elementAt(trilha).duration.ticks;
-                     var notas = segmento.elementAt(trilha).notes;
-                     for (var j=notas.length-1; j>=0;j--) {
-                       vozes[seg].nota[voz] = notas[j].pitch;
-                       vozes[seg].tonal[voz] = notas[j].tpc
-                       vozes[seg].trilha[voz] = trilha;
-                       vozes[seg].posição[voz] = segmento.tick;
-                       vozes[seg].duração[voz] = duração;
-                       vozes[seg].compasso = compasso;
-                       vozes[seg].formula = [numerador, denominador];
-                       vozes[seg].objeto[voz] = notas[j];
-                       if (notas[j].tieBack) { vozes[seg].ligadura[voz] = true; } else { vozes[seg].ligadura[voz] = false; }
-                       vozes[seg].tempo[voz] = tempo;
-                       vozes[seg].cifras = cifras;
-                       vozes[seg].tom = tom;
-        //console.log("voz", voz, "ligadura",vozes[seg].ligadura[voz]);
-                       voz++;
-                       carregou = true;
-
-                     };
-                   };
-                 } else { //console.log(seg, "tipo: nem pausa, nem chord", trilha, segmento.tick);
-
-              if (vozes[seg-1]) { //console.log("existe vozes anterior.");
-					     for (var y=0; y<vozes[seg-1].nota.length;y++) {
-						    if (trilha == vozes[seg-1].trilha[y]) { //console.log("trilha atual é a mesma da vozes anterior.");
-						    	if ((vozes[seg-1].duração[y] + vozes[seg-1].posição[y]) > segmento.tick) { var prolonga = true; } else { var prolonga = false; };
-                //  console.log("Duração da vozes anterior ultrapassa posição do segmento:", prolonga);
-						    if (prolonga){
-						        vozes[seg].nota[voz] = vozes[seg-1].nota[y];
-	                  vozes[seg].tonal[voz] = vozes[seg-1].tonal[y];
-	                  vozes[seg].trilha[voz] = vozes[seg-1].trilha[y];
-	                  vozes[seg].posição[voz] = segmento.tick;
-	                  vozes[seg].duração[voz] = vozes[seg-1].duração[y] - (segmento.tick - vozes[seg-1].posição[y]);
-	                  vozes[seg].compasso = compasso;
-	                  vozes[seg].formula = [numerador, denominador];
-	                  vozes[seg].objeto[voz] = vozes[seg-1].objeto[y];
-								    vozes[seg].ligadura[voz] = true;
-								    vozes[seg].tempo[voz] = tempo;
+         // Passo 1: ler as notas e guardar em "vozes"
+           for (trilha = trilhaInicial; trilha < trilhaFinal; trilha++) {
+           	cursor.track = trilha;
+        	  if (segmento.elementAt(trilha)) {
+        	  	 if (segmento.elementAt(trilha).type == Element.REST) { //console.log(seg, "tipo pausa", trilha, segmento.tick);
+        	  	 	 if (seg == 0) { pausa = true; //console.log("seg 0, voz", voz, "ligadura true");
+                   vozes[seg].nota[voz] = 0;
+                   vozes[seg].tonal[voz] = 0;
+                   vozes[seg].trilha[voz] = trilha;
+                   vozes[seg].posição[voz] = segmento.tick;
+                   vozes[seg].duração[voz] = segmento.elementAt(trilha).duration.ticks;
+                   vozes[seg].compasso = compasso;
+                   vozes[seg].formula = [numerador, denominador];
+                   vozes[seg].objeto[voz] = segmento.elementAt(trilha).rest;
+                   vozes[seg].ligadura[voz] = true;
+                   vozes[seg].tempo[voz] = tempo;
+                   vozes[seg].cifras = cifras;
+                   vozes[seg].tom = tom;
+                   voz++;
+                   carregou = true;
+                   continue;
+                 } else { //console.log("seg != 0, voz", voz, "ligadura true");
+                    vozes[seg].nota[voz] = vozes[seg-1].nota[voz];
+                    vozes[seg].tonal[voz] = vozes[seg-1].tonal[voz];
+                    vozes[seg].trilha[voz] = vozes[seg-1].trilha[voz];
+                    vozes[seg].posição[voz] = segmento.tick;
+                    vozes[seg].duração[voz] = segmento.elementAt(trilha).duration.ticks;
+                    vozes[seg].compasso = compasso;
+                    vozes[seg].formula = [numerador, denominador];
+                    vozes[seg].objeto[voz] = segmento.elementAt(trilha).rest;
+                    vozes[seg].ligadura[voz] = true;
+                    vozes[seg].tempo[voz] = tempo;
                     vozes[seg].cifras = cifras;
                     vozes[seg].tom = tom;
-
-						        voz++;
-						        carregou = true;
-							   };
-							   break;
-						    };
-					     };
-					    };
-             };
-            };
-
-              if (carregou) { //console.log("vozes", seg, ":", vozes[seg].nota[0], vozes[seg].nota[1]);
-                 cursor.track = trilhaInicial;
-                 for (var i=1;i<vozes[seg].nota.length;i++) {
-                 	 if (vozes[seg].duração[1] < vozes[seg].duração[0]) { cursor.track = vozes[seg].trilha[1]; };
+                    voz++;
+                    carregou = true;
+        	  	      continue; };
+        	  	 } else if (segmento.elementAt(trilha).type == Element.CHORD) { //console.log(seg, "tipo CHORD", trilha, segmento.tick);
+                 var duração = segmento.elementAt(trilha).duration.ticks;
+                 var notas = segmento.elementAt(trilha).notes;
+                 for (var j=notas.length-1; j>=0;j--) {
+                   vozes[seg].nota[voz] = notas[j].pitch;
+                   vozes[seg].tonal[voz] = notas[j].tpc
+                   vozes[seg].trilha[voz] = trilha;
+                   vozes[seg].posição[voz] = segmento.tick;
+                   vozes[seg].duração[voz] = duração;
+                   vozes[seg].compasso = compasso;
+                   vozes[seg].formula = [numerador, denominador];
+                   vozes[seg].objeto[voz] = notas[j];
+                   if (notas[j].tieBack) { vozes[seg].ligadura[voz] = true; } else { vozes[seg].ligadura[voz] = false; }
+                   vozes[seg].tempo[voz] = tempo;
+                   vozes[seg].cifras = cifras;
+                   vozes[seg].tom = tom;
+    //console.log("voz", voz, "ligadura",vozes[seg].ligadura[voz]);
+                   voz++;
+                   carregou = true;
                  };
-                 seg++;
-              };
+               };
+             } else { //console.log(seg, "tipo: nem pausa, nem chord", trilha, segmento.tick);
+          if (vozes[seg-1]) { //console.log("existe vozes anterior.");
+			     for (var y=0; y<vozes[seg-1].nota.length;y++) {
+				    if (trilha == vozes[seg-1].trilha[y]) { //console.log("trilha atual é a mesma da vozes anterior.");
+				    	if ((vozes[seg-1].duração[y] + vozes[seg-1].posição[y]) > segmento.tick) { var prolonga = true; } else { var prolonga = false; };
+            //console.log("Duração da vozes anterior ultrapassa posição do segmento:", prolonga);
+				    if (prolonga){
+				        vozes[seg].nota[voz] = vozes[seg-1].nota[y];
+                vozes[seg].tonal[voz] = vozes[seg-1].tonal[y];
+                vozes[seg].trilha[voz] = vozes[seg-1].trilha[y];
+                vozes[seg].posição[voz] = segmento.tick;
+                vozes[seg].duração[voz] = vozes[seg-1].duração[y] - (segmento.tick - vozes[seg-1].posição[y]);
+                vozes[seg].compasso = compasso;
+                vozes[seg].formula = [numerador, denominador];
+                vozes[seg].objeto[voz] = vozes[seg-1].objeto[y];
+						    vozes[seg].ligadura[voz] = true;
+						    vozes[seg].tempo[voz] = tempo;
+                vozes[seg].cifras = cifras;
+                vozes[seg].tom = tom;
+				        voz++;
+				        carregou = true;
+					   };
+					   break;
+				    };
+			     };
+			    };
+         };
+        };
 
-        		  cursor.next(); segmento = cursor.segment;
-              compasso++;
-              if (tickComp[compasso] && segmento.tick < tickComp[compasso]) { compasso--; };
-           };
+          if (carregou) { //console.log("vozes", seg, ":", vozes[seg].nota[0], vozes[seg].nota[1]);
+             cursor.track = trilhaInicial;
+             for (var i=1;i<vozes[seg].nota.length;i++) {
+             	 if (vozes[seg].duração[i] < vozes[seg].duração[i-1]) { cursor.track = vozes[seg].trilha[i]; };
+             };
+             seg++;
+          };
+
+    		  cursor.next(); segmento = cursor.segment;
+          compasso++;
+          if (tickComp[compasso] && segmento.tick < tickComp[compasso]) { compasso--; };
+       };
 
    if (seg == 0) { msgErros.text += "Nenhum acorde carregado!!\n";
                         msgErros.estado=true; (typeof(quit) === 'undefined' ? Qt.quit : quit)(); };
- for (var x=0;x<vozes.length;x++) { //console.log(x, vozes[x].nota);
-   if (vozes[x].nota[0] == 0 || vozes[x].nota[1] == 0) { vozes.splice(0, 1); x--; };
+ for (var x=0;x<vozes[0].nota.length;x++) {
+   if (vozes[0].nota[x] == 0) { vozes.splice(0, 1); x--; break; };
  };
+ //for (var x=0;x<vozes.length;x++) { console.log("vozes:", x, vozes[x].nota); };
  if (vozes.length < 2) { // verifica se há partitura
-    console.log("vozes.length < 2");
+    //console.log("vozes.length < 2");
     msgErros.text = "Erro! \n Não foi detectada quantidade mínima de notas!";
                       msgErros.visible=true; finaliza = true; return; };
 }
+
+function vTextura() { //console.log("função vTextura --- ");
+  if (vozes.length > 1) { // se tiver mais de um acorde
+    //console.log("vozes.length > 1:", vozes.length);
+    if (vozes[0].nota.length > 1) { //console.log("vozes[0].nota.length > 1:", vozes[0].nota.length);
+      //loop para carregas a var vozesT com as combinações de pares de vozes
+      for (var vs=0;vs<vozes[0].nota.length-1;vs++) { // percorre voz superior
+        //console.log("voz da nota superior:", vs, vozes[0].nota[vs]);
+        for (var vi=vs+1;vi<vozes[0].nota.length;vi++) { // percorre voz inferior
+          //console.log("vozes:", vs, vi);
+          vozesT = [];
+          for (var ac=0;ac<vozes.length;ac++) { // percorre acordes
+            //console.log("acordes:", ac, vozes[ac].nota[vs], vozes[ac].nota[vi] );
+            vozesT.push({
+              nota: [vozes[ac].nota[vs], vozes[ac].nota[vi]],
+              tonal: [vozes[ac].tonal[vs], vozes[ac].tonal[vi]],
+              trilha: [vozes[ac].trilha[vs], vozes[ac].trilha[vi]],
+              posição: [vozes[ac].posição[vs], vozes[ac].posição[vi]],
+              duração: [vozes[ac].duração[vs], vozes[ac].duração[vi]],
+              compasso: vozes[ac].compasso,
+              formula: vozes[ac].formula,
+              objeto: [vozes[ac].objeto[vs], vozes[ac].objeto[vi]],
+              ligadura: [vozes[ac].ligadura[vs], vozes[ac].ligadura[vi]],
+              tempo: [vozes[ac].tempo[vs], vozes[ac].tempo[vi]],
+              cifras: vozes[ac].cifras,
+              tom: vozes[ac].tom
+            });
+            //console.log("vozesT:", ac, vs, vi, vozesT[ac].nota)
+          };
+          vS = vs; vI = vi;
+          analisaDuplas(vS, vI);
+        };
+      }
+    } else if (vozes[0].nota.length == 1) { //console.log("vozes[0].nota.length == 1:", vozes[0].nota.length);
+          vozesT = [];
+          for (var ac=0;ac<vozes.length;ac++) { // percorre acordes
+            vozesT.push({
+              nota: vozes[ac].nota[vi],
+              tonal: vozes[ac].tonal[vi],
+              trilha: vozes[ac].trilha[vi],
+              posição: vozes[ac].posição[vi],
+              duração: vozes[ac].duração[vi],
+              compasso: vozes[ac].compasso,
+              formula: vozes[ac].formula,
+              objeto: vozes[ac].objeto[vi],
+              ligadura: vozes[ac].ligadura[vi],
+              tempo: vozes[ac].tempo[vi],
+              cifras: vozes[ac].cifras,
+              tom: vozes[ac].tom
+            });
+          };
+          vS = 0;
+          analisaDuplas();
+    } else { msgErros.text += "Nenhuma voz detectada!\n";
+                        msgErros.estado = true; return; };
+  } else { msgErros.text += "Não possui a quantidade mínima de notas para a realização da análise!\n";
+                        msgErros.estado = true; return; };
+}
+
 //------------------- melodia -----------
 function penultimaNota() {
  if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de notas para a verificação da penúltima nota!\n";
@@ -3390,6 +3680,7 @@ function ambitoMelodico() {
    var pos1, pos2, posI, posF;
 
    for (var i=0;i<vozes.length;i++) { // detecta as extremidades da melodia
+     if (vozes[i].nota[voz] == 0) { continue; };
      var nota = vozes[i].nota[voz];
      if (nota > agudo) { agudo = nota; pos1 = i; };
      if (nota < grave) { grave = nota; pos2 = i; };
@@ -3421,7 +3712,7 @@ function privilegiaConj() {
   var conj = 0, disj = 0;
 
   for (var x=1;x<vozes.length;x++) { // percorre acorde
-   if (!vozes[x].nota[voz] || !vozes[x-1].nota[voz]) {break;};
+   if (!vozes[x].nota[voz] || !vozes[x-1].nota[voz] || vozes[x].nota[voz] == 0 || vozes[x-1].nota[voz] == 0) { continue;};
    if (!vozes[x].ligadura[voz]) { var intervalo = Math.abs(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
     if (priviGCEx.checked) { if (intervalo > 4) { disj++; } else { conj++ };
     } else if (intervalo > 2) { disj++; } else { conj++ };
@@ -3491,13 +3782,19 @@ function melodiaAum() {
   if ((melodia && voz != vozCF) || (!melodia && !livreCP && voz == vozCF)) { continue; };
   for (var x=1;x<vozes.length;x++) { // percorre acordes
    if (!vozes[x].nota[voz] || !vozes[x-1].nota[voz]) {break;};
-
+   if (vozes[x-2] && vozes[x+1]) {
+     var iPrep = vozes[x-1].nota[voz] - vozes[x-2].nota[voz];
+     var iTrit = vozes[x].nota[voz] - vozes[x-1].nota[voz];
+     var iRes = vozes[x+1].nota[voz] - vozes[x].nota[voz];
+     if ((Math.abs(iPrep) < 3 && Math.abs(iRes) < 3 && Math.abs(iPrep) > 0 && Math.abs(iRes) > 0) && // prepara e resolve por grau conjunto
+        ((iPrep > 0 && iTrit < 0 && iRes < 0) || (iPrep > 0 && iTrit < 0 && iRes < 0))) // prepara e resolve na direção contrária do trítono
+        { var preparado = true } else { var preparado = false; };
+   };
    var intervalo = Math.abs(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
    var intCT = Math.abs(vozes[x].tonal[voz] - vozes[x-1].tonal[voz]);
-
-   if (intervalo == 6 || // 4ªa e 5ªd
-       (intervalo == 3 && intCT == 9) || // 2ªa
-       (intervalo == 8 && intCT == 8)) { // 5ªa
+   if ((intervalo == 6 && (!saltTrit.checked || !preparado) )|| // 4ªa e 5ªd
+       (intCT == 9) || // 2ªa
+       (intCT == 8)) { // 5ªa
       verificados++;
       criaResultado(verificados, x, voz, voz, "intervalo melódico aumentado ou diminuto", 2, 1);
     };
@@ -3592,12 +3889,12 @@ function tritono1Ext() {
    qtM++;
 
    var dir1 = direção(novaVoz[x].nota - novaVoz[x-1].nota);
-  // console.log("x:", x, "mov:", dir1)
+  //console.log("x:", x, "mov:", dir1)
 
    if (dir1 == 0) { mov[x-1] = mov[x-2]} else { mov[x-1] = dir1; };
 
    if (x>=2 && mov[x-1] != mov[x-2]) {
-    for (var i = posI+1; i < x-2; i++) { //   console.log("voz:", voz, " | ", novaVoz[i].nota, novaVoz[x-1].nota);
+    for (var i = posI+1; i < x-2; i++) { //console.log("voz:", voz, " | ", novaVoz[i].nota, novaVoz[x-1].nota);
 	    if (qtM >= 2) { var intervalo = Math.abs(novaVoz[i].nota - novaVoz[x-1].nota);
 	      var pIni = (novaVoz[x-1].pos - novaVoz[i].pos); var pFinal = novaVoz[x-1].pos;
 	      listaVerifica(intervalo);
@@ -3912,7 +4209,7 @@ function melodiaPF() {
    };
    if (vozSup[x] == pfSi) { pfSic++; // contagem dos pontos focais inferiores;
      var distI = vozes[x].posição[voz] - vozes[pfAntI].posição[voz]; //distância para o PF anterior
-    // console.log(voz, x, distMax, distI, pfAntI);
+    //console.log(voz, x, distMax, distI, pfAntI);
      if (vozSup[x-1] == pfSi || // não conta se nota anterior é ponto focal
         ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == 1)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
          distI <= distMax // não conte se distância entre os PFs for <= a dois tempos
@@ -3994,23 +4291,23 @@ for (var voz = vozInicial; voz <= vozFinal; voz++) {
          if (procuraT == "1") {  //procura resolução no 1º
            //console.log("achou resolução no 1º: 5 toms", tom1, tom2, tom3, tom4, tom5);
            if (x < novaVoz.length-2 && tam == 4 && tom1 == tom2 && tom1 == tom3 && tom1 == tom4) { // testa solução com distância de 4 notas
-          //  console.log("testa solução com distância de 4 notas", x, a, "alts", alt1, alt2, alt3, alt4);
+          //console.log("testa solução com distância de 4 notas", x, a, "alts", alt1, alt2, alt3, alt4);
             if (alt1 == "7+" && alt2 == "6+" && alt3 == "7+" && alt4 == "5") { x += 4; break;}
                 else { a = x; verificaAlter(); x += 3; break; };
           } else if (x < novaVoz.length-2 && tam == 3 && tom1 == tom2 && tom1 == tom3) { // testa solução com distância de 3 notas
-          //   console.log("testa solução com distância de 3 notas", x, a, "alts", alt1, alt2, alt3, "notas", nota1, nota2, nota3);
+          //console.log("testa solução com distância de 3 notas", x, a, "alts", alt1, alt2, alt3, "notas", nota1, nota2, nota3);
              if (alt1 == "6+" && (((alt2 == "2" || alt2 == "5" || alt2 == "1") && nota1 == 5) ||
                                   (nota2 == 5 && (alt3 == "5" || alt3 == "2")))) { x += 3; break;} else
              if (alt1 == "7+" && ((alt2 == "2" && alt3 == "5") || (nota2 == 3 && nota3 == 5))) { x += 3; break;}
                  else { a = x; verificaAlter(); x += 3; break; };
            } else if (tam == 2) { // testa solução com distância de 2 notas
-            // console.log("testa solução com distância de 2 notas", x, a, "alts", alt1, alt2, "notas", nota2);
+            //console.log("testa solução com distância de 2 notas", x, a, "alts", alt1, alt2, "notas", nota2);
              if (alt1 == "7+" && (alt2 == "2" || alt2 == "5")) { x += 2; break; } else
              if (alt1 == "6+" && nota2 == 5) { x += 2; break; }
                   else { a = x; verificaAlter(); x += 2; break; };
            } else if (tam == 1) { // testa solução com distância de 1 nota (e alternativa de 4 notas, com T na 2ª nota)
              if (x < novaVoz.length-3 && tam == 1 && tom1 == tom2 && tom1 == tom3 && tom1 == tom4 && tom1 == tom5) { // testa solução com distância de 4 notas
-            //   console.log("testa solução com distância de 1 e 4 notas", x, a, "alts", alt1, alt2, alt3, alt4);
+            //console.log("testa solução com distância de 1 e 4 notas", x, a, "alts", alt1, alt2, alt3, alt4);
                if (alt1 == "6+" && alt2 == "1" && ((alt3 == "7+" && alt4 == 2) || (alt4 == "7+" && alt3 == 2))) { x += 4; break;}};
              if (alt1 == "7+") { x += 1; break; } else { verificaAlter(); x += 1; break; };
            };
@@ -4214,71 +4511,67 @@ function saltoTempoForte() {
   };
 }
 
-// --------------------- conduz: condução de vozes ------------
+// --------------------- condução de vozes ------------
 function quintasOitavas() {
    var par5Status = true, par8Status = true;
    var acorAnt = 1;
    var qtdpar8Rep = parseInt(par8Rep.text), qtdpar5Rep = parseInt(par5Rep.text);
 
-     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
-       var vozAnt = voz;
+   var par5 = 0, par8 = 0;
 
-       for (var i=voz+1; i < vozes[1].nota.length; i++) { //  percorre outras vozes
-   		 var vozAtual = i;
-   		 var par5 = 0, par8 = 0;
+   for (var x=1;x<=vozesT.length;x++) { // percorre acordes
+      if (x==vozesT.length) { verificou58(); continue ; };
+      // if (voz >= vozesT[x].nota.length-1 || i >= vozesT[x].nota.length) { continue ; };
+      if (vozesT[x].nota && vozesT[x-1].nota) {
+        var dir1 = direção(vozesT[x].nota[0] - vozesT[x-1].nota[0]);
+        var dir2 = direção(vozesT[x].nota[1] - vozesT[x-1].nota[1]);
+        var intAtual = vozesT[x].nota[0] - vozesT[x].nota[1];
+        var intAnt = vozesT[x-1].nota[0] - vozesT[x-1].nota[1];
+        if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+          var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+            var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+        if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+          var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
+            var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
+      } else { return };
 
-	       for (var x=1;x<=vozes.length;x++) { // percorre acordes
-	         if (x==vozes.length) { verificou58(); continue ; };
-	        // if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { continue ; };
+      if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
-         var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
-         var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-         var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
-         var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
-         var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
-         var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
+          if (Math.abs(intAtual%12) == 7 && intT1 == 1 && intT2 == 1 && intAtual == intAnt && paralela5.checked) { //testa 5ª paralela
 
-         if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
+              var qtdPar5 = par5 + 1;
+              if (par5 == 0) { par5 = 2; } else { par5++; };
+              par5Status = true;
+              acorAnt = x;
+              par8 = 0, par8Status = false;
 
-              if (Math.abs(intAtual%12) == 7 && intT1 == 1 && intT2 == 1 && intAtual == intAnt && paralela5.checked) { //testa 5ª paralela
+          } else if (par5Status) { verificou58(); };
 
-                 if (vozAnt == voz) { var qtdPar5 = par5 + 1; }
-                 if (par5 == 0) { par5 = 2; } else { par5++; };
-                 par5Status = true;
-                 vozAnt = voz, vozAtual = i;
-                 acorAnt = x;
-                 par8 = 0, par8Status = false;
+            if (Math.abs(intAtual%12) == 0 && intT1 == 0 && intT2 == 0 && intAtual == intAnt && paralela8.checked) {  // testa 8ª paralela
 
-              } else if (par5Status) { verificou58(); };
+              var qtdPar8 = par8 + 1;
 
-               if (Math.abs(intAtual%12) == 0 && intT1 == 0 && intT2 == 0 && intAtual == intAnt && paralela8.checked) {  // testa 8ª paralela
+              if (par8 == 0) { par8 = 2; } else { par8++; };
+              par8Status = true;
+              acorAnt = x;
+              par5 = 0, par5Status = false;
 
-                 if (vozAnt == voz) { var qtdPar8 = par8 + 1;}
+          } else if (par8Status) { verificou58(); };
 
-                  if (par8 == 0) { par8 = 2; } else { par8++; };
-                  par8Status = true;
-                  vozAnt = voz, vozAtual = i;
-                  acorAnt = x;
-                  par5 = 0, par5Status = false;
-
-              } else if (par8Status) { verificou58(); };
-
-           } else { verificou58(); };
-         };
-       };
+        } else { verificou58(); };
      };
 
      function verificou58() {
 
        if (par8Status && par8 > qtdpar8Rep && paralela8.checked) {
          verificados++;
-         if (qtdPar8 >= vozes.length) { qtdPar8 = vozes.length; } else { qtdPar8++; };
-         criaResultado(verificados, acorAnt, vozAnt, vozAtual, "8ª paralela", qtdPar8 , 2);};
+         if (qtdPar8 >= vozesT.length) { qtdPar8 = vozesT.length; } else { qtdPar8++; };
+         criaResultado(verificados, acorAnt, vS, vI, "8ª paralela", qtdPar8 , 2);};
 
        if (par5Status && par5 > qtdpar5Rep && paralela5.checked) {
          verificados++;
-         if (qtdPar5 >= vozes.length) { qtdPar5 = vozes.length; } else { qtdPar5++; };
-         criaResultado(verificados, acorAnt, vozAnt, vozAtual, "5ª paralela", qtdPar5 , 2);};
+         if (qtdPar5 >= vozesT.length) { qtdPar5 = vozesT.length; } else { qtdPar5++; };
+         criaResultado(verificados, acorAnt, vS, vI, "5ª paralela", qtdPar5 , 2);};
 
       par8Status = false; par8 = 0;
       par5Status = false; par5 = 0;
@@ -4291,23 +4584,27 @@ function quartas() {
    var acorAnt = 1;
    var qtdpar4Rep = parseInt(par4Rep.text);
 
-  // console.log("par4Rep : "+ qtdpar4Rep)
+  //console.log("par4Rep : "+ qtdpar4Rep)
 
-     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
+     for (var voz=0; voz < vozesT[1].nota.length-1; voz++) { // percorre vozesT
        var vozAnt = voz;
-       for (var i=voz+1; i < vozes[1].nota.length; i++) { // percorre outras vozes
+       for (var i=voz+1; i < vozesT[1].nota.length; i++) { // percorre outras vozesT
          var vozAtual = i;
          var par4 = 0;
-	       for (var x=1;x<vozes.length;x++) { // percorre acordes
+	       for (var x=1;x<vozesT.length;x++) { // percorre acordes
 
-	        // if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) { verificou4(); continue; };
+	        // if (voz >= vozesT[x].nota.length-1 || i >= vozesT[x].nota.length) { verificou4(); continue; };
 
-	          var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
-            var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-            var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
-            var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
-            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
-            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
+	        var dir1 = direção(vozesT[x].nota[voz] - vozesT[x-1].nota[voz]);
+            var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
+            var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
+            var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
+            if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+              var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+                var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+            if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+              var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
+                var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
 
             if (Math.abs(intAtual%12) == 5 && intAtual == intAnt && intT1 == 1 && intT2 == 1 && dir1 == dir2 && dir1 != 0) { //testa por 4ª paralela
 
@@ -4341,29 +4638,27 @@ function terçasSextas() {
    var acorAnt = 1;
    var qtdpar36Rep = parseInt(par36Rep.text);
 
-     for (var voz=0; voz < vozes[1].nota.length-1; voz++) { // percorre vozes
+     for (var voz=0; voz < vozesT[1].nota.length-1; voz++) { // percorre vozesT
        var vozAnt = voz;
-
-       for (var i=voz+1; i < vozes[1].nota.length; i++) { // percorre outras vozes
+       for (var i=voz+1; i < vozesT[1].nota.length; i++) { // percorre outras vozesT
    		 var vozAtual = i;
    		 var par3 = 0, par6 = 0;
-
-	       for (var x=1;x<vozes.length;x++) { // percorre acordes
-
-	         if (voz >= vozes[x].nota.length-1 || i >= vozes[x].nota.length) {
-
-	            if (x==vozes.length-1) {verificou36();};
-
-	         continue;
-
+	       for (var x=1;x<vozesT.length;x++) { // percorre acordes
+           if (!vozesT[x].nota) { continue; };
+	         if (voz >= vozesT[x].nota.length-1 || i >= vozesT[x].nota.length) {
+	           if (x==vozesT.length-1) {verificou36();};
+	           continue;
 	         };
-
-	          var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
-            var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-            var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
-            var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
-            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
-            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
+	          var dir1 = direção(vozesT[x].nota[voz] - vozesT[x-1].nota[voz]);
+            var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
+            var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
+            var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
+            if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+              var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+                var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+            if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+              var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
+                var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
 
             if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
@@ -4417,26 +4712,28 @@ function terçasSextas() {
 
 function ocultas() {
 
-	for (var x=1;x<vozes.length;x++) { // percorre acordes
+	for (var x=1;x<vozesT.length;x++) { // percorre acordes
 
-    for (var voz=0; voz < vozes[x].nota.length; voz++) { // percorre vozes
+    for (var voz=0; voz < vozesT[x].nota.length; voz++) { // percorre vozesT
 
       var i;
-      var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
+      var dir1 = direção(vozesT[x].nota[voz] - vozesT[x-1].nota[voz]);
 
-      for (i=voz+1; i < vozes[x].nota.length; i++) { // percorre outras vozes
+      for (i=voz+1; i < vozesT[x].nota.length; i++) { // percorre outras vozesT
 
-         var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-         var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
-         var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
-         var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
+         var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
+         var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
+         var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
+         if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+           var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+             var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
 
          if (dir1 == dir2 && dir1 != 0) {          // both voices moving in the same direction
 
            if (Math.abs(intAtual%12) == 7 && intAtual != intAnt && intT1 == 1 && oculta5.checked) {             // testa ocultas
              // testa condições
-             if (!ocultEx.checked || (ocultEx.checked && x != vozes.length-1)) {
-               if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozes[x-1].nota[0] - vozes[x].nota[0]) > 2)) {
+             if (!ocultEx.checked || (ocultEx.checked && x != vozesT.length-1)) {
+               if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozesT[x-1].nota[0] - vozesT[x].nota[0]) > 2)) {
                 verificados++;
                 criaResultado(verificados, x, voz, i, "5ª oculta", 2, 2);
                };
@@ -4445,8 +4742,8 @@ function ocultas() {
 
            if (Math.abs(intAtual%12) == 0 && intAtual != intAnt && intT1 == 0 && oculta8.checked) { // testa ocultas
              // testa consições
-             if (!ocultEx.checked || (ocultEx.checked && x != vozes.length-1)) {
-               if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozes[x-1].nota[0] - vozes[x].nota[0]) > 2)) {
+             if (!ocultEx.checked || (ocultEx.checked && x != vozesT.length-1)) {
+               if (!ocultSalto.checked || (ocultSalto.checked && Math.abs(vozesT[x-1].nota[0] - vozesT[x].nota[0]) > 2)) {
                 verificados++;
                 criaResultado(verificados, x, voz, i, "8ª oculta", 2, 2);
                };
@@ -4460,20 +4757,24 @@ function ocultas() {
 
 function consecutivas() {
 
-     for (var x=1;x<vozes.length;x++) { // percorre acordes
+     for (var x=1;x<vozesT.length;x++) { // percorre acordes
 
-       for (var voz=0; voz < vozes[x].nota.length; voz++) { // percorre vozes
+       for (var voz=0; voz < vozesT[x].nota.length; voz++) { // percorre vozesT
 
          var i;
-         var dir1 = direção(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
+         var dir1 = direção(vozesT[x].nota[voz] - vozesT[x-1].nota[voz]);
 
-         for (i=voz+1; i < vozes[x].nota.length; i++) { // percorre outras vozes
+         for (i=voz+1; i < vozesT[x].nota.length; i++) { // percorre outras vozesT
 
-            var dir2 = direção(vozes[x].nota[i] - vozes[x-1].nota[i]);
-            var intAtual = vozes[x].nota[voz] - vozes[x].nota[i];
-            var intAnt = vozes[x-1].nota[voz] - vozes[x-1].nota[i];
-            var intT1 = Math.abs(vozes[x].tonal[voz] - vozes[x].tonal[i]);
-            var intT2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x-1].tonal[i]);
+            var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
+            var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
+            var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
+            if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+              var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+                var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+            if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+              var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
+                var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
 
             // consecutivas
 
@@ -4492,36 +4793,37 @@ function consecutivas() {
  }
 
 function intermitentes() {
-  var voz = 1 - vozCF;
-  var separa = parseInt(interExSn.text);
-   for (var x=0;x<vozes.length-2;x++) { // percorre acordes
-    var tF = verificaTempoForte(vozes[x].tempo[0], vozes[x].formula[0]); // verifica posição métrica
-    for (var y=x+2;y<vozes.length;y++) { // percorre acordes
+   var separa = parseInt(interExSn.text);
+   for (var x=0;x<vozesT.length-2;x++) { // percorre acordes
+    var tF = verificaTempoForte(vozesT[x].tempo[0], vozesT[x].formula[0]); // verifica posição métrica
+    for (var y=x+2;y<vozesT.length;y++) { // percorre acordes
       var ac = y - x + 1; // calcula qtd de acordes entre x e y
-      var tF2 = verificaTempoForte(vozes[y].tempo[0], vozes[y].formula[0]); // verifica posição métrica
-      var alc = Math.abs(vozes[y].nota[voz] - vozes[y-1].nota[voz]); // calcula intervalo melódico que alcança a intermitente
+      var tF2 = verificaTempoForte(vozesT[y].tempo[0], vozesT[y].formula[0]); // verifica posição métrica
+      var alc = Math.abs(vozesT[y].nota[0] - vozesT[y-1].nota[0]); // calcula intervalo melódico que alcança a intermitente
+      var alc2 = Math.abs(vozesT[y].nota[1] - vozesT[y-1].nota[1]);
       if (interExTf.checked && ((interExTf3.checked && tF != "F" && tF2 != "F") || // verifica exceção de tempo fraco e meio fraco
            (!interExTf3.checked && tF != "F" && tF != "mF" && tF2 != "F" && tF2 != "mF")) && // verifica exceção de tempo fraco
-           (!interExTf2.checked || (alc < 3 && alc != 0)) && // alcançada por grau conjunto
-           (!interExTf1.checked || vozes[x+1].ligadura[voz])) { continue; }; // verifica sincopada
-      if (interExTF.checked && tF == "F" && vozes[x].ligadura[voz] && vozes[y].ligadura[voz]) { continue; }; // verifica exceção de tempo forte
-      if (interExFim.checked && y == vozes.length-1) { continue; }; // verifica a exceção de cadência final
+           (!interExTf2.checked || (alc < 3 && alc != 0) || (alc2 < 3 && alc2 != 0)) && // alcançada por grau conjunto
+           (!interExTf1.checked || (vozesT[x+1].ligadura[0] || vozesT[x+1].ligadura[1]))) { continue; }; // verifica sincopada
+      if (interExTF.checked && tF == "F" && ((vozesT[x].ligadura[0] && vozesT[y].ligadura[0]) ||
+                                             (vozesT[x].ligadura[1] && vozesT[y].ligadura[1]))) { continue; }; // verifica exceção de tempo forte
+      if (interExFim.checked && y == vozesT.length-1) { continue; }; // verifica a exceção de cadência final
       if (interExS.checked && ac-2 > separa) { continue; }; // verifica qtd de notas que separam
       var notasIguais = true; // verifica a exceção de CF parado
       var notasIguais2 = true;
       var notasIguais3 = true;
       for (var j=x+1;j<=y;j++){
-        if (!livreCP && vozes[x].nota[vozCF] != vozes[j].nota[vozCF]) { notasIguais = false; };
-        if (livreCP && vozes[x].nota[voz] != vozes[j].nota[voz]) { notasIguais2 = false; };
-        if (livreCP && vozes[x].nota[vozCF] != vozes[j].nota[vozCF]) { notasIguais3 = false; };
+        if (vozesT[x].nota[0] != vozesT[j].nota[0]) { notasIguais = false; };
+        if (vozesT[x].nota[1] != vozesT[j].nota[1]) { notasIguais2 = false; };
       };
-      if (interExCF.checked && notasIguais && (notasIguais2 || notasIguais3)) { continue; }
-      var int1 = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]); // calcula intervalo x
-      var int2 = Math.abs(vozes[y].nota[0] - vozes[y].nota[1]); // calcula intervalo y
-      var intT1 = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
-      var intT2 = Math.abs(vozes[y].tonal[0] - vozes[y].tonal[1]);
-
-      if (interPM.checked && vozes[x].compasso+1 == vozes[y].compasso && vozes[x].tempo[0] == vozes[y].tempo[0]) { //mesma posição métrica
+      if (interExCF.checked && (notasIguais || notasIguais2)) { continue; };
+      var int1 = Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]); // calcula intervalo x
+      var int2 = Math.abs(vozesT[y].nota[0] - vozesT[y].nota[1]); // calcula intervalo y
+      if (vozesT[x].nota[0] >= vozesT[x].nota[1]) { var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1];  }
+        else { var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+      if (vozesT[y].nota[0] >= vozesT[y].nota[1]) { var intT2 = vozesT[y].tonal[0] - vozesT[y].tonal[1];  }
+        else { var intT2 = vozesT[y].tonal[1] - vozesT[y].tonal[0]; };
+      if (interPM.checked && vozesT[x].compasso+1 == vozesT[y].compasso && vozesT[x].tempo[0] == vozesT[y].tempo[0]) { //mesma posição métrica
           if (int1%12 == 7 && int1 == int2 && intT1 == 1 && intT2 == 1 && inter5.checked) {
 	         verificados++;
 		       criaResultado(verificados, y, 0, 1, "5ª intermitente", ac, "in"); };
@@ -4548,15 +4850,17 @@ function unissono() {
   var unissono = parseInt(unissQt.text)
   var uni = 0;
 
-  if (unissIF.checked) { var a1 = 1, a2 = vozes.length-1; } // exceção início e final
-    else { var a1 = 0, a2 = vozes.length; } ;
+  if (unissIF.checked) { var a1 = 1, a2 = vozesT.length-1; } // exceção início e final
+    else { var a1 = 0, a2 = vozesT.length; } ;
 
   for (var x=a1;x<a2;x++) { // percorre acordes
-   var pMetric = verificaTempoForte(vozes[x].tempo[0],vozes[x].formula[0]);
+   var pMetric = verificaTempoForte(vozesT[x].tempo[0],vozesT[x].formula[0]);
    if ((!unissTF.checked || pMetric != "f") && (!unissTmF.checked || pMetric != "mF"))  { // exceção tempo fraco e meio forte
-    for (var voz=1;voz<vozes[x].nota.length;voz++) {
-      var int1 = vozes[x].nota[voz-1] - vozes[x].nota[voz];
-      var intT1 = vozes[x].tonal[voz-1] - vozes[x].tonal[voz];
+    for (var voz=1;voz<vozesT[x].nota.length;voz++) {
+      var int1 = vozesT[x].nota[voz-1] - vozesT[x].nota[voz];
+      if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+        var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
+          var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
       if (int1 == 0 && intT1 == 0) { uni++; };
       if (int1 == 0 && intT1 == 0 && uni > unissono) {
         verificados++;
@@ -4567,38 +4871,74 @@ function unissono() {
 }
 
 function cruzamento() {
+  var cruza = false;
+  for (var x=1;x<vozesT.length;x++) { // percorre acordes
 
-  for (var x=1;x<vozes.length;x++) { // percorre acordes
+	 for (var voz=0; voz < vozesT[x].nota.length - 1; voz++) { // percorre vozesT
 
-	 for (var voz=0; voz < vozes[x].nota.length - 1; voz++) { // percorre vozes
-
-       if (vozes[x].nota[voz] < vozes[x].nota[voz+1]) {
-	          verificados++;
-	          criaResultado(verificados, x, voz, voz+1, "cruzamento", 1, 2);
-       };
+       if (vozesT[x].nota[voz] < vozesT[x].nota[voz+1]) {
+         if (cruza == false) {
+	        verificados++;
+	        criaResultado(verificados, x, voz, voz+1, "cruzamento", 1, 2);
+            cruza = true;
+         };
+       } else { cruza = false };
     };
   }; // acordes
 }
 
 function falsaRelação() {
-  for (var x=1;x<vozes.length;x++) { // percorre acordes
-
-    for (var voz=0; voz < vozes[x].nota.length; voz++) { // percorre vozes
-
-      var int1 = Math.abs(vozes[x].tonal[voz] - vozes[x-1].tonal[voz]);
+  for (var x=1;x<vozesT.length;x++) { // percorre acordes
+    for (var voz=0; voz < vozesT[x].nota.length; voz++) { // percorre vozesT
+      var int1 = Math.abs(vozesT[x].tonal[voz] - vozesT[x-1].tonal[voz]);
       if (int1 == 7) { continue; };
 
-      for (var i=0; i < vozes[x].nota.length; i++) { // percorre outras vozes
+      for (var i=0; i < vozesT[x].nota.length; i++) { // percorre outras vozesT
          if (i == voz) { continue; };
-
-         var int2 = Math.abs(vozes[x-1].tonal[voz] - vozes[x].tonal[i]);
-
+         var int2 = Math.abs(vozesT[x-1].tonal[voz] - vozesT[x].tonal[i]);
          if (int2 == 7)  {  // testa falsa relação
                	verificados++;
                	criaResultado(verificados, x, voz, i, "falsa relação", 2, "fr"); };
 
       };
     };
+  };
+}
+
+function priorizaContObli() {
+  var mC = 0, mO = 0, mS = 0;
+  for (var x=1;x<vozesT.length;x++) { // percorre acordes
+    var movS = vozesT[x].nota[0] - vozesT[x-1].nota[0];
+    var movI = vozesT[x].nota[1] - vozesT[x-1].nota[1];
+    if ((movS > 0 && movI > 0) || (movS < 0 && movI < 0)) { mS++; } else
+    if ((movS != 0 && movI == 0) || (movS == 0 && movI != 0)) { mO++; } else
+    if (movS != movI) { mC++; };
+  };
+  //console.log("movimentos:", mC, mO, mS);
+  if ((mO + mC) <= mS) {
+  	 verificados++;
+     var resultado = "não prioriza movimentos cont. e oblíquos (mC=" + mC + ", mO=" + mO + ", mS=" + mS + ")";
+	 criaResultado(verificados, vozesT.length-1, vS, vI, resultado, vozesT.length, "semComp");
+  };
+}
+
+function quantidadeMovSim() {
+  var mS = 0; var seq = false;
+  var qtdMax = parseInt(qtdMovSim.text);
+  for (var x=1;x<vozes.length;x++) { // percorre acordes
+    for (var v2=1;v2<vozes[0].nota.length;v2++) { // percorre voz inferior
+      var movS = vozes[x].nota[0] - vozes[x-1].nota[0];
+      var movI = vozes[x].nota[v2] - vozes[x-1].nota[v2];
+      if ((movS > 0 && movI > 0) || (movS < 0 && movI < 0)) { seq = true; }
+        else { seq = false; break; };
+    };
+    //console.log("Qtd mov sim:", x, seq, mS, qtdMax)
+    if ((!seq || x == vozes.length) && mS > qtdMax) {
+      verificados++;
+      criaResultado(verificados, x-1, 0, v2, "Excesso de movimentos similares", mS+1, vozes[0].nota.length);
+      console.log("verificados", verificados);
+    };
+    if (seq) { mS++; } else { mS = 0;};
   };
 }
 
@@ -4611,47 +4951,49 @@ function primUltIntervalo() {
  var tonica1 = tonicaPC(btTonica.text, btAcid.text);
  texto2tonica(vozes[vozes.length-1].tom);
  var tonica2 = tonicaPC(btTonica.text, btAcid.text);
- var notaInferior1 = vozes[0].nota[1];
- var notaInferior2 =  vozes[vozes.length-1].nota[1];
- var intI = (Math.abs(vozes[0].nota[0] - notaInferior1)) % 12;
- var intF = (Math.abs(vozes[vozes.length-1].nota[0] - notaInferior2)) % 12;
- var inicio = false, finale = false;
-//console.log("teste Intervalo inicial:",intI);
- if (intI != 0) { // se inicio não for U ou 8ª
-//   console.log(ex5Ji.checked, ex3i.checked, tonica1, notaInferior1%12);
-   if (ex5Ji.checked && (intI == 7 && tonica1 == notaInferior1%12)) { inicio = true; } else // se for 5ª com tonica na voz inferior
-   if (ex3i.checked && ((intI == 3 || intI == 4) && tonica1 == notaInferior1%12)) { inicio = true; }; // se for 3ª com tonica na voz inferior
-   if (!inicio) {
-   	verificados++;
-	  criaResultado(verificados, 0, 0, 1, "intervalo inicial", 1, 2); };
- };
-
- if (intF != 0) { // se final não for U ou 8ª
-   if (ex5Jf.checked && (intF == 7 && tonica2 == notaInferior2%12)) { finale = true; } else // se for 5ª com tonica na voz inferior
-   if (ex3f.checked && ((intF == 3 || intF == 4) && tonica2 == notaInferior2%12)) { finale = true; }; // se for 3ª com tonica na voz inferior
-   if (!finale) {
-    verificados++;
-    criaResultado(verificados, vozes.length-1, 0, 1, "intervalo final", 1, 2); };
+ var qtdVozes = vozes[0].nota.length;
+ var notaInferior1 = vozes[0].nota[qtdVozes-1];
+ var notaInferior2 = vozes[vozes.length-1].nota[qtdVozes-1];
+ for (var x=0;x<qtdVozes-1;x++) {
+  var intI = (Math.abs(vozes[0].nota[x] - notaInferior1)) % 12;
+  var intF = (Math.abs(vozes[vozes.length-1].nota[x] - notaInferior2)) % 12;
+  var inicio = false, finale = false;
+  //console.log("teste Intervalo inicial:", x, qtdVozes-1, intI);
+  if (intI != 0) { // se inicio não for U ou 8ª
+  //console.log(ex5Ji.checked, ex3i.checked, tonica1, notaInferior1%12);
+    if (ex5Ji.checked && (intI == 7 && tonica1 == notaInferior1%12)) { inicio = true; } else // se for 5ª com tonica na voz inferior
+    if (ex3i.checked && ((intI == 3 || intI == 4) && tonica1 == notaInferior1%12)) { inicio = true; }; // se for 3ª com tonica na voz inferior
+    if (!inicio && notaInferior1 != 0 && vozes[0].nota[x] != 0) {
+      verificados++;
+      criaResultado(verificados, 0, x, qtdVozes-1, "intervalo inicial", 1, 2); };
+  };
+  //console.log("teste Intervalo final:", x, qtdVozes-1, intF);
+  if (intF != 0) { // se final não for U ou 8ª
+    if (ex5Jf.checked && (intF == 7 && tonica2 == notaInferior2%12)) { finale = true; } else // se for 5ª com tonica na voz inferior
+    if (ex3f.checked && ((intF == 3 || intF == 4) && tonica2 == notaInferior2%12)) { finale = true; }; // se for 3ª com tonica na voz inferior
+    if (!finale && notaInferior2 != 0 && vozes[vozes.length-1].nota[x] != 0) {
+      verificados++;
+      criaResultado(verificados, vozes.length-1, x, qtdVozes-1, "intervalo final", 1, 2); };
+  };
  };
 }
 
 function alcançarMovContra() {
 
- if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
+ if (vozesT.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
                        msgErros.estado=true; return; };
 
- var intS = vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]
- var intI = vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1];
+ var intS = vozesT[vozesT.length-1].nota[0] - vozesT[vozesT.length-2].nota[0]
+ var intI = vozesT[vozesT.length-1].nota[1] - vozesT[vozesT.length-2].nota[1];
 
- var dir1 = direção(vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]);
- var dir2 = direção(vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1]);
+ var dir1 = direção(vozesT[vozesT.length-1].nota[0] - vozesT[vozesT.length-2].nota[0]);
+ var dir2 = direção(vozesT[vozesT.length-1].nota[1] - vozesT[vozesT.length-2].nota[1]);
 
  if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) {
-
-   if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
-	      verificados++;
-	      criaResultado(verificados, vozes.length-2, 0, 1, "alcança intervalo final", 1, 2);
-       };
+    if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
+    verificados++;
+    criaResultado(verificados, vozesT.length-2, 0, 1, "alcança intervalo final", 1, 2);
+ };
 }
 
 function sensivelCadencia(){
@@ -4664,10 +5006,10 @@ function sensivelCadencia(){
    var c = (vozes[vozes.length-1].compasso) - 1; // penúltimo compasso
    for (var voz=0;voz<vozes[1].nota.length;voz++) { // percorre vozes
      var x = vozes.length-2;
-//  console.log(voz, vozes[x].compasso, c);
+  //console.log(voz, vozes[x].compasso, c);
      while (vozes[x].compasso >= c && x >= 0) { // procura sensível no penúltimo compasso
        var intM = Math.abs(vozes[vozes.length-1].nota[voz] - vozes[x].nota[voz]); // intervalo melódico na nota final para a nota X
-//console.log(voz, sensCadR.checked, vozes[vozes.length-1].tonal[voz], tom, intM, vozes[x].tonal[voz]);
+  //console.log(voz, sensCadR.checked, vozes[vozes.length-1].tonal[voz], tom, intM, vozes[x].tonal[voz]);
        if ((!sensCadR.checked || (vozes[vozes.length-1].tonal[voz] == tom && intM == 1)) && // resolve sensível?
             vozes[x].tonal[voz] == tom+5) { achou = true; break; }; // achou a sensível?
        x--;
@@ -4677,24 +5019,26 @@ function sensivelCadencia(){
    if (!achou) {
   	 verificados++;
      var n = (vozes.length - x) - 1;
-  	 criaResultado(verificados, vozes.length-1, 0, 1, "cadência final sem a sensível", n, 2);
+  	 criaResultado(verificados, vozes.length-1, 0, 1, "cadência final sem a sensível", n, "null");
    };
 }
 
 function consonancias() {
 
   var cP = 0, cI = 0;
-  for (var x=0;x<vozes.length;x++) { // percorre acordes
-   var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
-   var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
+  for (var x=0;x<vozesT.length;x++) { // percorre acordes
+   var vIN = Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]);
+   if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
+   var vIT = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else { var vIT = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
    var int1 = verificaConsonancia(vIN, vIT);
+   //console.log("tipo de intervalo:", int1)
    if (int1 == "CP") { cP++; } else if (int1 == "CI") { cI++; }
   };
-//  console.log("consonancias:", cP, cI);
+  //console.log("consonancias:", cP, cI);
   if (cP > cI) {
   	 verificados++;
      var resultado = "cons. imperfeita não é maioria (p=" + cP + ", i=" + cI + ")";
-	 criaResultado(verificados, vozes.length-1, 0, 1, resultado, vozes.length, "null");
+	 criaResultado(verificados, vozesT.length-1, vS, vI, resultado, vozesT.length, 2);
   };
 }
 
@@ -4712,10 +5056,12 @@ function espaçamento() {
    case 14: intT= 23; break;
    case 15: intT= 24;
   };
-  var int1, conta = 0, conta2 = 0;
-  for (var x=0;x<vozes.length;x++) { // percorre acordes
-    for (var voz=1;voz<vozes[x].nota.length;voz++) {
+  for (var voz=1;voz<vozes[1].nota.length;voz++) { // percorre vozes
+    var int1, conta = 0;
+    for (var x=0;x<vozes.length;x++) { //percorre acordes
+      if (!vozes[x].nota[voz] || !vozes[x].nota[voz-1] || vozes[x].nota[voz] == 0 || vozes[x].nota[voz-1] == 0) { continue;};
       int1 = Math.abs(vozes[x].nota[voz-1] - vozes[x].nota[voz]);
+      //console.log("espaçamento:", voz-1, voz, int1, intT)
       if (int1 > intT) {
        conta++;
      } else {
@@ -4723,8 +5069,9 @@ function espaçamento() {
         conta = 0;
       };
     };
+    testaResultado(vozes.length-1, voz);
   };
-  testaResultado(vozes.length-1,vozes[1].nota.length-1);
+
  function testaResultado(x,voz){
   if (conta > qt) {
     var msg = "distância vozes (" + conta + ")";
@@ -4735,7 +5082,7 @@ function espaçamento() {
 }
 
 function coerenciaHarmonica() {
-//  console.log( "================ Coerência Harmônica =================\n")
+//console.log( "================ Coerência Harmônica =================\n")
   var novoX, acordeAnterior;
   for (var x=0;x<vozes.length;x++) {
     //console.log(x, vozes[x].tom);
@@ -4756,12 +5103,12 @@ function coerenciaHarmonica() {
       if (acordeAnterior && acorde.toString() == acordeAnterior.toString()) { mudaAcorde = false; };
       //console.log("nota pertence ao acorde?", pertence, acorde.toString(), acordeAnterior, mudaAcorde, notaAcento);
       if (!pertence &&
-                ( notaAcento == "F" || mudaAcorde ||
+                 (notaAcento == "F" || mudaAcorde ||
                  (!cHarmoniaEx.checked && notaAcento == "f") ||
                  (!cHarmoniaEx2.checked && notaAcento == "mF")
               )) {
         if (!priEsp) {
-          // console.log("compasso:", vozes[x].compasso, x);
+          //console.log("compasso:", vozes[x].compasso, x);
           novoX = cambiata(x, "ch"); if (novoX != x) { continue; };
           novoX = bordadura4(x, "ch"); if (novoX != x) { continue; };
           novoX = suspensão5(x, "ch"); if (novoX != x) { continue; };
@@ -4804,7 +5151,7 @@ function coerHarmFund() {
                        continue; };
         texto2tonica(vozes[jAnterior].tom);
         tom = tonicaTPC(btTonica.text, btAcid.text);
-        // console.log("acorde:", acorde);
+        //console.log("acorde:", acorde);
         var fund = acorde[0] + tom;
         //console.log(j,") conjunto de notas", conjNotas, " == Fund:", fund);
         var pertence = sePertence(conjNotas, fund, tom);
@@ -4813,7 +5160,7 @@ function coerHarmFund() {
           var msg = cifraAnterior + " sem a fundamental";
           var ac = j - jAnterior;
           verificados++;
-          criaResultado(verificados, j-1, 0, 1, msg, ac, 2);
+          criaResultado(verificados, j-1, 0, 1, msg, ac, vozFinal+1);
         };
         jAnterior = j; cifraAnterior = cifraAtual;
         conjNotas = []; conjNotas.push(vozes[j].tonal[voz]);
@@ -4823,20 +5170,22 @@ function coerHarmFund() {
 }
 
 // ------------------------Dissonâncias ------------
-function dissonanciasL() {
+function dissonanciasL() { //console.log("voz superior:", vS, "voz inferior:", vI)
   //relator += "================ função dissonanciasL ================\n";
   var novoX;
   // procura dissonâncias
-  for (var x = 0; x < vozes.length; x++) {  // percorre acordes
-  //  console.log("percorre acordes", novoX, x);
+  for (var x = 0; x < vozesT.length; x++) {  // percorre acordes
+    //console.log("DissonânciasL: percorre acordes", novoX, x);
+    if (vozesT[x].nota[0] == 0 || vozesT[x].nota[1] == 0) { continue; };
     var acusaDissonancia = true;
     //console.log("cambiataL",x);
     if (cambiataL.checked) { novoX = cambiata(x, "td"); if (novoX != x) { x = novoX-1; continue; }; };
-      //  console.log("bordadura4",x);
+      //console.log("bordadura4",x);
     if (bordaduraD.checked) { novoX = bordadura4(x, "td"); if (novoX != x) { x = novoX; continue; }; };
-        var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
-    var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
-    var intHarm = verificaConsonancia(vIN, vIT);
+    var vIN = Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]);
+    if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
+    var vIT = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else { var vIT = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+    var intHarm = verificaConsonancia(vIN, vIT); //console.log("==> Intervalo Harmônico: ", intHarm)
     if (intHarm == "D") { //console.log("Dissonância em", x);
        //procura padrão melódico de tratamento, do maior para o menor, até 3 notas. Primeiro na voz superior, depois na inferior.
        if (passagemL.checked) { //console.log("passagemL");
@@ -4854,60 +5203,66 @@ function dissonanciasL() {
           novoX = suspensão5(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; };
        };
 
-      // console.log("bordaduras");
+      //console.log("bordaduras");
        if (bordaduraLI.checked || bordaduraLS.checked) { novoX = bordadura(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
 
-      // console.log("apojaturaL");
+      //console.log("apojaturaL");
        if (apojaturaL.checked) { novoX = apojatura(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
-      // console.log("antecipaL");
+      //console.log("antecipaL");
        if (antecipaL.checked) { novoX = antecipação(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
-      // console.log("escapadaL");
+      //console.log("escapadaL");
        if (escapadaL.checked) { novoX = escapada(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
-      // console.log("pedal");
+      //console.log("pedal");
        if (pedal.checked) { novoX = notaPedal(x, "td"); if (novoX != x) { x = novoX-1; acusaDissonancia = false; continue; }; };
-      // console.log("acusaDissonancia", acusaDissonancia);
+      //console.log("acusaDissonancia", acusaDissonancia);
 
        if (acusaDissonancia) {
         verificados++;
-        if (priEsp) { criaResultado(verificados, x, 0, 1, "dissonância", 1, 2); } else
-              { criaResultado(verificados, x, 0, 1, "dissonância não tratada", 1, 2); };
+        if (priEsp) { criaResultado(verificados, x, vS, vI, "dissonância", 1, 2); } else
+              { criaResultado(verificados, x, vS, vI, "dissonância não tratada", 1, 2); };
        };
     } else { acusaDissonancia = false; };
   };
 }
-
-function suspensão3(x, tipo) { //console.log(x,"=============== função suspensão3 =============");
+function suspensão3(x, tipo) { //console.log(x,"=============== função suspensão3 =============", vS, vI);
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; }; //console.log("vozIni:", vozIni, "vozFin", vozFin)
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x-1, r = x;
-    while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
-      var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-      var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
-      var notaPrepara = verificaConsonancia(vIN, vIT);
-      var pos1 = vozes[x].posição[voz];
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
+      var vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+      var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+      var notaPrepara = verificaConsonancia(vIN, vIT); //console.log(x, p, "notaPrepara: ", notaPrepara);
+      var pos1 = vozesT[x].posição[voz];
       if (notaPrepara != "D") { break; };
       p--; if (p < 0) { p++; break; }; };
-    while (vozes[x].nota[voz] == vozes[r].nota[voz]) { r++; if (r >= vozes.length-1) { break; }; }; // procura nota posterior
-    if (!vozes[r]) { return x; };
+    while (vozesT[x].nota[voz] == vozesT[r].nota[voz]) { r++; if (r >= vozesT.length-1) { break; }; }; // procura nota posterior
+    if (!vozesT[r]) { return x; };
     if (!notaPrepara) {
-      var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-      var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
+      var vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+      var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
       var notaPrepara = verificaConsonancia(vIN, vIT); };
-    var vIN = Math.abs(vozes[r].nota[0] - vozes[r].nota[1]);
-    var vIT = Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]);
+    var vIN = Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) {
+    var vIT = vozesT[r].tonal[0] - vozesT[r].tonal[1]; } else { var vIT = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };;
     var notaResolve = verificaConsonancia(vIN, vIT);
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[r].posição[voz] - pos1;
-    if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//  console.log(p, x, r, "duração:", dur1, dur2, dur3);
+    //console.log(x, p, "notaPrepara: ", notaPrepara);
+    //console.log(x, r, "resolução: ", notaResolve);
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[r].posição[voz] - pos1;
+    if (!vozesT[r+1]) { var dur3 = dur1; } else { var dur3 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+//console.log(p, x, r, "duração:", dur1, dur2, dur3);
     if (mov1 == 0 && mov2 != 0 && intM < 3 && // desenho melódico, intervalos
         //(dur2 <= dur1*2 && dur2 <= dur3*2) && // proporção entre as durações de dissonâncias e consonâncias
         (notaResolve != "D" || tipo == "ch") && (notaPrepara != "D" || tipo == "ch") // e consonâncias em t.f.
@@ -4917,55 +5272,66 @@ function suspensão3(x, tipo) { //console.log(x,"=============== função suspen
 
         if (tipo == "td") { var nome = "- Tratamento de dissonância: suspensão 3 notas -"; avalia += 0.4; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: suspensão 3 notas -"; };
-        if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n"; };
+        switch(voz) {
+          case 0: var v = vS; break;
+          case 1: var v = vI; break;
+        };
+        if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (v+1) + "\n"; };
         return r;
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
-function suspensão4(x, tipo) { //console.log(x,"=============== função suspensão4 =============");
+function suspensão4(x, tipo) { //console.log(x,"=============== função suspensão4 =============", vS, vI);
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; }; //console.log("vozIni:", vozIni, "vozFin:", vozFin);
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x-1, i = x;
-    while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
-      var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-      var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
+      var vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+      var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
       var notaPrepara = verificaConsonancia(vIN, vIT);
-      var pos1 = vozes[x].posição[voz];
+      var pos1 = vozesT[x].posição[voz];
       if (notaPrepara != "D") { break; };
       p--; if (p < 0) { p++; break; }; };
-    while (vozes[x].nota[voz] == vozes[i].nota[voz]) { // procura nota interrompe
-      i++; if (i >= vozes.length) { i = vozes.length-1; break; }; };
+    while (vozesT[x].nota[voz] == vozesT[i].nota[voz]) { // procura nota interrompe
+      i++; if (i >= vozesT.length) { i = vozesT.length-1; break; }; };
      var r = i;
-    while (vozes[i].nota[voz] == vozes[r].nota[voz]) { // procura nota resolução
-      r++; if (r >= vozes.length-1) { r = vozes.length-1; break; }; };
-    if (!vozes[r]) { return x; };
+    while (vozesT[i].nota[voz] == vozesT[r].nota[voz]) { // procura nota resolução
+      r++; if (r >= vozesT.length-1) { r = vozesT.length-1; break; }; };
+    if (!vozesT[r]) { return x; };
     if (!notaPrepara) {
-      var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-      var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
+      var vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+      var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
       var notaPrepara = verificaConsonancia(vIN, vIT); };
-    var vIN = Math.abs(vozes[i].nota[0] - vozes[i].nota[1]);
-    var vIT = Math.abs(vozes[i].tonal[0] - vozes[i].tonal[1]);
+    var vIN = Math.abs(vozesT[i].nota[0] - vozesT[i].nota[1]);
+    if (vozesT[i].nota[0] >= vozesT[i].nota[1]) {
+    var vIT = vozesT[i].tonal[0] - vozesT[i].tonal[1]; } else { var vIT = vozesT[i].tonal[1] - vozesT[i].tonal[0]; };
+    //console.log("notaInterrompe - vIN, vIT: ", vIN, vIT);
     var notaInterrompe = verificaConsonancia(vIN, vIT);
-    var vIN = Math.abs(vozes[r].nota[0] - vozes[r].nota[1]);
-    var vIT = Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]);
+    var vIN = Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) {
+    var vIT = vozesT[r].tonal[0] - vozesT[r].tonal[1]; } else { var vIT = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };;
     var notaResolve = verificaConsonancia(vIN, vIT);
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var mov3 = direção(vozes[i].nota[voz] - vozes[x].nota[voz]);
-    var mov4 = direção(vozes[r].nota[voz] - vozes[i].nota[voz]);
-    var intM = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[i].nota[voz] - vozes[x].nota[voz]);
-    var intM3 = Math.abs(vozes[r].nota[voz] - vozes[i].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[i].posição[voz] - pos1;
-    var dur3 = vozes[r].posição[voz] - vozes[i].posição[voz];
-    if (!vozes[r+1]) { var dur4 = dur1; } else { var dur4 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//  console.log(p,x,i,r,", mov:", mov1, mov2, mov3, mov4, ", ints:", intM, intM2, intM3, ", acentos:", notaAcento, notaAcentoR, ", cons:", notaPrepara, notaInterrompe, notaResolve);
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var mov3 = direção(vozesT[i].nota[voz] - vozesT[x].nota[voz]);
+    var mov4 = direção(vozesT[r].nota[voz] - vozesT[i].nota[voz]);
+    var intM = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[i].nota[voz] - vozesT[x].nota[voz]);
+    var intM3 = Math.abs(vozesT[r].nota[voz] - vozesT[i].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[i].posição[voz] - pos1;
+    var dur3 = vozesT[r].posição[voz] - vozesT[i].posição[voz];
+    if (!vozesT[r+1]) { var dur4 = dur1; } else { var dur4 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+    //console.log(p,x,i,r,", mov:", mov1, mov2, mov3, mov4, ", ints:", intM, intM2, intM3, ", acentos:", notaAcento, notaAcentoR, ", cons:", notaPrepara, notaInterrompe, notaResolve);
     if (mov1 == 0 && mov2 != 0 && intM < 3 &&
        (dur2 <= dur1*2 && dur2 <= dur4*2 && dur3 <= dur4) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch") // desenho melódico, intervalos e consonâncias em t.f.
@@ -4975,62 +5341,69 @@ function suspensão4(x, tipo) { //console.log(x,"=============== função suspen
         (suspeLEx2.checked || mov2 == -1 || tipo == "ch")) { // permitir também resolução ascendente
           if (tipo == "td") { var nome = "- Tratamento de dissonância: suspensão RI 4 notas -"; avalia += 0.5; } else
           if (tipo == "ch") { var nome = "- Coerência Harmônica: suspensão RI 4 notas -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n"; };
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n"; };
           if (r-1 == x) { return r; } else { return r-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function suspensão5(x, tipo) { //console.log(x,"=============== função suspensão5 =============");
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x-1, i = x;
-    while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
-      var vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-      var vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
+      var vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+      var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
       var notaPrepara = verificaConsonancia(vIN, vIT);
-      var pos1 = vozes[x].posição[voz];
+      var pos1 = vozesT[x].posição[voz];
       if (notaPrepara != "D") { break; };
       p--; if (p < 0) { p++; break; }; };
-    while (vozes[x].nota[voz] == vozes[i].nota[voz]) { // procura 1ª nota interrompe
-      i++; if (i >= vozes.length) { i = vozes.length-1; break; }; };
+    while (vozesT[x].nota[voz] == vozesT[i].nota[voz]) { // procura 1ª nota interrompe
+      i++; if (i >= vozesT.length) { i = vozesT.length-1; break; }; };
      var i2 = i;
-    while (vozes[i].nota[voz] == vozes[i2].nota[voz]) { // procura 2ª nota interrompe
-       i2++; if (i2 >= vozes.length) { i2 = vozes.length-1; break; }; };
+    while (vozesT[i].nota[voz] == vozesT[i2].nota[voz]) { // procura 2ª nota interrompe
+       i2++; if (i2 >= vozesT.length) { i2 = vozesT.length-1; break; }; };
       var r = i2;
-    while (vozes[i2].nota[voz] == vozes[r].nota[voz]) { // procura nota resolução
-      r++; if (r >= vozes.length-1) { r = vozes.length-1; break; }; };
-    if (!vozes[r]) { return x; };
-    vIN = Math.abs(vozes[p].nota[0] - vozes[p].nota[1]);
-    vIT = Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]);
+    while (vozesT[i2].nota[voz] == vozesT[r].nota[voz]) { // procura nota resolução
+      r++; if (r >= vozesT.length-1) { r = vozesT.length-1; break; }; };
+    if (!vozesT[r]) { return x; };
+    vIN = Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]);
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) {
+    var vIT = vozesT[p].tonal[0] - vozesT[p].tonal[1]; } else { var vIT = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
     if (!notaPrepara) { var notaPrepara = verificaConsonancia(vIN, vIT); };
-    vIN = Math.abs(vozes[i].nota[0] - vozes[i].nota[1]);
-    vIT = Math.abs(vozes[i].tonal[0] - vozes[i].tonal[1]);
+    vIN = Math.abs(vozesT[i].nota[0] - vozesT[i].nota[1]);
+    if (vozesT[i].nota[0] >= vozesT[i].nota[1]) {
+    var vIT = vozesT[i].tonal[0] - vozesT[i].tonal[1]; } else { var vIT = vozesT[i].tonal[1] - vozesT[i].tonal[0]; };
     var notaInterrompe = verificaConsonancia(vIN, vIT);
-    vIN = Math.abs(vozes[i2].nota[0] - vozes[i2].nota[1]);
-    vIT = Math.abs(vozes[i2].tonal[0] - vozes[i2].tonal[1]);
+    vIN = Math.abs(vozesT[i2].nota[0] - vozesT[i2].nota[1]);
+    if (vozesT[i2].nota[0] >= vozesT[i2].nota[1]) {
+    var vIT = vozesT[i2].tonal[0] - vozesT[i2].tonal[1]; } else { var vIT = vozesT[i2].tonal[1] - vozesT[i2].tonal[0]; };
     var notaInterrompe2 = verificaConsonancia(vIN, vIT);
-    vIN = Math.abs(vozes[r].nota[0] - vozes[r].nota[1]);
-    vIT = Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]);
+    vIN = Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) {
+    vIT = vozesT[r].tonal[0] - vozesT[r].tonal[1]; } else { vIT = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };;
     var notaResolve = verificaConsonancia(vIN, vIT);
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var mov3 = direção(vozes[i].nota[voz] - vozes[x].nota[voz]);
-    var mov4 = direção(vozes[r].nota[voz] - vozes[i].nota[voz]);
-    var intM = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[i].nota[voz] - vozes[x].nota[voz]);
-    var intM3 = Math.abs(vozes[r].nota[voz] - vozes[i].nota[voz]);
-    var intM4 = Math.abs(vozes[i2].nota[voz] - vozes[i].nota[voz]);
-    var intM5 = Math.abs(vozes[r].nota[voz] - vozes[i2].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[i].posição[voz] - pos1;
-    var dur3 = vozes[i2].posição[voz] - vozes[i].posição[voz];
-    var dur4 = vozes[r].posição[voz] - vozes[i2].posição[voz];
-    if (!vozes[r+1]) { var dur5 = dur1; } else { var dur5 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var mov3 = direção(vozesT[i].nota[voz] - vozesT[x].nota[voz]);
+    var mov4 = direção(vozesT[r].nota[voz] - vozesT[i].nota[voz]);
+    var intM = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[i].nota[voz] - vozesT[x].nota[voz]);
+    var intM3 = Math.abs(vozesT[r].nota[voz] - vozesT[i].nota[voz]);
+    var intM4 = Math.abs(vozesT[i2].nota[voz] - vozesT[i].nota[voz]);
+    var intM5 = Math.abs(vozesT[r].nota[voz] - vozesT[i2].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[i].posição[voz] - pos1;
+    var dur3 = vozesT[i2].posição[voz] - vozesT[i].posição[voz];
+    var dur4 = vozesT[r].posição[voz] - vozesT[i2].posição[voz];
+    if (!vozesT[r+1]) { var dur5 = dur1; } else { var dur5 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
 
     if (mov1 == 0 && mov2 != 0 && intM < 3 &&
        (dur2 <= dur1*2 && dur2 <= dur5*2 && dur3 <= dur5 && dur4 <= dur5) && // proporção entre as durações de dissonâncias e consonâncias
@@ -5043,64 +5416,68 @@ function suspensão5(x, tipo) { //console.log(x,"=============== função suspen
   //console.log(p,x,i,i2,r);
           if (tipo == "td") { var nome = "- Tratamento de dissonância: suspensão RI 5 notas -"; avalia += 0.5; } else
           if (tipo == "ch") { var nome = "- Coerência Harmônica: suspensão RI 5 notas -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function cambiata(x, tipo) { //console.log(x,"=============== função cambiata =============");
    var diss1 = false, diss2 = false, diss3 = false;
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var np1 = x;
-    while (vozes[x].nota[voz] == vozes[np1].nota[voz]) { // procura nota passagem 1
-      np1++; if (np1 >= vozes.length) { np1 = vozes.length-1; break; }; };
+    while (vozesT[x].nota[voz] == vozesT[np1].nota[voz]) { // procura nota passagem 1
+      np1++; if (np1 >= vozesT.length) { np1 = vozesT.length-1; break; }; };
      var np2 = np1;
-    while (vozes[np1].nota[voz] == vozes[np2].nota[voz]) { // procura nota passagem 2
-      np2++; if (np2 >= vozes.length) { np2 = vozes.length-1; break; }; };
+    while (vozesT[np1].nota[voz] == vozesT[np2].nota[voz]) { // procura nota passagem 2
+      np2++; if (np2 >= vozesT.length) { np2 = vozesT.length-1; break; }; };
      var np3 = np2;
-    while (vozes[np2].nota[voz] == vozes[np3].nota[voz]) { // procura nota passagem 3
-       np3++; if (np3 >= vozes.length) { np3 = vozes.length-1; break; }; };
+    while (vozesT[np2].nota[voz] == vozesT[np3].nota[voz]) { // procura nota passagem 3
+       np3++; if (np3 >= vozesT.length) { np3 = vozesT.length-1; break; }; };
      var r = np3;
-    while (vozes[np3].nota[voz] == vozes[r].nota[voz]) { // procura nota resolução
-      r++; if (r >= vozes.length-1) { r = vozes.length-1; break; }; };
-    if (!vozes[r]) { return x; };
-    var vIN = Math.abs(vozes[x].nota[0] - vozes[x].nota[1]);
-    var vIT = Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]);
+    while (vozesT[np3].nota[voz] == vozesT[r].nota[voz]) { // procura nota resolução
+      r++; if (r >= vozesT.length-1) { r = vozesT.length-1; break; }; };
+    if (!vozesT[r]) { return x; };
+    var vIN = Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]);
+    if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
+    var vIT = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else { var vIT = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
     var notaInicial = verificaConsonancia(vIN, vIT);
-    vIN = Math.abs(vozes[r].nota[0] - vozes[r].nota[1]);
-    vIT = Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]);
+    vIN = Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) {
+    vIT = vozesT[r].tonal[0] - vozesT[r].tonal[1]; } else { vIT = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
     var notaResolve = verificaConsonancia(vIN, vIT);
     var dCounter = 0; // contagem de dissonâncias
-    if (verificaConsonancia(Math.abs(vozes[np1].nota[0] - vozes[np1].nota[1]),
-                            Math.abs(vozes[np1].tonal[0] - vozes[np1].tonal[1])) == "D") { dCounter++; diss1 = true; };
-    if (verificaConsonancia(Math.abs(vozes[np2].nota[0] - vozes[np2].nota[1]),
-                            Math.abs(vozes[np2].tonal[0] - vozes[np2].tonal[1])) == "D") { dCounter++; diss2 = true; };
-    if (verificaConsonancia(Math.abs(vozes[np3].nota[0] - vozes[np3].nota[1]),
-                            Math.abs(vozes[np3].tonal[0] - vozes[np3].tonal[1])) == "D") { dCounter++; diss3 = true; };
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]); // posição métrica das notasIguais
-    var notaAcento1 = verificaTempoForte(vozes[np1].tempo[voz],vozes[np1].formula[0]);
-    var notaAcento2 = verificaTempoForte(vozes[np2].tempo[voz],vozes[np2].formula[0]);
-    var notaAcento3 = verificaTempoForte(vozes[np3].tempo[voz],vozes[np3].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov0 = direção(vozes[np1].nota[voz] - vozes[x].nota[voz]);
-    var mov1 = direção(vozes[np2].nota[voz] - vozes[np1].nota[voz]);
-    var mov2 = direção(vozes[np3].nota[voz] - vozes[np2].nota[voz]);
-    var mov3 = direção(vozes[r].nota[voz] - vozes[np3].nota[voz]);
-    var mov4 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var dirCF = direção(vozes[r].nota[vozCF] - vozes[x].nota[vozCF]);
-    var intM0 = Math.abs(vozes[x].nota[voz] - vozes[np1].nota[voz]);
-    var intM1 = Math.abs(vozes[np1].nota[voz] - vozes[np2].nota[voz]);
-    var intM2 = Math.abs(vozes[np2].nota[voz] - vozes[np3].nota[voz]);
-    var intM3 = Math.abs(vozes[np3].nota[voz] - vozes[r].nota[voz]);
-    var intM4 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var dur1 = vozes[np1].posição[voz] - vozes[x].posição[voz];
-    var dur2 = vozes[np2].posição[voz] - vozes[np1].posição[voz];
-    var dur3 = vozes[np3].posição[voz] - vozes[np2].posição[voz];
-    var dur4 = vozes[r].posição[voz] - vozes[np3].posição[voz];
-    if (!vozes[r+1]) { var dur5 = dur1; } else { var dur5 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
+    if (verificaConsonancia(Math.abs(vozesT[np1].nota[0] - vozesT[np1].nota[1]),
+                            (vozesT[np1].tonal[0] - vozesT[np1].tonal[1])) == "D") { dCounter++; diss1 = true; };
+    if (verificaConsonancia(Math.abs(vozesT[np2].nota[0] - vozesT[np2].nota[1]),
+                            (vozesT[np2].tonal[0] - vozesT[np2].tonal[1])) == "D") { dCounter++; diss2 = true; };
+    if (verificaConsonancia(Math.abs(vozesT[np3].nota[0] - vozesT[np3].nota[1]),
+                            (vozesT[np3].tonal[0] - vozesT[np3].tonal[1])) == "D") { dCounter++; diss3 = true; };
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]); // posição métrica das notasIguais
+    var notaAcento1 = verificaTempoForte(vozesT[np1].tempo[voz],vozesT[np1].formula[0]);
+    var notaAcento2 = verificaTempoForte(vozesT[np2].tempo[voz],vozesT[np2].formula[0]);
+    var notaAcento3 = verificaTempoForte(vozesT[np3].tempo[voz],vozesT[np3].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov0 = direção(vozesT[np1].nota[voz] - vozesT[x].nota[voz]);
+    var mov1 = direção(vozesT[np2].nota[voz] - vozesT[np1].nota[voz]);
+    var mov2 = direção(vozesT[np3].nota[voz] - vozesT[np2].nota[voz]);
+    var mov3 = direção(vozesT[r].nota[voz] - vozesT[np3].nota[voz]);
+    var mov4 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var dirCF = direção(vozesT[r].nota[vozCF] - vozesT[x].nota[vozCF]);
+    var intM0 = Math.abs(vozesT[x].nota[voz] - vozesT[np1].nota[voz]);
+    var intM1 = Math.abs(vozesT[np1].nota[voz] - vozesT[np2].nota[voz]);
+    var intM2 = Math.abs(vozesT[np2].nota[voz] - vozesT[np3].nota[voz]);
+    var intM3 = Math.abs(vozesT[np3].nota[voz] - vozesT[r].nota[voz]);
+    var intM4 = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var dur1 = vozesT[np1].posição[voz] - vozesT[x].posição[voz];
+    var dur2 = vozesT[np2].posição[voz] - vozesT[np1].posição[voz];
+    var dur3 = vozesT[np3].posição[voz] - vozesT[np2].posição[voz];
+    var dur4 = vozesT[r].posição[voz] - vozesT[np3].posição[voz];
+    if (!vozesT[r+1]) { var dur5 = dur1; } else { var dur5 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
 //console.log(x,np1,np2,np3,r,", mov:", mov0, mov1, mov2, mov3, mov4, ", ints:", intM0, intM1, intM2, intM3, intM4,", acentos:", notaAcento, notaAcento1, notaAcento2, notaAcento3, notaAcentoR, ", cons:", notaInicial, diss1, diss2, diss3, notaResolve);
     if (mov0 == mov1 && mov1 != 0 && mov2 == mov1*-1 && mov3 == mov2 && // contorno melódico
         intM0 < 3 && (intM1 == 3 || intM1 == 4) && intM2 < 3 && intM3 < 3 && // intervalos melódicos
@@ -5110,7 +5487,7 @@ function cambiata(x, tipo) { //console.log(x,"=============== função cambiata 
           (!diss2 || (notaAcento2 != "F" && (cambiLEx3MF.checked || notaAcento2 != "mF")) ) && // dissonancia em tempo fraco
           (!diss3 || (notaAcento3 != "F" && (cambiLEx3MF.checked || notaAcento3 != "mF")))) || !cambiLEx3.checked) &&
         (diss1 || !cambiLEx4.checked || tipo == "ch") && // 2ª nota deve ser dissonante
-        ((vozes[np1].duração[voz] <= vozes[x].duração[voz] && vozes[np1].duração[voz] <= vozes[r].duração[voz]) || !cambiLEx5.checked) && // duração 2ª nota < 1ª e última
+        ((vozesT[np1].duração[voz] <= vozesT[x].duração[voz] && vozesT[np1].duração[voz] <= vozesT[r].duração[voz]) || !cambiLEx5.checked) && // duração 2ª nota < 1ª e última
         (dirCF == mov4 || !cambiLEx2.checked) && // cambiata na mesma direção do CF
         dCounter < 3 && // quantidade de dissonâncias
         notaInicial != "D" && notaResolve != "D" && // consonâncias
@@ -5118,38 +5495,43 @@ function cambiata(x, tipo) { //console.log(x,"=============== função cambiata 
       ) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: cambiata -"; avalia += 0.5; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: cambiata -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n"; };
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n"; };
           if (r-1 == x) { return r; } else { return r-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function bordadura(x, tipo) { //console.log(x,"=============== função bordadura =============");
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x, r = x; // preparação, resolução
-    while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
-      var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                            Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+        else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+      var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
       if (notaPrepara != "D") { break; };
-      var pos1 = vozes[p].posição[voz];
+      var pos1 = vozesT[p].posição[voz];
       p--; if (p < 0) { p++; break; }; };
-    while (vozes[x].nota[voz] == vozes[r].nota[voz]) { r++; if (r >= vozes.length-1) { break; }; }; // procura nota posterior
-    if (!vozes[r]) { return x; };
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[r].posição[voz] - pos1;
-    if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
+    while (vozesT[x].nota[voz] == vozesT[r].nota[voz]) { r++; if (r >= vozesT.length-1) { break; }; }; // procura nota posterior
+    if (!vozesT[r]) { return x; };
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[r].posição[voz] - pos1;
+    if (!vozesT[r+1]) { var dur3 = dur1; } else { var dur3 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
     if (mov1 != 0 && mov1 == mov2*-1 && intM1 < 3 && intM2 < 3 &&
        (dur2 < dur1*2.1 && dur2 < dur3*2.1) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch")
@@ -5157,42 +5539,48 @@ function bordadura(x, tipo) { //console.log(x,"=============== função bordadur
         ((mov1 > 0 && bordaduraLS.checked) || (mov1 < 0 && bordaduraLI.checked) || tipo == "ch")) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Bordadura -"; avalia += 0.3; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Bordadura -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
 
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function bordadura4(x, tipo) { //console.log(x,"=============== função bordadura4 =============");
-   if (x == 0 || x+2 >= vozes.length) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   if (x == 0 || x+2 >= vozesT.length) { return x; };
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x-1, r = x+2; // preparação, resolução
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaBorda1 = verificaConsonancia(Math.abs(vozes[x].nota[0] - vozes[x].nota[1]),
-                                         Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]));
-    var notaBorda2 = verificaConsonancia(Math.abs(vozes[x+1].nota[0] - vozes[x+1].nota[1]),
-                                         Math.abs(vozes[x+1].tonal[0] - vozes[x+1].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento0 = verificaTempoForte(vozes[p].tempo[voz],vozes[p].formula[0]);
-    var notaAcento1 = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcento2 = verificaTempoForte(vozes[x+1].tempo[voz],vozes[x+1].formula[0]);
-    var notaAcento3 = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[x+1].nota[voz] - vozes[x].nota[voz]);
-    var mov3 = direção(vozes[r].nota[voz] - vozes[x+1].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[x+1].nota[voz] - vozes[x].nota[voz]);
-    var intM3 = Math.abs(vozes[r].nota[voz] - vozes[x+1].nota[voz]);
-    var dur1 = vozes[x].posição[voz] - vozes[p].posição[voz];
-    var dur2 = vozes[x+1].posição[voz] - vozes[x].posição[voz];
-    var dur3 = vozes[r].posição[voz] - vozes[x+1].posição[voz];
-    if (!vozes[r+1]) { var dur4 = dur1; } else { var dur4 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//console.log(x,")", vozes[p].nota[voz], vozes[x].nota[voz], vozes[x+1].nota[voz],vozes[r].nota[voz], "|",
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[x].nota[0] >= vozesT[x].nota[1]) { var ib1Tonal = vozesT[x].tonal[0] - vozesT[x].tonal[1]; }
+      else { var ib1Tonal = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+    var notaBorda1 = verificaConsonancia(Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]), ib1Tonal);
+    if (vozesT[x+1].nota[0] >= vozesT[x+1].nota[1]) { var ib2Tonal = vozesT[x+1].tonal[0] - vozesT[x+1].tonal[1]; }
+      else { var ib2Tonal = vozesT[x+1].tonal[1] - vozesT[x+1].tonal[0]; };
+    var notaBorda2 = verificaConsonancia(Math.abs(vozesT[x+1].nota[0] - vozesT[x+1].nota[1]), ib2Tonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var notaAcento0 = verificaTempoForte(vozesT[p].tempo[voz],vozesT[p].formula[0]);
+    var notaAcento1 = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcento2 = verificaTempoForte(vozesT[x+1].tempo[voz],vozesT[x+1].formula[0]);
+    var notaAcento3 = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[x+1].nota[voz] - vozesT[x].nota[voz]);
+    var mov3 = direção(vozesT[r].nota[voz] - vozesT[x+1].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[x+1].nota[voz] - vozesT[x].nota[voz]);
+    var intM3 = Math.abs(vozesT[r].nota[voz] - vozesT[x+1].nota[voz]);
+    var dur1 = vozesT[x].posição[voz] - vozesT[p].posição[voz];
+    var dur2 = vozesT[x+1].posição[voz] - vozesT[x].posição[voz];
+    var dur3 = vozesT[r].posição[voz] - vozesT[x+1].posição[voz];
+    if (!vozesT[r+1]) { var dur4 = dur1; } else { var dur4 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+//console.log(x,")", vozesT[p].nota[voz], vozesT[x].nota[voz], vozesT[x+1].nota[voz],vozesT[r].nota[voz], "|",
             // notaPrepara, notaBorda1, notaBorda2, notaResolve, "|", notaAcento1, notaAcento2, "|", mov1, mov2, mov3, "|", intM1, intM2, intM3);
     if (mov1 != 0 && mov1 == mov2*-1 && mov3 == mov1 &&
         (dur2 < dur1*2.1 && dur2 < dur4*2.1 && dur3 < dur4*2.1) && // proporção entre as durações de dissonâncias e consonâncias
@@ -5203,44 +5591,53 @@ function bordadura4(x, tipo) { //console.log(x,"=============== função bordadu
         ((notaAcento1 != "F" && notaAcento2 != "F") || !bordaLEx1.checked || tipo == "ch")) { // em tempo fraco e meio forte
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Bordadura dupla -"; avalia += 0.5; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Bordadura dupla -"; };
-        if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";; };
+        if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";; };
           if (r-1 == x) { return r; } else { return r-1; };
 
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function notaPassagem(x, tipo) { //console.log(x,"=============== função NP =============", tipo);
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x, r = x;
-    while (vozes[x].nota[voz] == vozes[p].nota[voz] || // procura nota preparação
-           verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                               Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1])) == "D")  {
-      if (vozes[x].nota[voz] == vozes[p].nota[voz]) { var pos1 = vozes[p].posição[voz] };
-      if (p <= 0) { break; }; p--;  }; // console.log("a:", p, vozes[p].nota[voz]);
-    while (vozes[x].nota[voz] == vozes[r].nota[voz]) { r++; if (r >= vozes.length-1) { break; }; }; // procura nota posterior
-    if (!vozes[r]) { return x; };
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intMT1 = Math.abs(parseInt(verificaGrauMelodico(vozes[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozes[p].tonal[voz], p)));
-    var intMT2 = Math.abs(parseInt(verificaGrauMelodico(vozes[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozes[r].tonal[voz], r)));
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz] || // procura nota preparação
+           verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal) == "D")  {
+      if (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { var pos1 = vozesT[p].posição[voz] };
+      if (p <= 0) { break; }; p--;
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+        else { ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    };  //console.log("preparação:", p, vozesT[p].nota[voz]);
+    while (vozesT[x].nota[voz] == vozesT[r].nota[voz]) { r++; if (r >= vozesT.length-1) { break; }; }; // procura nota posterior
+    if (!vozesT[r]) { return x; };
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    //console.log("notaPrepara:", notaPrepara, " - notaResolve:", notaResolve)
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intMT1 = Math.abs(parseInt(verificaGrauMelodico(vozesT[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozesT[p].tonal[voz], p)));
+    var intMT2 = Math.abs(parseInt(verificaGrauMelodico(vozesT[x].tonal[voz], x)) - parseInt(verificaGrauMelodico(vozesT[r].tonal[voz], r)));
     if (intMT1 == 6) { intMT1 = 1; };
     if (intMT2 == 6) { intMT2 = 1; };
-  // console.log(p, x, r, verificaGrauMelodico(vozes[x].tonal[voz], x), verificaGrauMelodico(vozes[r].tonal[voz], r), intMT1, intMT2);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[r].posição[voz] - pos1;
-    if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
- //console.log(p,x,r,"NP:", notaPrepara, notaResolve, notaAcento, mov1, mov2, intM1, intM2, intMT1, intMT2, dur1, dur2, dur3, passaLExMF.checked);
+    //console.log(p, x, r, verificaGrauMelodico(vozesT[x].tonal[voz], x), verificaGrauMelodico(vozesT[r].tonal[voz], r), intMT1, intMT2);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[r].posição[voz] - pos1;
+    if (!vozesT[r+1]) { var dur3 = dur1; } else { var dur3 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+    //console.log(p,x,r,"NP:", notaPrepara, notaResolve, notaAcento, mov1, mov2, intM1, intM2, intMT1, intMT2, dur1, dur2, dur3, passaLExMF.checked);
     if (mov1 == mov2 && mov1 != 0 && ((intM1 < 4 && intMT1 == 1) || intM1 < 3) && ((intM2 < 4 && intMT2 == 1) || intM2 < 3) &&// contorno melódico e graus conjuntos
        (dur2 < dur1*2.1 && dur2 <= dur3*2.1) && // proporção entre as durações de dissonâncias e consonâncias
         (notaPrepara != "D" || tipo == "ch") && (notaResolve != "D" || tipo == "ch") // prepara e resolve em consonâncias
@@ -5248,51 +5645,61 @@ function notaPassagem(x, tipo) { //console.log(x,"=============== função NP ==
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Nota de passagem -";
                             if (terEsp || quiEsp || livreCP) { avalia += 0.2; } else { avalia += 0.3;}; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Nota de passagem -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function notaPassagem4(x, tipo) { //console.log(x,"=============== função NP4 =============");
    if (!passaLEx2.checked) { return x; };
-   if (x == 0 || x+2 >= vozes.length) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   if (x == 0 || x+2 >= vozesT.length) { return x; };
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x, np1 = x, r; // preparação, resolução
-    while (vozes[x].nota[voz] == vozes[p].nota[voz] ||
-           verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                               Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1])) == "D")  { // procura nota preparação
-      if (vozes[x].nota[voz] == vozes[p].nota[voz]) { var pos1 = vozes[p].posição[voz] };
-      if (p <= 0) { break; }; p--;  }; // console.log("a:", p, vozes[p].nota[voz]);
-    while (vozes[x].nota[voz] == vozes[np1].nota[voz]) { // procura nota posterior
-        np1++; if (np1 >= vozes.length-1) { break; }; }; if (!vozes[np1]) { return x; }; r = np1;
-    while (vozes[np1].nota[voz] == vozes[r].nota[voz]) { // procura nota posterior
-        r++; if (r >= vozes.length-1) { break; }; }; if (!vozes[r]) { return x; };
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaPassa1 = verificaConsonancia(Math.abs(vozes[x].nota[0] - vozes[x].nota[1]),
-                                         Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]));
-    var notaPassa2 = verificaConsonancia(Math.abs(vozes[np1].nota[0] - vozes[np1].nota[1]),
-                                         Math.abs(vozes[np1].tonal[0] - vozes[np1].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento0 = verificaTempoForte(vozes[p].tempo[voz],vozes[p].formula[0]);
-    var notaAcento1 = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcento2 = verificaTempoForte(vozes[np1].tempo[voz],vozes[np1].formula[0]);
-    var notaAcento3 = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[np1].nota[voz] - vozes[x].nota[voz]);
-    var mov3 = direção(vozes[r].nota[voz] - vozes[np1].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[np1].nota[voz] - vozes[x].nota[voz]);
-    var intM3 = Math.abs(vozes[r].nota[voz] - vozes[np1].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[np1].posição[voz] - pos1;
-    var dur3 = vozes[r].posição[voz] - vozes[np1].posição[voz];
-    if (!vozes[r+1]) { var dur4 = dur1; } else { var dur4 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//console.log(x,")", vozes[p].nota[voz], vozes[x].nota[voz], vozes[x+1].nota[voz],vozes[r].nota[voz], "|",
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz] ||
+           verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal) == "D")  { // procura nota preparação
+      if (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { var pos1 = vozesT[p].posição[voz] };
+      if (p <= 0) { break; }; p--;
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+        else { ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    }; //console.log("a:", p, vozesT[p].nota[voz]);
+    while (vozesT[x].nota[voz] == vozesT[np1].nota[voz]) { // procura nota posterior
+        np1++; if (np1 >= vozesT.length-1) { break; }; }; if (!vozesT[np1]) { return x; }; r = np1;
+    while (vozesT[np1].nota[voz] == vozesT[r].nota[voz]) { // procura nota posterior
+        r++; if (r >= vozesT.length-1) { break; }; }; if (!vozesT[r]) { return x; };
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[x].nota[0] >= vozesT[x].nota[1]) { var ixTonal = vozesT[x].tonal[0] - vozesT[x].tonal[1]; }
+      else { var ixTonal = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+    var notaPassa1 = verificaConsonancia(Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]), ixTonal);
+    if (vozesT[np1].nota[0] >= vozesT[np1].nota[1]) { var inpTonal = vozesT[np1].tonal[0] - vozesT[np1].tonal[1]; }
+      else { var inpTonal = vozesT[np1].tonal[1] - vozesT[np1].tonal[0]; };
+    var notaPassa2 = verificaConsonancia(Math.abs(vozesT[np1].nota[0] - vozesT[np1].nota[1]), inpTonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var notaAcento0 = verificaTempoForte(vozesT[p].tempo[voz],vozesT[p].formula[0]);
+    var notaAcento1 = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcento2 = verificaTempoForte(vozesT[np1].tempo[voz],vozesT[np1].formula[0]);
+    var notaAcento3 = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[np1].nota[voz] - vozesT[x].nota[voz]);
+    var mov3 = direção(vozesT[r].nota[voz] - vozesT[np1].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[np1].nota[voz] - vozesT[x].nota[voz]);
+    var intM3 = Math.abs(vozesT[r].nota[voz] - vozesT[np1].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[np1].posição[voz] - pos1;
+    var dur3 = vozesT[r].posição[voz] - vozesT[np1].posição[voz];
+    if (!vozesT[r+1]) { var dur4 = dur1; } else { var dur4 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+//console.log(x,")", vozesT[p].nota[voz], vozesT[x].nota[voz], vozesT[x+1].nota[voz],vozesT[r].nota[voz], "|",
           //   notaPrepara, notaPassa1, notaPassa2, notaResolve, "|", notaAcento1, notaAcento2, "|", mov1, mov2, mov3, "|", intM1, intM2, intM3);
     if (mov1 != 0 && mov1 == mov2 && mov3 == mov1 &&
         (dur2 <= dur1*2.1 && dur2 <= dur4*2.1 && dur3 <= dur4*2.1) && // proporção entre as durações de dissonâncias e consonâncias
@@ -5302,64 +5709,75 @@ function notaPassagem4(x, tipo) { //console.log(x,"=============== função NP4 
         (((notaAcento1 != "F" && (passaLExMF.checked || notaAcento1 != "mF")) && (notaAcento2 != "F" && (passaLExMF.checked || notaAcento2 != "mF"))) || !passaLEx.checked || tipo == "ch")) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: NP grupo 2 -"; avalia += 0.4; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: NP grupo 2 -"; };
-        if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";; };
+        if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";; };
           if (r-1 == x) { return r; } else { return r-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function notaPassagem5(x, tipo) { //console.log(x,"=============== função NP5 =============");
    if (!passaLEx2.checked) { return x; };
-   if (x == 0 || x+3 >= vozes.length) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   if (x == 0 || x+3 >= vozesT.length) { return x; };
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
      var p = x, np1 = x, np2, r; // preparação, resolução
-     while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
-       if (vozes[x].nota[voz] == vozes[p].nota[voz]) { var pos1 = vozes[p].posição[voz] };
+     while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
+       if (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { var pos1 = vozesT[p].posição[voz] };
        p--; if (p < 0) { break; }; };
-       p++; if (p == x) { p--; }; // console.log("a:", p, vozes[p].nota[voz]);
-     while (vozes[x].nota[voz] == vozes[np1].nota[voz]) { // procura nota posterior
-         if (verificaConsonancia(Math.abs(vozes[np1].nota[0] - vozes[np1].nota[1]),
-                                 Math.abs(vozes[np1].tonal[0] - vozes[np1].tonal[1])) != "D") { break; };
-         np1++; if (np1 >= vozes.length-1) { break; }; }; if (!vozes[np1]) { return x; }; np2 = np1;
-     while (vozes[np1].nota[voz] == vozes[np2].nota[voz]) { // procura nota posterior
-         if (verificaConsonancia(Math.abs(vozes[np2].nota[0] - vozes[np2].nota[1]),
-                                 Math.abs(vozes[np2].tonal[0] - vozes[np2].tonal[1])) != "D") { break; };
-         np2++; if (np2 >= vozes.length-1) { break; }; }; if (!vozes[np2]) { return x; }; r = np2;
-     while (vozes[np2].nota[voz] == vozes[r].nota[voz]) { // procura nota posterior
-         if (verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                 Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1])) != "D") { break; };
-         r++; if (r >= vozes.length-1) { break; }; }; if (!vozes[r]) { return x; };
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaPassa1 = verificaConsonancia(Math.abs(vozes[x].nota[0] - vozes[x].nota[1]),
-                                         Math.abs(vozes[x].tonal[0] - vozes[x].tonal[1]));
-    var notaPassa2 = verificaConsonancia(Math.abs(vozes[np1].nota[0] - vozes[np1].nota[1]),
-                                         Math.abs(vozes[np1].tonal[0] - vozes[np1].tonal[1]));
-    var notaPassa3 = verificaConsonancia(Math.abs(vozes[np2].nota[0] - vozes[np2].nota[1]),
-                                         Math.abs(vozes[np2].tonal[0] - vozes[np2].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento0 = verificaTempoForte(vozes[p].tempo[voz],vozes[p].formula[0]);
-    var notaAcento1 = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcento2 = verificaTempoForte(vozes[np1].tempo[voz],vozes[np1].formula[0]);
-    var notaAcento3 = verificaTempoForte(vozes[np2].tempo[voz],vozes[np2].formula[0]);
-    var notaAcento4 = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[np1].nota[voz] - vozes[x].nota[voz]);
-    var mov3 = direção(vozes[np2].nota[voz] - vozes[np1].nota[voz]);
-    var mov4 = direção(vozes[r].nota[voz] - vozes[np2].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[np1].nota[voz] - vozes[x].nota[voz]);
-    var intM3 = Math.abs(vozes[np2].nota[voz] - vozes[np1].nota[voz]);
-    var intM4 = Math.abs(vozes[r].nota[voz] - vozes[np2].nota[voz]);
-    var dur1 = pos1 - vozes[p].posição[voz];
-    var dur2 = vozes[np1].posição[voz] - pos1;
-    var dur3 = vozes[np2].posição[voz] - vozes[np1].posição[voz];
-    var dur4 = vozes[r].posição[voz] - vozes[np2].posição[voz];
-    if (!vozes[r+1]) { var dur5 = dur1; } else { var dur5 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-//console.log(x,")", vozes[p].nota[voz], vozes[x].nota[voz], vozes[np1].nota[voz],vozes[r].nota[voz], "|",
+       p++; if (p == x) { p--; }; //console.log("a:", p, vozesT[p].nota[voz]);
+     while (vozesT[x].nota[voz] == vozesT[np1].nota[voz]) { // procura nota posterior
+       if (vozesT[np1].nota[0] >= vozesT[np1].nota[1]) { var ipTonal = vozesT[np1].tonal[0] - vozesT[np1].tonal[1]; }
+         else { var ipTonal = vozesT[np1].tonal[1] - vozesT[np1].tonal[0]; };
+         if (verificaConsonancia(Math.abs(vozesT[np1].nota[0] - vozesT[np1].nota[1]), ipTonal) != "D") { break; };
+         np1++; if (np1 >= vozesT.length-1) { break; }; }; if (!vozesT[np1]) { return x; }; np2 = np1;
+     while (vozesT[np1].nota[voz] == vozesT[np2].nota[voz]) { // procura nota posterior
+       if (vozesT[np2].nota[0] >= vozesT[np2].nota[1]) { var ipTonal = vozesT[np2].tonal[0] - vozesT[np2].tonal[1]; }
+         else { var ipTonal = vozesT[np2].tonal[1] - vozesT[np2].tonal[0]; };
+         if (verificaConsonancia(Math.abs(vozesT[np2].nota[0] - vozesT[np2].nota[1]), ipTonal) != "D") { break; };
+         np2++; if (np2 >= vozesT.length-1) { break; }; }; if (!vozesT[np2]) { return x; }; r = np2;
+     while (vozesT[np2].nota[voz] == vozesT[r].nota[voz]) { // procura nota posterior
+       if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+         else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+         if (verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal) != "D") { break; };
+         r++; if (r >= vozesT.length-1) { break; }; }; if (!vozesT[r]) { return x; };
+     if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+       else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+     var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+     if (vozesT[x].nota[0] >= vozesT[x].nota[1]) { var ixTonal = vozesT[x].tonal[0] - vozesT[x].tonal[1]; }
+       else { var ixTonal = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
+     var notaPassa1 = verificaConsonancia(Math.abs(vozesT[x].nota[0] - vozesT[x].nota[1]), ixTonal);
+     if (vozesT[np1].nota[0] >= vozesT[np1].nota[1]) { var inpTonal = vozesT[np1].tonal[0] - vozesT[np1].tonal[1]; }
+       else { var inpTonal = vozesT[np1].tonal[1] - vozesT[np1].tonal[0]; };
+     var notaPassa2 = verificaConsonancia(Math.abs(vozesT[np1].nota[0] - vozesT[np1].nota[1]), inpTonal);
+     if (vozesT[np2].nota[0] >= vozesT[np2].nota[1]) { var inp2Tonal = vozesT[np2].tonal[0] - vozesT[np2].tonal[1]; }
+       else { var inp2Tonal = vozesT[np2].tonal[1] - vozesT[np2].tonal[0]; };
+     var notaPassa3 = verificaConsonancia(Math.abs(vozesT[np2].nota[0] - vozesT[np2].nota[1]), inp2Tonal);
+     if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+       else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+     var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+
+    var notaAcento0 = verificaTempoForte(vozesT[p].tempo[voz],vozesT[p].formula[0]);
+    var notaAcento1 = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcento2 = verificaTempoForte(vozesT[np1].tempo[voz],vozesT[np1].formula[0]);
+    var notaAcento3 = verificaTempoForte(vozesT[np2].tempo[voz],vozesT[np2].formula[0]);
+    var notaAcento4 = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[np1].nota[voz] - vozesT[x].nota[voz]);
+    var mov3 = direção(vozesT[np2].nota[voz] - vozesT[np1].nota[voz]);
+    var mov4 = direção(vozesT[r].nota[voz] - vozesT[np2].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[np1].nota[voz] - vozesT[x].nota[voz]);
+    var intM3 = Math.abs(vozesT[np2].nota[voz] - vozesT[np1].nota[voz]);
+    var intM4 = Math.abs(vozesT[r].nota[voz] - vozesT[np2].nota[voz]);
+    var dur1 = pos1 - vozesT[p].posição[voz];
+    var dur2 = vozesT[np1].posição[voz] - pos1;
+    var dur3 = vozesT[np2].posição[voz] - vozesT[np1].posição[voz];
+    var dur4 = vozesT[r].posição[voz] - vozesT[np2].posição[voz];
+    if (!vozesT[r+1]) { var dur5 = dur1; } else { var dur5 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+//console.log(x,")", vozesT[p].nota[voz], vozesT[x].nota[voz], vozesT[np1].nota[voz],vozesT[r].nota[voz], "|",
              //notaPrepara, notaPassa1, notaPassa2, notaResolve, "|", notaAcento1, notaAcento2, "|", mov1, mov2, mov3, "|", intM1, intM2, intM3);
     if (mov1 != 0 && mov1 == mov2 && mov3 == mov1 && mov4 == mov1 &&
         (dur2 <= dur1*2.1 && dur2 <= dur5*2.1 && dur3 <= dur1*2.1 && dur3 <= dur5*2.1
@@ -5374,78 +5792,73 @@ function notaPassagem5(x, tipo) { //console.log(x,"=============== função NP5 
       // if (testaVozMove) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: NP grupo 3 -"; avalia += 0.4; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: NP grupo 3 -"; };
-        if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";; };
+        if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";; };
           if (r-1 == x) { return r; } else { return r-1; };
         //} else { return x-1; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function apojatura(x, tipo) { //console.log(x,"=============== função apojatura =============");
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x-1, r = x+1;
-    if (!vozes[r]) { return x; };
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-    var intM2 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var dur1 = vozes[x].posição[voz] - vozes[p].posição[voz];
-    var dur2 = vozes[r].posição[voz] - vozes[x].posição[voz];
-    if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
-    if ((notaResolve != "D" || tipo == "ch") && (notaPrepara != "D" || tipo == "ch") &&
-        p < x && r > x && intM1 > 2 && intM2 < 3 &&
+    if (!vozesT[r]) { return x; };
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+    var intM2 = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var dur1 = vozesT[x].posição[voz] - vozesT[p].posição[voz];
+    var dur2 = vozesT[r].posição[voz] - vozesT[x].posição[voz];
+    if (!vozesT[r+1]) { var dur3 = dur1; } else { var dur3 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
+    if ((notaResolve != "D" || tipo == "ch") && (notaPrepara != "D" || tipo == "ch" || !apojaEx5.checked) && // verifica preparação e resolução
+        p < x && r > x && intM1 > 2 && intM2 < 3 && // verifica intervalos melódicos
         (dur2 <= dur1*2.1 && dur2 <= dur3*2.1) && // proporção entre as durações de dissonâncias e consonâncias
-        (mov1 != 0 && (!apojaEx2.checked || mov1 == 1 || tipo == "ch")) &&  // introduzida por movimento ascendente
-        (mov2 != 0 && (!apojaEx3.checked || mov2 == -1 || tipo == "ch")) && // resolução descendente
-        (!apojaEx1.checked || (notaAcento == "F" || (apojaEx1MF.checked && notaAcento == "mF") || (notaAcento == "f" && notaAcentoR == "c")) || tipo == "ch")) {
-      // var testaVozMove = true;
-      // for (var d = x+1; d < r; d++) {
-      //   var vozmove1 = verificaConsonancia(Math.abs(vozes[d].nota[0] - vozes[d].nota[1]),
-      //                                      Math.abs(vozes[d].tonal[0] - vozes[d].tonal[1]));
-      //   if (vozmove1 == "D") {
-      //     var voz2 = 1 - voz;
-      //     var vozmove2 = verificaConsonancia(Math.abs(vozes[d].nota[voz2] - vozes[r].nota[voz]),
-      //                                        Math.abs(vozes[d].tonal[voz2] - vozes[r].tonal[voz]));
-      //     if (vozmove2 == "D") { testaVozMove = false; };
-      //   };
-      // };
-      //if (testaVozMove) {
+        (mov1 != 0 && (!apojaEx2.checked || mov1 == 1)) &&  // preparação ascendente
+        (mov2 != 0 && (!apojaEx3.checked || mov2 == -1)) && // resolução descendente
+        ((mov1 != 0 && mov2 != 0) && (!apojaEx4.checked || mov1 != mov2)) &&  // resolução por direção contrária
+        (!apojaEx1.checked || (notaAcento == "F" || (apojaEx1MF.checked && notaAcento == "mF") || // posição métrica
+        (notaAcento == "f" && notaAcentoR == "c")) || tipo == "ch")) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Apojatura -"; avalia += 0.3; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Apojatura -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
-      //  } else { return x; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function antecipação(x, tipo) { //console.log(x,"=============== função antecipação =============");
    if (x == 0) { return x; };
-   var qtVozes, vozIni;
-   if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-            else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-   for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
-
+   var vozFin, vozIni;
+   if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+   for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var r = x+1;
-    if (!vozes[r]) { return x; };
-    // while (vozes[x].nota[voz] == vozes[r].nota[voz] && vozes[r].ligadura[voz]) {
-    //   r++; if (r >= vozes.length-1) { break; }; }; // procura nota posterior
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-    var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-    var int1 = vozes[x].nota[voz] - vozes[x-1].nota[voz];
-    var dur1 = vozes[r].posição[voz] - vozes[x].posição[voz];
-    if (!vozes[r+1]) { var dur2 = dur1; } else { var dur2 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
+    if (!vozesT[r]) { return x; };
+    // while (vozesT[x].nota[voz] == vozesT[r].nota[voz] && vozesT[r].ligadura[voz]) {
+    //   r++; if (r >= vozesT.length-1) { break; }; }; // procura nota posterior
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+    var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+    var int1 = vozesT[x].nota[voz] - vozesT[x-1].nota[voz];
+    var dur1 = vozesT[r].posição[voz] - vozesT[x].posição[voz];
+    if (!vozesT[r+1]) { var dur2 = dur1; } else { var dur2 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
     if (mov1 == 0 && (notaResolve != "D" || tipo == "ch") && r > x &&
         (dur1 <= dur2*2.1) && // proporção entre as durações de dissonâncias e consonâncias
         (notaAcentoR == "F" || ((notaAcentoR == "f" || notaAcentoR == "mF") && notaAcento == "c") || tipo == "ch") &&
@@ -5453,49 +5866,53 @@ function antecipação(x, tipo) { //console.log(x,"=============== função ante
             (antecipaEx2.checked && !antecipaEx3.checked && (int1 > -3 && int1 < 0)) ||
             (!antecipaEx2.checked && antecipaEx3.checked && (int1 < 3 && int1 > 0)) ||
             (!antecipaEx2.checked && !antecipaEx3.checked)) &&
-        (!antecipaEx4.checked || r == vozes.length-1 || tipo == "ch")) {
+        (!antecipaEx4.checked || r == vozesT.length-1 || tipo == "ch")) {
       // var testaVozMove = true;
       // for (var d = x+1; d < r; d++) {
-      //   var vozmove1 = verificaConsonancia(Math.abs(vozes[d].nota[0] - vozes[d].nota[1]),
-      //                                      Math.abs(vozes[d].tonal[0] - vozes[d].tonal[1]));
+      //   var vozmove1 = verificaConsonancia(Math.abs(vozesT[d].nota[0] - vozesT[d].nota[1]),
+      //                                      Math.abs(vozesT[d].tonal[0] - vozesT[d].tonal[1]));
       //   if (vozmove1 == "D") {
       //     var voz2 = 1 - voz;
-      //     var vozmove2 = verificaConsonancia(Math.abs(vozes[d].nota[voz2] - vozes[r].nota[voz]),
-      //                                        Math.abs(vozes[d].tonal[voz2] - vozes[r].tonal[voz]));
+      //     var vozmove2 = verificaConsonancia(Math.abs(vozesT[d].nota[voz2] - vozesT[r].nota[voz]),
+      //                                        Math.abs(vozesT[d].tonal[voz2] - vozesT[r].tonal[voz]));
       //     if (vozmove2 == "D") { testaVozMove = false; };
       //   };
       // };
       // if (testaVozMove) {
         if (tipo == "td") { var nome = "- Tratamento de dissonância: Antecipação -"; avalia += 0.2; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: Antecipação -"; };
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r-1; };
       //  } else { return x; };
-      } else if (voz == qtVozes) { return x; };
+      } else if (voz == vozFin) { return x; };
    };
 }
 function escapada(x, tipo){ //console.log(x,"=============== função escapada =============");
     if (x == 0) { return x; };
-    var qtVozes, vozIni;
-    if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
-             else { vozIni = 0; qtVozes = vozes[x].nota.length-1; };
-    for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+    var vozFin, vozIni;
+    if (!livreCP) {
+     if (vozCF == vS) { vozIni = 1; vozFin = 1; } else
+     if (vozCF == vI) { vozIni = 0; vozFin = 0; } else { vozIni = 0; vozFin = 1; };
+   } else { vozIni = 0; vozFin = 1; };
+    for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
      var p = x-1, r = x+1;
-     if (!vozes[r]) { return x; };
-     var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                           Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-     var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                           Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-     var notaAcentoP = verificaTempoForte(vozes[p].tempo[voz],vozes[p].formula[0]);
-     var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
-     var notaAcentoR = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-     var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-     var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-     var intM1 = Math.abs(vozes[p].nota[voz] - vozes[x].nota[voz]);
-     var intM2 = Math.abs(vozes[r].nota[voz] - vozes[x].nota[voz]);
-     var dur1 = vozes[x].posição[voz] - vozes[p].posição[voz];
-     var dur2 = vozes[r].posição[voz] - vozes[x].posição[voz];
-     if (!vozes[r+1]) { var dur3 = dur1; } else { var dur3 = vozes[r+1].posição[voz] - vozes[r].posição[voz]; };
+     if (!vozesT[r]) { return x; };
+     if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+       else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+     var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+     if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+       else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+     var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+     var notaAcentoP = verificaTempoForte(vozesT[p].tempo[voz],vozesT[p].formula[0]);
+     var notaAcento = verificaTempoForte(vozesT[x].tempo[voz],vozesT[x].formula[0]);
+     var notaAcentoR = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+     var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+     var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+     var intM1 = Math.abs(vozesT[p].nota[voz] - vozesT[x].nota[voz]);
+     var intM2 = Math.abs(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+     var dur1 = vozesT[x].posição[voz] - vozesT[p].posição[voz];
+     var dur2 = vozesT[r].posição[voz] - vozesT[x].posição[voz];
+     if (!vozesT[r+1]) { var dur3 = dur1; } else { var dur3 = vozesT[r+1].posição[voz] - vozesT[r].posição[voz]; };
  //console.log(x,")");
      if (p < x && r > x && intM1 < 3 && intM2 > 2 &&
         (dur2 < dur1*2.1 && dur2 < dur3*2.1) && // proporção entre as durações de dissonâncias e consonâncias
@@ -5504,54 +5921,58 @@ function escapada(x, tipo){ //console.log(x,"=============== função escapada =
          (!escapaEx1.checked || (escapaEx1MF.checked && notaAcento == "mF") || (notaAcento == "f" || notaAcento == "c"))) {
        // var testaVozMove = true;
        // for (var d = x+1; d < r; d++) {
-       //   var vozmove1 = verificaConsonancia(Math.abs(vozes[d].nota[0] - vozes[d].nota[1]),
-       //                                      Math.abs(vozes[d].tonal[0] - vozes[d].tonal[1]));
+       //   var vozmove1 = verificaConsonancia(Math.abs(vozesT[d].nota[0] - vozesT[d].nota[1]),
+       //                                      Math.abs(vozesT[d].tonal[0] - vozesT[d].tonal[1]));
        //   if (vozmove1 == "D") {
        //     var voz2 = 1 - voz;
-       //     var vozmove2 = verificaConsonancia(Math.abs(vozes[d].nota[voz2] - vozes[r].nota[voz]),
-       //                                        Math.abs(vozes[d].tonal[voz2] - vozes[r].tonal[voz]));
+       //     var vozmove2 = verificaConsonancia(Math.abs(vozesT[d].nota[voz2] - vozesT[r].nota[voz]),
+       //                                        Math.abs(vozesT[d].tonal[voz2] - vozesT[r].tonal[voz]));
        //     if (vozmove2 == "D") { testaVozMove = false; };
        //   };
        // };
        // if (testaVozMove) {
          if (tipo == "td") { var nome = "- Tratamento de dissonância: Escapada -"; avalia += 0.2; } else
          if (tipo == "ch") { var nome = "- Coerência Harmônica: Escapada -"; };
-           if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+           if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
            if (r-1 == x) { return r; } else { return r-1; };
          //} else { return x; };
-       } else if (voz == qtVozes) { return x; };
+       } else if (voz == vozFin) { return x; };
     };
 }
 function notaPedal(x, tipo) { //console.log(x,"=============== função nota pedal =============");
   if (x == 0) { return x; };
-  var qtVozes, vozIni;
-  //if (!livreCP) { vozIni = 1-vozCF; qtVozes = 1-vozCF; }
+  var vozFin, vozIni;
+  //if (!livreCP) { vozIni = 1-vozCF; vozFin = 1-vozCF; }
            //else {
-             vozIni = 0; qtVozes = vozes[x].nota.length-1; //};
-  for (var voz = vozIni; voz <= qtVozes; voz++) { // percorre vozes
+             vozIni = 0; vozFin = 1; //};
+  for (var voz = vozIni; voz <= vozFin; voz++) { // percorre vozesT
     var p = x, r = x;
-    while (vozes[x].nota[voz] == vozes[p].nota[voz]) { // procura nota preparação
+    while (vozesT[x].nota[voz] == vozesT[p].nota[voz]) { // procura nota preparação
       p--; if (p < 0) { break; }; };
-      p++; if (p == x) { p--; }; // console.log("a:", p, vozes[p].nota[voz]);
-    while (vozes[p].nota[voz] == vozes[x].nota[voz] && p < x ) {
-      if (verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                              Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1])) == "D") { p++; } else { break; };
-    }; //console.log("b:", p, vozes[p].nota[voz]);
-    while (vozes[x].nota[voz] == vozes[r].nota[voz]) { // procura nota posterior
-      if (verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                              Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1])) != "D") { break; };
-      r++; if (r >= vozes.length-1) { break; }; };
-    if (!vozes[r]) { return x; };
-  //console.log("intervalos em p e r:", Math.abs(vozes[p].nota[0] - vozes[p].nota[1]), Math.abs(vozes[r].nota[0] - vozes[r].nota[1]));
-    var notaPrepara = verificaConsonancia(Math.abs(vozes[p].nota[0] - vozes[p].nota[1]),
-                                          Math.abs(vozes[p].tonal[0] - vozes[p].tonal[1]));
-    var notaResolve = verificaConsonancia(Math.abs(vozes[r].nota[0] - vozes[r].nota[1]),
-                                          Math.abs(vozes[r].tonal[0] - vozes[r].tonal[1]));
-    var metrPrepara = verificaTempoForte(vozes[p].tempo[voz],vozes[p].formula[0]);
-    var metrResolve = verificaTempoForte(vozes[r].tempo[voz],vozes[r].formula[0]);
-    var mov1 = direção(vozes[x].nota[voz] - vozes[p].nota[voz]);
-    var mov2 = direção(vozes[r].nota[voz] - vozes[x].nota[voz]);
-//  console.log("voz",voz, "|", p, x, r,") notas:", vozes[p].nota[voz], vozes[x].nota[voz], vozes[r].nota[voz],
+      p++; if (p == x) { p--; }; //console.log("a:", p, vozesT[p].nota[voz]);
+    while (vozesT[p].nota[voz] == vozesT[x].nota[voz] && p < x ) {
+      if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+        else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+      if (verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal) == "D") { p++; } else { break; };
+    }; //console.log("b:", p, vozesT[p].nota[voz]);
+    while (vozesT[x].nota[voz] == vozesT[r].nota[voz]) { // procura nota posterior
+      if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+        else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+      if (verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal) != "D") { break; };
+      r++; if (r >= vozesT.length-1) { break; }; };
+    if (!vozesT[r]) { return x; };
+  //console.log("intervalos em p e r:", Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]));
+    if (vozesT[p].nota[0] >= vozesT[p].nota[1]) { var ipTonal = vozesT[p].tonal[0] - vozesT[p].tonal[1]; }
+      else { var ipTonal = vozesT[p].tonal[1] - vozesT[p].tonal[0]; };
+    var notaPrepara = verificaConsonancia(Math.abs(vozesT[p].nota[0] - vozesT[p].nota[1]), ipTonal);
+    if (vozesT[r].nota[0] >= vozesT[r].nota[1]) { var irTonal = vozesT[r].tonal[0] - vozesT[r].tonal[1]; }
+      else { var irTonal = vozesT[r].tonal[1] - vozesT[r].tonal[0]; };
+    var notaResolve = verificaConsonancia(Math.abs(vozesT[r].nota[0] - vozesT[r].nota[1]), irTonal);
+    var metrPrepara = verificaTempoForte(vozesT[p].tempo[voz],vozesT[p].formula[0]);
+    var metrResolve = verificaTempoForte(vozesT[r].tempo[voz],vozesT[r].formula[0]);
+    var mov1 = direção(vozesT[x].nota[voz] - vozesT[p].nota[voz]);
+    var mov2 = direção(vozesT[r].nota[voz] - vozesT[x].nota[voz]);
+//console.log("voz",voz, "|", p, x, r,") notas:", vozesT[p].nota[voz], vozesT[x].nota[voz], vozesT[r].nota[voz],
       //        "| mov:", mov1, mov2, "| metro:", metrPrepara, metrResolve, pedalEx1MF.checked,
       //        "| cons:", notaPrepara, notaResolve);
     if (mov1 == 0 && mov2 == 0 &&  // desenho melódico
@@ -5561,49 +5982,60 @@ function notaPedal(x, tipo) { //console.log(x,"=============== função nota ped
           (metrResolve == "F" || (pedalEx1MF.checked && metrResolve == "mF"))) || !pedalEx1.checked)) { // dissonância métrica forte
         if (tipo == "td") { var nome = "- Tratamento de dissonância: nota pedal -"; avalia += 0.2; } else
         if (tipo == "ch") { var nome = "- Coerência Harmônica: nota pedal -"; }
-          if (tipo) { relator += nome + " Comp. " + vozes[x].compasso + " , voz " + (voz+1) + "\n";};
+          if (tipo) { relator += nome + " Comp. " + vozesT[x].compasso + " , voz " + (voz+1) + "\n";};
           if (r-1 == x) { return r; } else { return r; };
-    } else if (voz == qtVozes) { return x; };
+    } else if (voz == vozFin) { return x; };
   };
 }
 
 //------------------------------------------------------------------------------
 function criaResultado(verificados, x, voz, i, tipo, numAcordes, numVozes) {
-//console.log(x, voz, i, tipo, numAcordes, numVozes);
- 	var primAcorde = x - (numAcordes-1);
- 	var compAnt = Math.floor(vozes[primAcorde].compasso);
- 	var compAtual = Math.floor(vozes[x].compasso);
- 	var qtdVozes = vozes[x].nota.length;
- 	if (compAnt != compAtual && numAcordes > 1) { var compasso = compAnt+" ao "+compAtual;}
- 														  else { var compasso = compAtual; };
- 	switch (numVozes) {   // cria mensagem de texto
+   var vozesR = [];
+   if (vozesT.length >= 1) { //console.log("=== vozesT ===");
+     vozesR = vozesT; voz = vS; i = vI; }
+     else { //console.log("=== vozes ===");
+       vozesR = vozes; };
+       //console.log("x:", x, "voz1:", voz, "voz2:", i, "tipo:", tipo, "qtdAcordes:", numAcordes, "qtdVozes:", numVozes);
+   var primAcorde = x - (numAcordes-1);
+   var compAnt = Math.floor(vozesR[primAcorde].compasso);
+   var compAtual = Math.floor(vozesR[x].compasso);
+   var qtdVozes = vozesR[x].nota.length;
+   var compInicial = Math.floor(vozesR[0].compasso);
+   if (compAnt != compAtual && numAcordes > 1) { var compasso = (compAnt - compInicial + 1) + " ao " + (compAtual - compInicial + 1);}
+                                                        else { var compasso = (compAtual - compInicial + 1); };
+   switch (numVozes) {   // cria mensagem de texto
      case "ne":
- 	   case 1: var qualVoz = ", na voz "+ (voz+1); break;
- 	   case "fr": //falsa relação
+     case 1: var qualVoz = ", na voz "+ (voz+1); break;
+     case "fr": //falsa relação
      case "in": //intermitente
- 	   case 2: var qualVoz = ", vozes "+(voz+1)+" e "+(i+1); break;
- 	   case "null":
- 	   case qtdVozes: var qualVoz = ""; break;
- 	};
-   var texto = verificados+") "+tipo+": compasso "+ compasso + qualVoz;
-   resultado[verificados] = [texto];
-   for (var y=primAcorde;y<=x;y++) {  // cria array de objetos para colorir
-
-   	switch (numVozes) {
-   		case 1: resultado[verificados].push(vozes[y].objeto[voz]); break;
-   		case 2: resultado[verificados].push(vozes[y].objeto[voz], vozes[y].objeto[i]); break;
-   		case "null":
-   		case qtdVozes: for (var k=0;k<qtdVozes;k++) {
-   							  resultado[verificados].push(vozes[y].objeto[k]);
-   		               }; break;
-   		case "fr": if (y == primAcorde) { resultado[verificados].push(vozes[y].objeto[voz]); }
-   						else { resultado[verificados].push(vozes[y].objeto[i]); }; break;
-      case "ne":
-        if (y == primAcorde || y == x) { resultado[verificados].push(vozes[y].objeto[voz]); }; break;
-      case "in":
-        if (y == primAcorde || y == x) { resultado[verificados].push(vozes[y].objeto[voz], vozes[y].objeto[i]); }; break;
-    };
+     case "semComp":
+     case 2: var qualVoz = ", vozes "+(voz+1)+" e "+(i+1); break;
+     case "null":
+     case qtdVozes: var qualVoz = ""; break;
    };
+   if (numVozes == "semComp") { var texto = verificados + ") " + tipo + qualVoz; } else {
+                    var texto = verificados + ") " + tipo + ": compasso " + compasso + qualVoz; }
+   resultado[verificados] = [texto];
+   //console.log("resultado:", resultado[verificados])
+   for (var y=primAcorde;y<=x;y++) {  // cria array de objetos para colorir
+     //console.log("=== objetos:", vozesR[y].objeto[0], vozesR[y].objeto[1])
+    switch (numVozes) {
+        case 1: resultado[verificados].push(vozesR[y].objeto[voz]); break;
+        case "semComp":
+        case 2: resultado[verificados].push(vozesR[y].objeto[0], vozesR[y].objeto[1]); break;
+        case "null":
+        case qtdVozes: for (var k=0;k<qtdVozes;k++) {
+                              resultado[verificados].push(vozesR[y].objeto[k]);
+                        }; break;
+        case "fr": if (y == primAcorde) { resultado[verificados].push(vozesR[y].objeto[0]); }
+                        else { resultado[verificados].push(vozesR[y].objeto[1]); }; break;
+        case "ne":
+          if (y == primAcorde || y == x) { resultado[verificados].push(vozesR[y].objeto[0]); }; break;
+        case "in":
+          if (y == primAcorde || y == x) { resultado[verificados].push(vozesR[y].objeto[0], vozesR[y].objeto[1]); }; break;
+      };
+    };
+    //console.log(">>> resultado:", resultado[verificados])
 
 if (tipo == "não conduz para finalis por grau conj." || // melodia
     tipo == "penúltima nota não pertence ao V ou viiº" ||
@@ -5622,7 +6054,7 @@ if (tipo == "não conduz para finalis por grau conj." || // melodia
     tipo == "repetição de padrão mel." ||
     tipo == "arpejo de acorde" ||
     tipo == "repete ponto focal superior" ||
-  //  tipo == "repete ponto focal inferior" ||
+    //tipo == "repete ponto focal inferior" ||
     tipo == "alteração 6º e/ou 7º" ||
     tipo == "neutralização 6º e/ou 7º" ||
     tipo.substring(0, 12) == "Nota inicial" ||
@@ -5657,7 +6089,7 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
   inicializaVariáveis();
   carregarCfg();
   function inicializaVariáveis() {
-   var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-0-false-false-false-false-false-false-false-false-false-1-10-false-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-12-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-0-false-true-0-true-1-true-true-false-false-false-false-2-true-false-false-true-false-false-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-0-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-1-false-true-1-true-3-true-true-false-false-false-false-2-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-1-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-5-true-1-true-true-2-true-4-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-3-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-7-true-1-true-true-2-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-0-15-true-true-true-true-true-true-true-true-false-false-true-true-false-true-false-false-false-false-false-false-false-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-4-true-1-true-true-2-true-3-true-true-false-false-false-false-4-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-2-false-false-true-true-false-true-true-true-true-3-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-false-false-false-true-true-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-24-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-7-true-1-true-true-2-true-4-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-false-false-false-true-1-true-1-false-1-true-4-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-false-false-false-0-false-false-true-true-false-true-true-true-true-5-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-false-false-false-true-true-true-true-false-true-true-true-false-true-true-true-true-true-false-false-false-false-false-false-false-false-21-true-true-true-false-false-true-true-false-false-false-false-true-true-true-false-false-true-true-true-true-10-true-2-true-true-3-true-5-true-true-false-false-false-false-8-true-true-true-true-true-true-false-false-true-false-false-false-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false"
+   var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-true-false-false-false-false-false-false-false-false-false-false-true-false-0-8-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-true-true-true-12-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-3-true-0-false-false-0-false-2-true-true-false-false-true-true-4-true-false-false-true-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-false-false-true-true-true-true-true-true-0-15-true-true-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-16-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-3-true-true-false-false-true-true-4-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-3-true-3-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-true-true-true-true-true-false-true-true-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-18-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-4-true-true-false-false-true-true-6-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-true-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-18-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-1-true-4-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-3-false-3-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-2-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-true-false-true-true-true-false-true-true-false-false-false-false-false-false-true-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-16-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-3-true-true-false-false-true-true-4-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-false-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-1-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-true-false-true-true-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-24-true-true-true-false-true-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-5-true-1-true-true-1-true-4-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-4-false-false-true-0-true-true-true-true-true-true-true-true-true-2-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-false-false-true-true-false-true-true-true-true-true-true-true-true-true-false-true-true-true-false-false-true-true-true-true-true-false-false-false-true-true-24-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-5-true-2-true-true-1-true-5-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true"
 
    preSet = preSet.split("-");
    for (var i=0;i<preSet.length;i++) {
@@ -5666,11 +6098,14 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
     config[i] = preSet[i];
    };
 
-   console.log(config.length, config[config.length-1]);
+   //console.log(config.length, config[config.length-1]);
 
   }
   window.visible = true;
   window.raise();
+  // window.raise();
+  // window.raise();
+  // window.raise();
  } // fecha onRun
 
 } // fecha função Musescore
