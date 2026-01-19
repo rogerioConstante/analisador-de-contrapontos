@@ -1,5 +1,5 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.5                                                        \\
+//  Analisador de Contrapontos v0.5.1                                                      \\
 //                                                                                         \\
 //  Copyright (C)2025 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -15,16 +15,17 @@
 //                                                                                         \\
 //=========================================================================================\\
 
-import QtQuick 2.3
+import QtQuick 2.5
 import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 import MuseScore 3.0
 
 MuseScore {
+      title: qsTr("Analisador de Contrapontos")
       menuPath: "Plugins.Contraponto.Analisador"
       description: "Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto."
-      version: "0.5"
+      version: "0.5.1"
 
       //4.4 title: "Analisador de Contrapontos"
       //4.4 thumbnailName: "interface042.png"
@@ -43,7 +44,7 @@ MuseScore {
   ApplicationWindow {
     id: window
     visible: true
-    title: qsTr("Analisador de Contrapontos v0.5")
+    title: qsTr("Analisador de Contrapontos v0.5.1")
       width: 700; height: 630
     color: "#020202"
 
@@ -125,7 +126,7 @@ MuseScore {
             MouseArea {
                   id: mArea4
                    anchors.fill: parent
-                   onClicked: { (typeof(quit) === 'undefined' ? Qt.quit : quit)(); window.close(); msgResult.close(); msgRelatorio.close(); }
+                   onClicked: { (typeof(quit) === 'undefined' ? Qt.quit : quit()); window.close(); msgResult.close(); msgRelatorio.close(); }
              }
 
             Text {
@@ -3206,7 +3207,7 @@ function vCantusFirmus() {
                        msgErros.visible=true; finaliza = true; return; };
 }
 
-function apresentaResultado(p) { //console.log("======== Apresenta Resultado () =============");
+function apresentaResultado(p) { //console.log(" ======== Apresenta Resultado () =============");
   mensagem = [];
   var total = resultado.length - 1;
   var linhas = 0;
@@ -3215,11 +3216,12 @@ function apresentaResultado(p) { //console.log("======== Apresenta Resultado () 
   if (pag < 0) { pag = 0 } else
   if (pag > totalPagVer) { pag = totalPagVer; };
   const itemAtual = pag * 20;
-  const itemFinal = itemAtual + 20;
+  let itemFinal = itemAtual + 20;
   if (itemFinal > total) { itemFinal = total; };
+  //console.log(resultado.length);
+  if (!resultado) { return ; };
   for (var i=itemAtual;i<itemFinal;i++) {
-    if (!resultado) { return ; };
-    console.log(">>", resultado[i+1][0])
+    //console.log(">>" + resultado[i+1][0]);
     if ((cxCond.checked &&
         (resultado[i+1][0].indexOf("paralela") !== -1 ||
         resultado[i+1][0].indexOf("oculta") !== -1 ||
@@ -3272,32 +3274,39 @@ function apresentaResultado(p) { //console.log("======== Apresenta Resultado () 
   if (msgErros.estado) { msgErros.visible = true; };
 }
 
+function fechaMsgErros(){
+  msgErros.text = "";
+  msgErros.estado = false;
+}
+
 //-----------------------------------------------
 function verificar() {
  vozCF = null;
  vozesT = [];
  finaliza = false;
- msgErros.text = "";
- msgErros.estado = false;
+ fechaMsgErros();
  msgResult.height = 40;
  relator = "";
  avalia = 0;
-console.log("- verificar ---------");
+ //console.log(" - verificar ---------");
  if (!priEsp && !secEsp && !terEsp && !quaEsp && !quiEsp && !melodia && !livreCP) {
           msgErros.text += "Erro! \n Nenhum tipo de contraponto selecionado!\n Utilize a barra laterial para selecionar.";
                        msgErros.visible=true; return; };
  destroirMsg();
  resultado = [];
  carregarNotas();
+ //console.log(" - carregou notas ---------");
  if (finaliza) { return; };
  vCantusFirmus();
  analisaMelodia(); // função para analisar uma só voz da textura
  analisaTodas(); // função para analisar todas as vozes da textura
- vTextura(); // função para analisar a textura em pares de vozes
- console.log("resultado.length - antes:", resultado.length)
+ analisaPares(); // função para analisar a textura em pares de vozes
+ //console.log(" resultado.length - antes:" + resultado.length);
  resultado = removeRepetição(resultado); // função para apresentar o resultado em uma nova janela
- console.log("resultado.length - depois:", resultado.length)
+ //console.log( " - resultado.length - depois:" + resultado.length);
  apresentaResultado(0);
+ //console.log( " - apresentou resultado?");
+ console.log(log);
 }
 
 function analisaMelodia() {
@@ -3354,16 +3363,13 @@ function analisaDuplas() {
 //---------------------------------------
 function carregarNotas() {
 
-  console.log("Contraponto .............................................. Rogério Tavares Constante - 2025(c)")
+  console.log("Analisador de Contrapontos v0.5 .............................................. Rogério Tavares Constante - 2025(c)")
 
   if (typeof curScore == 'undefined' || curScore == null) { // verifica se há partitura
-     console.log("nenhuma partitura encontrada");
+     //console.log("nenhuma partitura encontrada");
      msgErros.text = "Erro! \n Nenhuma partitura encontrada!";
                        msgErros.visible=true; finaliza = true; return; };
 
-  //curScore.startCmd(); // atualizar a leitura dos texto de harmonia ------------
-  // cmd("transpose-up"); cmd("transpose-down"); cmd("undo"); cmd("undo");
-  //curScore.endCmd(); //  (don't know if it's necessary to restart cmd)
   //----------------------------------------------------------------------------
   var cursor = curScore.newCursor();
   vozCF = parseInt(vozCantusFirmus.text) - 1;
@@ -3373,12 +3379,13 @@ function carregarNotas() {
   var posInicial;
   processaTudo = false;
   vozes = [];
-
+  //console.log("- criou cursor e limpou vozes!");
   cursor.rewind(1);
+  //console.log("- cursor.rewind(1) ---------");
   //procura por uma seleção
   if (!cursor.segment) {
      // no selection
-     console.log("nenhuma seleção: processando toda partitura");
+     //console.log("nenhuma seleção: processando toda partitura");
      processaTudo = true;
      if (melodia) { pautaInicial = vozCF; pautaFinal = vozCF + 1}
              else { pautaInicial = 0; pautaFinal = curScore.nstaves; };
@@ -3398,17 +3405,17 @@ function carregarNotas() {
   if (cursor.segment) { cursor.rewind(1); } else { cursor.rewind(0); };
   var cantus;
   for (var cf = 0; cf < cursor.segment.annotations.length; cf++) {
-    if (cursor.segment.annotations[cf].type == 41 ||
-        cursor.segment.annotations[cf].type == 42) { //console.log("Anotações:", cursor.segment.annotations[cf].text);
+    if (cursor.segment.annotations[cf].type == 49 ||
+        cursor.segment.annotations[cf].type == 48) { console.log("Anotações:", cursor.segment.annotations[cf].text);
         cantus = cursor.segment.annotations[cf].text.toUpperCase();
         if (cantus == "CF" || cantus == "C.F." ||
             cantus == "CANTUS FIRMUS" || cantus == "CANTUS") {
-            if (cursor.segment.annotations[cf].track == 0) { //console.log("CF está no track 0")
+            if (cursor.segment.annotations[cf].track == 0) { console.log("CF está no track 0");
               vozCantusFirmus.text = 1;
-            } else { //console.log("CF não está no track 0")
+            } else { console.log("CF não está no track 0");
               vozCantusFirmus.text = (cursor.segment.annotations[cf].track/4)+1;
             };
-        }; //console.log("track:", cursor.segment.annotations[cf].track, vozCantusFirmus.text)
+        }; console.log("track:", cursor.segment.annotations[cf].track, vozCantusFirmus.text);
     };
   };
 
@@ -3448,13 +3455,14 @@ function carregarNotas() {
         var tempo = ((segmento.tick - tickComp[compasso]) / (1920 / denominador)) + 1;
         var voz = 0;
         var cifras, tom;
-        for (var cif = 0; cif < segmento.annotations.length; cif++) { //console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
-             if (segmento.annotations[cif].subStyle == 29) {
-              //console.log("compasso", compasso, ":", segmento.annotations[cif]);
+        for (var cif = 0; cif < segmento.annotations.length; cif++) { console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
+             if (segmento.annotations[cif].subStyle == 30 &&
+                 segmento.annotations[cif].type == 49) {
+              console.log("compasso", compasso, ":", segmento.annotations[cif]);
               cifras = segmento.annotations[cif].text;
-              //console.log("cif", cif, cifras);
-           } else if ((segmento.annotations[cif].type == 41 ||
-                       segmento.annotations[cif].type == 42) &&
+              console.log("cif", cif, cifras);
+           } else if ((segmento.annotations[cif].type == 49 ||
+                       segmento.annotations[cif].type == 48) &&
                        segmento.annotations[cif].text.length > 4) {
               var textoTom = segmento.annotations[cif].text;
               textoTom = textoTom.toUpperCase();
@@ -3584,14 +3592,16 @@ function carregarNotas() {
  for (var x=0;x<vozes[0].nota.length;x++) {
    if (vozes[0].nota[x] == 0) { vozes.splice(0, 1); x--; break; };
  };
- //for (var x=0;x<vozes.length;x++) { console.log("vozes:", x, vozes[x].nota); };
+ //for (var x=0;x<vozes.length;x++) {
+ //console.log("vozes:", 1, vozes[1].nota); fechaMsgErros();
+ //};
  if (vozes.length < 2) { // verifica se há partitura
     //console.log("vozes.length < 2");
     msgErros.text = "Erro! \n Não foi detectada quantidade mínima de notas!";
                       msgErros.visible=true; finaliza = true; return; };
 }
 
-function vTextura() { //console.log("função vTextura --- ");
+function analisaPares() { //console.log("função analisaPares --- ");
   if (vozes.length > 1) { // se tiver mais de um acorde
     //console.log("vozes.length > 1:", vozes.length);
     if (vozes[0].nota.length > 1) { //console.log("vozes[0].nota.length > 1:", vozes[0].nota.length);
@@ -4056,7 +4066,7 @@ function repetiçãoNotas() {
    var novaVoz = []; var qt = 0, pos1 = 0;
 
    for (var x=0;x<vozes.length;x++) {
-     //console.log(x,")",vozes[x].nota[voz], vozes[x].ligadura[voz])
+     //console.log(x,")",vozes[x].nota[voz], vozes[x].ligadura[voz]);
     if (!vozes[x].ligadura[voz]) {
       novaVoz.push({ nota: vozes[x].nota[voz], pos: x}) ;
     } else if (novaVoz.length > 1) { novaVoz[novaVoz.length-1].pos = x; };
@@ -4980,19 +4990,19 @@ function primUltIntervalo() {
 
 function alcançarMovContra() {
 
- if (vozesT.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
+ if (vozes.length<3) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de alcançar intervalo final!\n";
                        msgErros.estado=true; return; };
 
- var intS = vozesT[vozesT.length-1].nota[0] - vozesT[vozesT.length-2].nota[0]
- var intI = vozesT[vozesT.length-1].nota[1] - vozesT[vozesT.length-2].nota[1];
+ var intS = vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]
+ var intI = vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1];
 
- var dir1 = direção(vozesT[vozesT.length-1].nota[0] - vozesT[vozesT.length-2].nota[0]);
- var dir2 = direção(vozesT[vozesT.length-1].nota[1] - vozesT[vozesT.length-2].nota[1]);
+ var dir1 = direção(vozes[vozes.length-1].nota[0] - vozes[vozes.length-2].nota[0]);
+ var dir2 = direção(vozes[vozes.length-1].nota[1] - vozes[vozes.length-2].nota[1]);
 
  if (intS > 2 || intI > 2 || intS < -2 || intI < -2 || dir1 == dir2 || dir1 == 0 || dir2 == 0) {
     if ((quartaJi.checked && (intI == 5 || intI == -7)) || (quartaJs.checked && (intS == 5 || intS == -7))) { return; };
     verificados++;
-    criaResultado(verificados, vozesT.length-2, 0, 1, "alcança intervalo final", 1, 2);
+    criaResultado(verificados, vozes.length-2, 0, 1, "alcança intervalo final", 1, 2);
  };
 }
 
@@ -5991,11 +6001,11 @@ function notaPedal(x, tipo) { //console.log(x,"=============== função nota ped
 //------------------------------------------------------------------------------
 function criaResultado(verificados, x, voz, i, tipo, numAcordes, numVozes) {
    var vozesR = [];
-   if (vozesT.length >= 1) { //console.log("=== vozesT ===");
+   if (vozesT.length >= 1) { console.log("=== vozesT ===");
      vozesR = vozesT; voz = vS; i = vI; }
-     else { //console.log("=== vozes ===");
+     else { console.log("=== vozes ===");
        vozesR = vozes; };
-       //console.log("x:", x, "voz1:", voz, "voz2:", i, "tipo:", tipo, "qtdAcordes:", numAcordes, "qtdVozes:", numVozes);
+       console.log("x:", x, "voz1:", voz, "voz2:", i, "tipo:", tipo, "qtdAcordes:", numAcordes, "qtdVozes:", numVozes);
    var primAcorde = x - (numAcordes-1);
    var compAnt = Math.floor(vozesR[primAcorde].compasso);
    var compAtual = Math.floor(vozesR[x].compasso);
