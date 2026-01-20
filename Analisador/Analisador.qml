@@ -1,7 +1,7 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.5.1                                                      \\
+//  Analisador de Contrapontos v0.5.2                                                      \\
 //                                                                                         \\
-//  Copyright (C)2025 Rogério Tavares Constante                                            \\
+//  Copyright (C)2026 Rogério Tavares Constante                                            \\
 //                                                                                         \\
 //  Este programa é um software livre: você pode redistribuir e/ou  modificar              \\
 //  ele nos termos da GNU General Public License como publicada pela                       \\
@@ -15,2025 +15,3932 @@
 //                                                                                         \\
 //=========================================================================================\\
 
-import QtQuick 2.5
-import QtQuick.Controls 1.3
-import QtQuick.Dialogs 1.2
-import QtQuick.Window 2.1
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import MuseScore 3.0
+import Muse.UiComponents
 
 MuseScore {
-      title: qsTr("Analisador de Contrapontos")
+      version: "0.5.2"
+      title: "Analisador de Contrapontos"
+      pluginType: "dialog"
+      categoryCode: "Contraponto"
+      thumbnailName: "Logo.png"
       menuPath: "Plugins.Contraponto.Analisador"
       description: "Analisador de Contrapontos.\nPlugin de auxílio na correção de exercícios de contraponto."
-      version: "0.5.1"
 
-      //4.4 title: "Analisador de Contrapontos"
-      //4.4 thumbnailName: "interface042.png"
-      //4.4 categoryCode: "Contraponto"
+      width: 900
+      height: 600
 
-       Component.onCompleted: {
-         if (mscoreMajorVersion >= 4) {
-            title = qsTr("Analisador de Contrapontos")
-            thumbnailName = "interface042.png"
-            categoryCode = "Contraponto"
-          }
-        }
+      // Variáveis de cor globais
+      property color corFundoPrincipal: "#1e1e1e"
+      property color corPainel: "#252525"
+      property color corPainelInterno: "#2d2d2d"
+      property color corPainelDestaque: "#333333"
 
+      property color corTextoPrimario: "#e0e0e0"
+      property color corTextoSecundario: "#a0a0a0"
+      property color corTextoDestaque: "#4a9eff"
+      property color corTextoAlerta: "#9a7fcc"
+      property color corTextoSucesso: "#4caf50"
 
-// ----------------------------- janela principal -----------------------
-  ApplicationWindow {
-    id: window
-    visible: true
-    title: qsTr("Analisador de Contrapontos v0.5.1")
-      width: 700; height: 630
-    color: "#020202"
+      property color corBorda: "#404040"
+      property color corBordaDestaque: "#505050"
 
+      property color corBotaoNormal: "#8a7fba"//"#614963" "#3a3a3a"
+      property color corBotaoHover: "#444444"
+      property color corBotaoSelecionado: "#2a5caa"
+      property color corBotaoAcaoPrimario: "#2a5caa"
+      property color corBotaoAcaoSecundario: "#7287a6" //"#5d5e80" "#424242"
 
-    // ------------------------------ barra inferior --------------------------
-    Rectangle {
-            id: barraInferior
-            y: 600
-            width: 697; height: 30
-            color: "#090909"
-            border.color: "#383838"
-            border.width: 1
-            x: 1
+      property color corCheckBox: "#4a9eff"
+      property color corInput: "yellow"
+      property color corInputFundo: "#2a2a2a"
 
-        Text { x: 6; y: 4; font.pointSize: 7; color: "#aaa31e"; text: "criado por" }
-        Text { x: 5; y: 13; font.pointSize: 9; color: "#aaa31e"; text: "Rogério Tavares Constante" }
-        Text { x: 660; y: 10; font.pointSize: 9; color: "#aaa31e"; text: "(c)2025" }
+      property int currentView: 0
+      property int tipoBotoes: 0
 
-       Rectangle {
-             id: btVerifica
-             property string text: qsTr("Verificar")
-             signal clicked
-             anchors.verticalCenter: parent.verticalCenter
-             anchors.right: parent.horizontalCenter //; anchors.leftMargin: 3
-             width: bLabel3.width + 20; height: bLabel3.height + 7
-             border { width: 1; color: "#555555" }
-             smooth: true
-             radius: 2
-             gradient: Gradient {
-              GradientStop {
-                  position: 0.0
-                  color: {
-                        if (mArea3.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#334455" }
-            }
-
-            MouseArea {
-                  id: mArea3
-                   anchors.fill: parent
-                   onClicked: { msgResult.close(); verificar(); }
-             }
-
-            Text {
-             id: bLabel3
-             anchors.centerIn: btVerifica
-             color: "#000000"
-             text: btVerifica.text
-                  }
-            } // botão verificar
-
-       Rectangle {
-             id: btFechar
-             property string text: qsTr("Fechar")
-             signal clicked
-             anchors.verticalCenter: parent.verticalCenter
-             anchors.left: parent.horizontalCenter; anchors.leftMargin: 3
-             width: bLabel4.width + 20; height: bLabel4.height + 7
-             border { width: 1; color: "#555555" }
-             smooth: true
-             radius: 2
-             gradient: Gradient {
-              GradientStop {
-                  position: 0.0
-                  color: {
-                        if (mArea4.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#334455" }
-            }
-
-            MouseArea {
-                  id: mArea4
-                   anchors.fill: parent
-                   onClicked: { (typeof(quit) === 'undefined' ? Qt.quit : quit()); window.close(); msgResult.close(); msgRelatorio.close(); }
-             }
-
-            Text {
-             id: bLabel4
-             anchors.centerIn: btFechar
-             color: "#000000"
-             text: btFechar.text
-                  }
-            } // botão fechar
-        }
-    // ------------------------------ Apresentação ---------------------------
- Item { id: apresenta; visible: true
-
-    Text { x: 90; y: 275; font.pointSize: 19; color: "#aaa31e"; text: qsTr("Analisador de Contrapontos 0.5") }
-    Text { x: 196; y: 303; font.pointSize: 9; color: "#aaa31e"; text: qsTr("Extensão para MuseScore") }
-
-  }
-    // ------------------------------ configurações, barra lateral --------------------------
- Item { id: configura; visible: true;
-    Rectangle { x: 536; y: 3; width: 161; height: 595;	color: "#222222"; radius: 2
-      Text { x: 22; y: 5; color: "#d1d10a"; font.pixelSize: 18; text: qsTr("Configurações") }
-      Rectangle { id: tonalidade;
-                  x: 3; y: 28; width: 155; height: 110;
-                  color: "#101010"; radius: 2
-         Button {
-	       	id: btTonica
-	         text: "Dó"
-	         width: 60
-	         menu: menuTonica
-	         x: 3; y: 3
-	         Text { x: 62; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Tônica/finalis") }
-          }
-	       Button {
-	       	id: btAcid
-	         text: ""
-	         width: 50
-	         menu: menuAcid
-	         x: 3; y: 28
-	         Text { x: 52; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Acidente") }
-	       }
-	       Button {
-	       	id: btModo
-	         text: qsTr("Maior")
-	         width: 90
-	         menu: menuModo
-	         x: 3; y: 53
-	         Text { x: 92; color: "#fcffbc"; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 13; text: qsTr("Modo") }
-	       }
-	       Menu {
-	       	id: menuTonica
-	       	property int value: 1
-	    		    MenuItem { text: "Dó"; onTriggered: { menuTonica.value = 1; btTonica.text = "Dó" } }
-				    	MenuItem { text: "Ré"; onTriggered: { menuTonica.value = 2; btTonica.text = "Ré" } }
-				    	MenuItem { text: "Mi"; onTriggered: { menuTonica.value = 3; btTonica.text = "Mi" } }
-				    	MenuItem { text: "Fá"; onTriggered: { menuTonica.value = 4; btTonica.text = "Fá" } }
-				    	MenuItem { text: "Sol"; onTriggered: { menuTonica.value = 5; btTonica.text = "Sol" } }
-				    	MenuItem { text: "Lá"; onTriggered: { menuTonica.value = 6; btTonica.text = "Lá" } }
-				    	MenuItem { text: "Si"; onTriggered: { menuTonica.value = 7; btTonica.text = "Si" } }
-				 }
-		     Menu {
-	       	id: menuAcid
-	       	property string value: ""
-	    		    MenuItem { text: "Natural"; onTriggered: { menuAcid.value = 1; btAcid.text = "" } }
-				    	MenuItem { text: "#"; onTriggered: { menuAcid.value = 2; btAcid.text = "#" } }
-				    	MenuItem { text: "b"; onTriggered: { menuAcid.value = 3; btAcid.text = "b" } }
-				 }
-		     Menu {
-	       	id: menuModo
-          property int value: 1
-	    		    MenuItem { text: qsTr("Maior"); onTriggered: { menuModo.value = 1; btModo.text = "Maior" } }
-				    	MenuItem { text: qsTr("Menor"); onTriggered: { menuModo.value = 2; btModo.text = "Menor" } }
-				    	MenuItem { text: qsTr("Jônico"); onTriggered: { menuModo.value = 3; btModo.text = "Jônico" } }
-				    	MenuItem { text: qsTr("Dórico"); onTriggered: { menuModo.value = 4; btModo.text = "Dórico" } }
-				    	MenuItem { text: qsTr("Frígio"); onTriggered: { menuModo.value = 5; btModo.text = "Frígio" } }
-				    	MenuItem { text: qsTr("Lídio"); onTriggered: { menuModo.value = 6; btModo.text = "Lídio" } }
-				    	MenuItem { text: qsTr("Mixolídio"); onTriggered: { menuModo.value = 7; btModo.text = "Mixolídio" } }
-				    	MenuItem { text: qsTr("Eólio"); onTriggered: { menuModo.value = 8; btModo.text = "Eólio" } }
-				    	MenuItem { text: qsTr("Lócrio"); onTriggered: { menuModo.value = 9; btModo.text = "Lócrio" } }
-				 }
-
-         Text { x: 6; y: 86; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Voz do C.F. :")
-	         Rectangle { anchors.left: parent.right; anchors.leftMargin: 8; anchors.verticalCenter: parent.verticalCenter;
-	                     width: 25; height: 22; color: "#9c9c9c"; radius: 2
-             Rectangle { x: 1; y: 1; width: 23; height: 20; color: "#050000"; radius: 2
-	            TextInput { id: vozCantusFirmus; anchors.horizontalCenter: parent.horizontalCenter;
-	                        anchors.verticalCenter: parent.verticalCenter; text: "1"; font.pixelSize: 15; color: "yellow";
-	                        validator: IntValidator{bottom: 1; top: 8; } }
-		         }
-		       }
-		     }
+      Rectangle { // fundo
+        x: 0; y: 0
+        width: parent.width
+        height: parent.height
+        color: corFundoPrincipal
+        border.width: 2
+        border.color: corBorda
       }
-      Rectangle { id: contraponto // botões para seleção de espécies
-              x: 3; y: 142
-              width: 155; height: 157; radius: 2
-              color: "#101010"
-              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Tipo de contraponto:") }
-
-        // CF
-        Rectangle {
-                   id: botao27
-                   x: 2; y: 25
-                   property string text: "Cantus Firmus"
-                   signal clicked
-                   width: 149; height: bLabel27.height + 7
-                   border { width: 1; color: "#555555" }
-                   smooth: true
-                   radius: 2
-                   gradient: Gradient {
-                    GradientStop {
-                        position: 0.0
-                        color: {
-                              if (mArea27.pressed)
-                                  return "#888d96"
-                                 else
-                                 return "#a0a8af"
-                           }
-                    }
-                    GradientStop { position: 1.0; color: "#334455" }
-                  }
-                  onClicked: {
-                           salvarCfg();
-                           if (melodia) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; melodia = false; //bLabel291.color = "#000000";
-                                          bLabel27.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabel26.color = "#000000"; bLabel28.color = "#002e77";
-                           bLabLivre.color = "#000000"; bLabel25.color = "#000000";
-                           bLabel24.color = "#000000"; bLabel23.color = "#000000";
-                           bLabel2.color = "#000000"; bLabel1.color = "#000000";
-                           bLabel27.color = "#002e77"; bLabel29.color = "#000000";
-                           bLabel26o.color = "#000000";// bLabel291.color = "#000000";
-                           conduz.visible = false; dissonâncias.visible = false; outros.visible = false;
-                           intervalosClasse.visible = false; melodias.visible = true;
-                           priEsp = false; secEsp = false; terEsp = false; quaEsp = false;
-                           quiEsp = false; melodia = true; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                           }
-                  MouseArea {
-                        id: mArea27
-                         anchors.fill: parent
-                         onClicked: botao27.clicked();
-                   }
-
-                  Text {
-                   id: bLabel27
-                   anchors.centerIn: botao27
-                   color: "#000000"
-                   text: botao27.text
-                        }
-                  }
-        // primeira espécie
-        Rectangle {
-                   id: botao1
-                   x: 3; y: 51
-                   property string text: "1ª esp."
-                   signal clicked
-                   width: 74; height: bLabel1.height + 7
-                   border { width: 1; color: "#555555" }
-                   smooth: true
-                   radius: 2
-                   gradient: Gradient {
-                     GradientStop {
-                        position: 0.0
-                        color: {
-                              if (mArea1.pressed)
-                                  return "#888d96"
-                                 else
-                                 return "#a0a8af"
-                           }
-                         }
-                     GradientStop { position: 1.0; color: "#334455" }
-                   }
-                   onClicked: {
-                           salvarCfg();
-                           if (priEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; priEsp = false; // bLabel291.color = "#000000";
-                                          bLabel1.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabLivre.color = "#000000"; bLabel25.color = "#000000";
-                           bLabel24.color = "#000000"; bLabel23.color = "#000000";
-                           bLabel2.color = "#000000"; bLabel1.color = "#002e77";
-                           bLabel27.color = "#000000"
-                           priEsp = true; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                           }
-                   MouseArea {
-                        id: mArea1
-                         anchors.fill: parent
-                         onClicked: botao1.clicked();
-                   }
-
-                   Text {
-                   id: bLabel1
-                   anchors.centerIn: botao1
-                   color: "#000000"
-                   text: botao1.text
-                   }
-                  }
-        // segunda espécie
-        Rectangle {
-                   id: botao2
-                   x: 78; y: 51
-                   property string text: "2ª esp."
-                   signal clicked
-                   width: 74; height: bLabel2.height + 7
-                   border { width: 1; color: "#555555" }
-                   smooth: true
-                   radius: 2
-                   gradient: Gradient {
-                    GradientStop {
-                        position: 0.0
-                        color: {
-                              if (mArea2.pressed)
-                                  return "#888d96"
-                                 else
-                                 return "#a0a8af"
-                           }
-                    }
-                    GradientStop { position: 1.0; color: "#334455" }
-                  }
-                   onClicked: {
-                           salvarCfg();
-                           if (secEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; secEsp = false; //bLabel291.color = "#000000";
-                                          bLabel2.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabLivre.color = "#000000"; bLabel25.color = "#000000";
-                           bLabel24.color = "#000000"; bLabel23.color = "#000000";
-                           bLabel2.color = "#002e77"; bLabel1.color = "#000000"; bLabel27.color = "#000000"
-                           priEsp = false; secEsp = true; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                           }
-                  MouseArea {
-                        id: mArea2
-                         anchors.fill: parent
-                         onClicked: botao2.clicked();
-                   }
-
-                  Text {
-                   id: bLabel2
-                   anchors.centerIn: botao2
-                   color: "#000000"
-                   text: botao2.text
-                   }
-                  }
-        // terceira especie
-        Rectangle {
-                   id: botao23
-                   x: 3; y: 77
-                   property string text: "3ª esp."
-                   signal clicked
-                   width: 74; height: bLabel23.height + 7
-                   border { width: 1; color: "#555555" }
-                   smooth: true
-                   radius: 2
-                   gradient: Gradient {
-                    GradientStop {
-                        position: 0.0
-                        color: {
-                              if (mArea23.pressed)
-                                  return "#888d96"
-                                 else
-                                 return "#a0a8af"
-                           }
-                    }
-                    GradientStop { position: 1.0; color: "#334455" }
-                  }
-                   onClicked: {
-                           salvarCfg();
-                           if (terEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; terEsp = false;//bLabel291.color = "#000000";
-                                          bLabel23.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabLivre.color = "#000000"; bLabel25.color = "#000000";
-                           bLabel24.color = "#000000"; bLabel23.color = "#002e77";
-                           bLabel2.color = "#000000"; bLabel1.color = "#000000"; bLabel27.color = "#000000"
-                           priEsp = false; secEsp = false; terEsp = true; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                          }
-                  MouseArea {
-                        id: mArea23
-                         anchors.fill: parent
-                         onClicked: botao23.clicked();
-                   }
-
-                  Text {
-                   id: bLabel23
-                   anchors.centerIn: botao23
-                   color: "#000000"
-                   text: botao23.text
-                        }
-                  }
-        // quarta espécie
-        Rectangle {
-                    id: botao24
-                    x: 78; y: 77
-                    property string text: "4ª esp."
-                    signal clicked
-                    width: 74; height: bLabel24.height + 7
-                    border { width: 1; color: "#555555" }
-                    smooth: true
-                    radius: 2
-                    gradient: Gradient {
-                     GradientStop {
-                         position: 0.0
-                         color: {
-                               if (mArea24.pressed)
-                                   return "#888d96"
-                                  else
-                                  return "#a0a8af"
-                            }
-                     }
-                     GradientStop { position: 1.0; color: "#334455" }
-                   }
-                    onClicked: {
-                           salvarCfg();
-                           if (quaEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; quaEsp = false;//bLabel291.color = "#000000";
-                                          bLabel24.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabLivre.color = "#000000"; bLabel25.color = "#000000";
-                           bLabel24.color = "#002e77"; bLabel23.color = "#000000";
-                           bLabel2.color = "#000000"; bLabel1.color = "#000000"; bLabel27.color = "#000000"
-                           priEsp = false; secEsp = false; terEsp = false; quaEsp = true; quiEsp = false; melodia = false; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                          }
-                   MouseArea {
-                         id: mArea24
-                          anchors.fill: parent
-                          onClicked: botao24.clicked();
-                    }
-                   Text {
-                    id: bLabel24
-                    anchors.centerIn: botao24
-                    color: "#000000"
-                    text: botao24.text
-                         }
-                    }
-        // quinta espécie
-        Rectangle {
-                   id: botao25
-                   x: 3; y: 103
-                   property string text: "5ª esp."
-                   signal clicked
-                   width: 74; height: bLabel25.height + 7
-                   border { width: 1; color: "#555555" }
-                   smooth: true
-                   radius: 2
-                   gradient: Gradient {
-                    GradientStop {
-                        position: 0.0
-                        color: {
-                              if (mArea25.pressed)
-                                  return "#888d96"
-                                 else
-                                 return "#a0a8af"
-                           }
-                    }
-                    GradientStop { position: 1.0; color: "#334455" }
-                  }
-                  onClicked: {
-                           salvarCfg();
-                           if (quiEsp) {  intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                          melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                          bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000";
-                                          bLabel29.color = "#000000"; quiEsp = false;//bLabel291.color = "#000000";
-                                          bLabel25.color = "#000000"; bLabel26o.color = "#000000";}
-                            else  {
-                           bLabLivre.color = "#000000";
-                           bLabel25.color = "#002e77"; bLabel24.color = "#000000";
-                           bLabel23.color = "#000000"; bLabel2.color = "#000000";
-                           bLabel1.color = "#000000"; bLabel27.color = "#000000"
-                           priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = true; melodia = false; livreCP = false; }
-                           atualizarTitulo();
-                           carregarCfg();
-                          }
-                  MouseArea {
-                        id: mArea25
-                         anchors.fill: parent
-                         onClicked: botao25.clicked();
-                   }
-
-                  Text {
-                   id: bLabel25
-                   anchors.centerIn: botao25
-                   color: "#000000"
-                   text: botao25.text
-                        }
-                  }
-        // contraponto livre
-        Rectangle {
-                     id: livre
-                     x: 3; y: 129
-                     property string text: qsTr("Contraponto livre")
-                     signal clicked
-                     width: 149; height: bLabLivre.height + 7
-                     border { width: 1; color: "#555555" }
-                     smooth: true
-                     radius: 2
-                     gradient: Gradient {
-                        GradientStop {
-                            position: 0.0
-                            color: {
-                              if (mArLiv.pressed)
-                                  return "#888d96"
-                                  else
-                                  return "#a0a8af"
-                                       }
-                                }
-                        GradientStop { position: 1.0; color: "#334455" }
-                      }
-                      onClicked: {
-                                 salvarCfg();
-                                 if (livreCP) { intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
-                                                melodias.visible = false; dissonâncias.visible = false; conduz.visible = false;
-                                                bLabLivre.color = "#000000"; bLabel26.color = "#000000"; bLabel28.color = "#000000"; //bLabel291.color = "#000000";
-                                                bLabel29.color = "#000000";  livreCP = false; bLabel26o.color = "#000000"; }
-                                  else  {
-                                 bLabLivre.color = "#002e77"; bLabel25.color = "#000000";
-                                 bLabel24.color = "#000000"; bLabel23.color = "#000000";
-                                 bLabel2.color = "#000000"; bLabel1.color = "#000000";
-                                 bLabel27.color = "#000000";
-                                 priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = true; }
-                                 atualizarTitulo();
-                                 carregarCfg();
-                                  }
-                      MouseArea {
-                        id: mArLiv
-                        anchors.fill: parent
-                        onClicked: livre.clicked();
-                      }
-
-                      Text {
-                       id: bLabLivre
-                       anchors.centerIn: livre
-                       color: "#000000"
-                       text: livre.text
-                      }
-                    }
-
-      }
-      Rectangle { id: menu2 // botões para seleção de páginas
-              x: 3; y: 303
-              width: 155; height: 130; radius: 2
-              color: "#101010"
-              Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Aspectos:") }
-              // conduz
-              Rectangle {
-               id: botao26
-               x: 3; y: 25
-               property string text: qsTr("Condução de vozes")
-               signal clicked
-               width: 149; height: bLabel26.height + 7
-               border { width: 1; color: "#555555" }
-               smooth: true
-               radius: 2
-               gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: {
-                          if (mArea26.pressed)
-                              return "#888d96"
-                             else
-                             return "#a0a8af"
-                       }
-                }
-                GradientStop { position: 1.0; color: "#343434" }
-              }
-              onClicked: {
-             				  if (conduz.visible) { conduz.visible = false; titulo1.text = ""; }
-                         else if (!melodia) {
-                           conduz.visible = true; melodias.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = false;
-                                bLabel26.color = "#002e77"; bLabel28.color = "#000000"; bLabel26o.color = "#000000";
-                                bLabel29.color = "#000000"; //bLabel291.color = "#000000";
-                               };
-                         atualizarTitulo();
-              				 }
-              MouseArea {
-                    id: mArea26
-                     anchors.fill: parent
-                     onClicked: botao26.clicked();
-               }
-              Text {
-               id: bLabel26
-               anchors.centerIn: botao26
-               color: "#000000"
-               text: botao26.text
-                    }
-              }
-              // dissonâncias
-              Rectangle {
-               id: botao29
-               x: 3; y: 51
-               property string text: qsTr("Dissonâncias")
-               signal clicked
-               width: 149; height: bLabel29.height + 7
-               border { width: 1; color: "#555555" }
-               smooth: true
-               radius: 2
-               gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: {
-                          if (mArea29.pressed)
-                              return "#888d96"
-                             else
-                             return "#a0a8af"
-                       }
-                }
-                GradientStop { position: 1.0; color: "#343434" }
-              }
-              onClicked: {
-                       if (dissonâncias.visible) { dissonâncias.visible = false; titulo1.text = ""; }
-              				   else if (!melodia) {
-                            dissonâncias.visible = true; melodias.visible = false; conduz.visible = false; intervalosClasse.visible = false; outros.visible = false;
-                         bLabel29.color = "#002e77"; bLabel28.color = "#000000"; bLabel26o.color = "#000000";
-                         bLabel26.color = "#000000"; //bLabel291.color = "#000000";
-                         }
-                         atualizarTitulo();
-                       }
-              MouseArea {
-                    id: mArea29
-                     anchors.fill: parent
-                     onClicked: botao29.clicked();
-               }
-              Text {
-               id: bLabel29
-               anchors.centerIn: botao29
-               color: "#000000"
-               text: botao29.text
-                    }
-              }
-              // melodia
-              Rectangle {
-               id: botao28
-               x: 3; y: 77
-               property string text: qsTr("Melodia")
-               signal clicked
-               width: 149; height: bLabel28.height + 7
-               border { width: 1; color: "#555555" }
-               smooth: true
-               radius: 2
-               gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: {
-                          if (mArea28.pressed)
-                              return "#888d96"
-                             else
-                             return "#a0a8af"
-                       }
-                }
-                GradientStop { position: 1.0; color: "#343434" }
-              }
-              onClicked: {
-                    if (melodias.visible) { melodias.visible = false; titulo1.text = ""; }
-                     else { melodias.visible = true; conduz.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = false;
-                            bLabel28.color = "#002e77"; //bLabel291.color = "#000000";
-                            bLabel26o.color = "#000000"; bLabel26.color = "#000000"; bLabel29.color = "#000000";
-              				   }
-                         atualizarTitulo();
-              				}
-              MouseArea {
-                    id: mArea28
-                     anchors.fill: parent
-                     onClicked: botao28.clicked();
-               }
-              Text {
-               id: bLabel28
-               anchors.centerIn: botao28
-               color: "#000000"
-               text: botao28.text
-                    }
-              }
-              // outros aspectos
-              Rectangle {
-               id: botao26o
-               x: 3; y: 103
-               property string text: qsTr("Outros aspectos")
-               signal clicked
-               width: 149; height: bLabel26o.height + 7
-               border { width: 1; color: "#555555" }
-               smooth: true
-               radius: 2
-               gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: {
-                          if (mArea26o.pressed)
-                              return "#888d96"
-                             else
-                             return "#a0a8af"
-                       }
-                }
-                GradientStop { position: 1.0; color: "#343434" }
-              }
-              onClicked: {
-             				  if (outros.visible) { outros.visible = false; titulo1.text = ""; }
-                         else {
-                           conduz.visible = false; melodias.visible = false; dissonâncias.visible = false; intervalosClasse.visible = false; outros.visible = true;
-                                bLabel26o.color = "#002e77"; bLabel28.color = "#000000"; bLabel26.color = "#000000";
-                                bLabel29.color = "#000000"; //bLabel291.color = "#000000";
-                               };
-                         atualizarTitulo();
-              				 }
-              MouseArea {
-                    id: mArea26o
-                     anchors.fill: parent
-                     onClicked: botao26o.clicked();
-               }
-              Text {
-               id: bLabel26o
-               anchors.centerIn: botao26o
-               color: "#000000"
-               text: botao26o.text
-                    }
-              }
-      // classificação de intervalos
-              // Rectangle {
-              //  id: botao291
-              //  x: 3; y: 103
-              //  property string text: qsTr("Intervalos")
-              //  signal clicked
-              //  width: 149; height: bLabel291.height + 7
-              //  border { width: 1; color: "#555555" }
-              //  smooth: true
-              //  radius: 2
-              //  gradient: Gradient {
-              //   GradientStop {
-              //       position: 0.0
-              //       color: {
-              //             if (mArea291.pressed)
-              //                 return "#888d96"
-              //                else
-              //                return "#a0a8af"
-              //          }
-              //   }
-              //   GradientStop { position: 1.0; color: "#343434" }
-              // }
-              // onClicked: {
-              //   if (intervalosClasse.visible) { intervalosClasse.visible = false; titulo1.text = ""; }
-              //   // else if (!melodia) {
-              //   //        intervalosClasse.visible = true; melodias.visible = false; conduz.visible = false; dissonâncias.visible = false;
-              //   //        bLabel28.color = "#000000"; bLabel291.color = "#002e77";
-              //   //        bLabel26o.color = "#000000"; bLabel29.color = "#000000";
-              //   //     }
-              //   //     atualizarTitulo();
-              // 		}
-              // MouseArea {
-              //       id: mArea291
-              //        anchors.fill: parent
-              //        onClicked: botao291.clicked();
-              //  }
-              // Text {
-              //  id: bLabel291
-              //  anchors.centerIn: botao291
-              //  color: "#000000"
-              //  text: botao291.text
-              //       }
-              // }
-      }
-      Rectangle { id: preConfigurações;
-                 x: 3; y: 437; width: 155; height: 106
-                 color: "#101010"; radius: 2
-        Text { x: 3; y: 5; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Pré-configurações:") }
-        Rectangle { x: 3; y: 25; width: 149; height: 22; color: "#9c9c9c"; radius: 2
-         Rectangle { x: 1; y: 1; width: 147; height: 20; color: "#050000"; radius: 2
-          Text { id: nomePre; x: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12; color: "#d1d10a"; text: qsTr("sem nome") }
-         }
-        }
-            Rectangle {
-             id: salvarCnfiguração
-             property string text: qsTr("Salvar")
-             signal clicked
-             x: 3; y: 50; width: 149; height: 25
-             border { width: 1; color: "#555555" }
-             smooth: true
-             radius: 2
-             gradient: Gradient {
-              GradientStop {
-                  position: 0.0
-                  color: {
-                        if (mArea41.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#2b2b2b" }
-            }
-            MouseArea {
-                  id: mArea41
-                   anchors.fill: parent
-                   onClicked: { salvarCfg(); saveFileDialog.open(); }
-             }
-
-            Text {
-             id: bLabel41
-             anchors.centerIn: salvarCnfiguração
-             color: "#101010"
-             font.pointSize: 10
-             text: salvarCnfiguração.text
-                  }} //botão salvar
-            Rectangle {
-             id: carregarCnfiguração
-             property string text: qsTr("Carregar")
-             signal clicked
-             x: 3; y: 77; width: 149; height: 25
-             border { width: 1; color: "#555555" }
-             smooth: true
-             radius: 2
-             gradient: Gradient {
-              GradientStop {
-                  position: 0.0
-                  color: {
-                        if (mArea42.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#2b2b2b" }
-            }
-             MouseArea {
-                  id: mArea42
-                   anchors.fill: parent
-                   onClicked: { openFileDialog.open(); }
-             }
-             Text {
-             id: bLabel42
-             anchors.centerIn: carregarCnfiguração
-             color: "#101010"
-             font.pointSize: 10
-             text: carregarCnfiguração.text
-                  }} //botão carregar
-      }
-      Rectangle { id: relatorio;
-                 x: 3; y: 546; width: 155; height: 46
-                 color: "#101010"; radius: 2
-        Text { x: 3; y: 3; color: "#f9ff8c"; font.pixelSize: 14; text: qsTr("Relatório:") }
-            Rectangle {
-             id: geraRel
-             property string text: qsTr("Gerar relatório")
-             signal clicked
-             x: 3; y: 18; width: 149; height: 25
-             border { width: 1; color: "#555555" }
-             smooth: true
-             radius: 2
-             gradient: Gradient {
-              GradientStop {
-                  position: 0.0
-                  color: {
-                        if (mArea412.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#2b2b2b" }
-            }
-              MouseArea {
-                  id: mArea412
-                   anchors.fill: parent
-                   onClicked: { gerarRelatorio(); }
-              }
-
-              Text {
-               id: bLabel412
-               anchors.centerIn: geraRel
-               color: "#101010"
-               font.pointSize: 10
-               text: geraRel.text
-              }
-          } //botão gerar Relatório
-
-      }
-
-    }
-  }
-// ------------------------------ verificações -----------------------------------
- Text { id: titulo2; x: 5; y: 2; color: "#e0dfc3"; font.pixelSize: 20; text: ""
- Text { id: titulo1; anchors.left: parent.right; anchors.leftMargin: 13; anchors.verticalCenter: parent.verticalCenter;
-        color: "#e0dfc3"; font.pixelSize: 18; text: ""  }}
- Item { id: conduz; visible: false;
-   Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#3a3a3a"; radius: 2
-     // paralelas
-	  Rectangle { x: 3; y: 3; width: 526; height: 83; color: "#1c1c1c"; radius: 2
-
-	     CheckBox { id: paralela8; checked: true; x: 5; y: 3;
-	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("U/8ª paralela") }
-	       Text { id: par8RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
-		     TextInput { id: par8Rep; anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y;
-           font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
-		      Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
-		     }
-		   }
-
-	     CheckBox { id: paralela5; checked: true; x: 5; y: 44;
-	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª paralela") }
-	       Text { id: par5RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
-		     TextInput { id: par5Rep; anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y;
-           font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
-	         Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
-	        }
-	       }
-
-	     CheckBox { id: paralela4; checked: false; x: 245; y: 3;
-	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("4ªJ paralela") }
-	      Text { id: par4RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
-	       TextInput { id: par4Rep; anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y;
-           font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
-           Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
-	       }
-	      }
-
-	     CheckBox { id: paralela36; checked: true; x: 245; y: 44;
-	      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-          color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("3ª e 6ª paralela") }
-	      Text { id: par36RepTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se ocorrer") }
-	       TextInput { id: par36Rep; anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y;
-           font.underline: true; text: "4"; font.pixelSize: 12;  color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}
-	        Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-            color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou mais paralela(s)") }
-	       }
-	      }
-	  }
-	   // ocultas
-	   Rectangle { x: 3; y: 89; width: 526; height: 44; color: "#1c1c1c"; radius: 2
-
-	     CheckBox { id: oculta8; checked: true; x: 5; y: 2;
-	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª oculta/direta") }
-	      }
-	     CheckBox { id: oculta5; checked: true; x: 5; y: 20;
-	       onClicked: {if (!oculta8.checked && !oculta5.checked) { ocultEx.checked = false; ocultSalto.checked = false;}}
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª oculta/direta") }
-	      }
-		 	  CheckBox { id: ocultEx; checked: true; x: 160; y: 2;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no final") }
-		 		}
-		 	  CheckBox { id: ocultSalto; checked: true; x: 160; y: 20;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente se salto na voz superior") }
-		 		}
-        CheckBox { id: ocultExt; checked: true; x: 295; y: 2;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente nas vozes externas") }
-		 		}
-		  }
-      // 5ªs e 8ªs intermitentes
-     Rectangle { x: 3; y: 136; width: 526; height: 190; color: "#1c1c1c"; radius: 2;
-
-       CheckBox { id: inter8; checked: true; x: 5; y: 3;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("8ª/U e")
-           CheckBox { id: inter5; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                    color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª intermitente") }}
-       }}
-       CheckBox { id: interPM; checked: true; x: 30; y: 25;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Na mesma posição métrica") }}
-       CheckBox { id: interSI; checked: true; x: 30; y: 45;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Separadas por um intervalo") }}
-       CheckBox { id: interExS; checked: true; x: 30; y: 65
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-               color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto separadas por mais de")
-          TextInput { id: interExSn; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
-                     font.underline: true; text: "4"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 2; top: 99;}
-           Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalos") }
-          }
-         }
-        }
-       CheckBox { id: interExTf; checked: true; x: 30; y: 85;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-              color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco e")
-              CheckBox { id: interExTf3; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                      color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("em tempo meio forte :") } }
-            }
-        CheckBox { id: interExTf1; checked: false; x: 60; y: 20;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("sincopada e")
-         CheckBox { id: interExTf2; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                 color: "#e0dfc3"; font.pixelSize: 11; text: qsTr("alcançada por grau conjunto") }}
-         }
-        }
-       }
-       CheckBox { id: interExTF; checked: true; x: 30; y: 125;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo forte com ambas notas ligadas às anteriores") }
-       }
-       CheckBox { id: interExFim; checked: true; x: 30; y: 145;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto na cadência final") }
-       }
-       CheckBox { id: interExCF; checked: true; x: 30; y: 165;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto se CF não move") }
-       }
-       CheckBox { id: interExt; checked: true; x: 295; y: 165;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Somente nas vozes externas") }
-       }
-
-     }
-     // movimentos similares
-     Rectangle { x: 3; y: 330; width: 526; height: 44;	color: "#1c1c1c"; radius: 2
-       CheckBox { id: movContObli; checked: true; x: 5; y: 2;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-          font.pixelSize: 14; text: qsTr("priorizar mov. contrário e oblíquo") }
-        }
-       CheckBox { id: movSim; checked: true; x: 5; y: 20
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-              color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Qtd máxima de ")
-         TextInput { id: qtdMovSim; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
-                    font.underline: true; text: "4"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 2; top: 99;}
-                 Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
-                 color: "#e0dfc3"; font.pixelSize: 12; text: qsTr(" movimentos similares, em sequência, em todas as vozes") }
-         }
-        }
-       }
-     }
-	     // consecutivas por movimento contrário e oblíquo
-	   Rectangle { x: 3; y: 378; width: 276; height: 44;	color: "#1c1c1c"; radius: 2
-
-	     CheckBox { id: consecObli; checked: false; x: 5; y: 2;
-	        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. oblíquo") }
-	      }
-
-			CheckBox { id: consecCont; checked: false; x: 5; y: 20;
-		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("5ª e 8ª consecutivas mov. contrário") }
-		 		}
-		 }
-     // cruzamento de vozes
-     Rectangle { x: 283; y: 378; width: 246; height: 44; color: "#1c1c1c"; radius: 2
-      CheckBox { id: cruzaVozes; checked: true; x: 5; y: 2
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Cruzamento de vozes") }
-       }
-       CheckBox { id: falsaR; checked: true; x: 5; y: 20
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Falsa relação") }
-       }
-     }
-      // uníssono
-		 Rectangle { x: 3; y: 426; width: 526; height: 42; color: "#1c1c1c"; radius: 2
-	     CheckBox { id: uniss; checked: true; x: 5; y: 2;
-	       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: qsTr("Uníssono") }
-	       CheckBox { id: unissIF; checked: true; x: 250; y: 0
-		       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 12; text: qsTr("Exceto Início/Final") }}
-         CheckBox { id: unissTF; checked: true; x: 250; y: 18
-  		     Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 12; text: qsTr("Exceto tempo fraco")
-              CheckBox { id: unissTmF; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-           		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                       font.pixelSize: 12; text: qsTr("e meio forte") }}
-                }}
-         Text { id: unissTxt; x: 5; y: 22; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("se quantidade for maior do que") }
-		      TextInput { id: unissQt; anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y; font.underline: true; text: "0";
-                      font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 99;}}
-		   }
-		  }
-   }
-  }
- Item { id: outros; visible: false;
-    Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#3a3a3a"; radius: 2
-     // primeiro intervalo
-     Rectangle { x: 3; y: 3; width: 526; height: 58;	color: "#282828"; radius: 2
-        CheckBox { id: primInt; checked: true; x: 3; y: 2;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("início diferente de unís./8ªJ") }
-         CheckBox { id: ex5Ji; checked: true; x: 20; y: 18;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
-         CheckBox { id: ex3i; checked: true; x: 20; y: 35;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
-       } // ultimo intervalo
-       CheckBox { id: ultInt; checked: true; x: 260; y: 2;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("final diferente de unís./8ªJ") }
-         CheckBox { id: ex5Jf; checked: true; x: 20; y: 18;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 5ªJ, com a Tônica na voz inf.") } }
-         CheckBox { id: ex3f; checked: true; x: 20; y: 35;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 3ª, com a Tônica na voz inf.") } }
-       }
-     }
-     // últimas notas de cada voz alcançadas por grau conjunto descendente e ascendente
-     Rectangle { x: 3; y: 64; width: 526; height: 44;	color: "#282828"; radius: 2
-        CheckBox { id: ultNotas; checked: true; x: 5; y: 2;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter ;
-                color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não alcançar último intervalo por grau conj. e mov. contrário") }
-         CheckBox { id: quartaJi; checked: true; x: 18; y: 20;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz inf.") } }
-          CheckBox { id: quartaJs; checked: true; x: 260; y: 20;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("exceto 4ªJ asc / 5ªJ desc, voz sup.") } }
-       }
-     }
-     // sensível na cadência final
-     Rectangle { x: 3; y: 112; width: 526; height: 47; color: "#282828"; radius: 2
-     CheckBox { id: sensCad; checked: true; x: 5; y: 2;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-         color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Se não usar a sensível na cadência final")
-         CheckBox { id: sensCadR; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ou se a sensível não resolver") }}
-         CheckBox { id: sensCadEx; checked: true; x: 0; y: 17;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                  color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto no modo Frígio") }}
-       }}
-     }
-     // distância
-     Rectangle { x: 3; y: 162; width: 526; height: 41; color: "#282828"; radius: 2
-
-        CheckBox { id: distancia; checked: true; x: 5; y: 2;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Distância entre as vozes") }
-          Text { id: distTxt; x: 5; y: 20; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("- se uma sequencia maior do que") }
-          TextInput { id: distQt; anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y; font.underline: true; text: "1"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 0; top: 20;}
-           Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("intervalo(s) maior(es) do que a")
-            TextInput { id: distInt;
-              anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.underline: true; text: "10"; font.pixelSize: 12; color: "yellow"; validator: IntValidator{bottom: 8; top: 15;}
-             Text { anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter; color: "yellow"; font.pixelSize: 12; text: "ª" }}
-           }
-          }
-         }
-        }
-     // consonâncias imperfeitas
-     Rectangle { x: 3; y: 206; width: 526; height: 27; color: "#282828"; radius: 2
-       CheckBox { id: consImp; checked: true; x: 5; y: 3;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-           color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Prioridade para Consonâncias Imperfeitas") }
-         }
-       }
-     // coerência harmônica
-     Rectangle { x: 3; y: 236; width: 526; height: 53; color: "#282828"; radius: 2
-       Text { x: 5; y: 0; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Coerência harmônica") }
-       CheckBox { id: cHarmonia; checked: true; x: 5; y: 32;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("notas que não pertencem ao acorde")
-           CheckBox { id: cHarmoniaEx; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                    color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("Exceto em tempo fraco")
-                    CheckBox { id: cHarmoniaEx2; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-                      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                             color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("e meio forte") }}
-             }
-           }
-         }
-       }
-       CheckBox { id: cHarmoniaF; checked: true; x: 5; y: 15;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-                color: "#e0dfc3"; font.pixelSize: 12; text: qsTr("ausência da fundamental")}}
-
-     }
-    }
-   }
- Item { id: dissonâncias; visible: false;
-   Rectangle { x: 2; y: 28; width: 532; height: 564;	color: "#353535"; radius: 2
-     Rectangle { x: 3; y: 3; width: 526; height: 45; color: "#292929"; radius: 2
-      Rectangle { x: 3; y: 3; width: 520; height: 40; color: "#131313"; radius: 2 // Dissonâncias
-       CheckBox { id: dissonanciasG; checked: true; x: 3; y: 3;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: qsTr("Verificar dissonâncias") }}
-     }
-     }
-     Rectangle { x: 3; y: 36; width: 526; height: 525; color: "#292929"; radius: 2
-      Rectangle { x: 3; y: 3; width: 520; height: 45; color: "#131313"; radius: 2 // nota de passagem
-       CheckBox { id: passagemL; checked: true; x: 3; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: qsTr("Nota de passagem")
-          CheckBox { id: passaLEx2; checked: false; anchors.left: parent.right; anchors.leftMargin: 15; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                              font.pixelSize: 14; text: qsTr("e Grupo de NP") }}
-        }
-        CheckBox { id: passaLEx; checked: false; x: 25; y: 20
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 11; text: qsTr("somente em tempo fraco")
-           CheckBox { id: passaLExMF; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                        font.pixelSize: 11; text: qsTr("e em tempo meio forte") }}
-        }}
-       }
-      }
-      Rectangle { x: 3; y: 51; width: 520; height: 45; color: "#131313"; radius: 2 // bordadura
-      Text {  x: 3; y: 3; color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura")
-       CheckBox { id: bordaduraLI; checked: true; x: 80; anchors.verticalCenter: parent.verticalCenter;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 11; text: qsTr("inferior,")
-         CheckBox { id: bordaduraLS; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("superior,")
-            CheckBox { id: bordaLEx; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 11; text: qsTr("somente em tempo fraco")
-                CheckBox { id: bordaLExMF; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-                  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                              font.pixelSize: 11; text: qsTr("e em tempo meio forte") }}
-            }}
-          }}
-        }}
-      }
-
-    CheckBox { id: bordaduraD; checked: false; x: 3; y:22;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter;
-              color: "#e0dfc3"; font.pixelSize: 14; text: qsTr("Bordadura dupla")
-        CheckBox { id: bordaLEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("somente em tempo fraco ou meio forte")
-          // CheckBox { id: bordaLEx2; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-          //  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-          //        font.pixelSize: 11; text: qsTr("e notas principais em tempo forte") }}
-        }}}
-      }
-
-      }
-      Rectangle { x: 3; y: 98; width: 520; height: 128; color: "#131313"; radius: 2 // cambiata
-       CheckBox { id: cambiataL; checked: true; x: 3; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: qsTr("Cambiata");
-         CheckBox { id: cambiLEx1; checked: true; x: 0; y: 20;
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("1ª e última nota em tempo forte")
-           CheckBox { id: cambiLEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
-             Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                         font.pixelSize: 11; text: qsTr("ou meio forte") }}
-          }
-         }
-         CheckBox { id: cambiLEx2; checked: false; x: 0; y: 40
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("cambiata na mesma direção do CF") }
-         }
-         CheckBox { id: cambiLEx3; checked: false; x: 0; y: 60
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("dissonâncias somente em tempo fraco")
-             CheckBox { id: cambiLEx3MF; checked: true; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
-               Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                       font.pixelSize: 11; text: qsTr("ou meio forte") }}
-          }
-         }
-         CheckBox { id: cambiLEx4; checked: false; x: 0; y: 80
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                    font.pixelSize: 11; text: qsTr("2ª nota deve ser dissonânte") }
-         }
-         CheckBox { id: cambiLEx5; checked: false; x: 0; y: 100
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                    font.pixelSize: 11; text: qsTr("2ª nota com duração igual ou mais curta do que a 1ª e a última") }
-         }
-        }
-       }
-      }
-      Rectangle { x: 3; y: 229; width: 520; height: 87; color: "#131313"; radius: 2 // suspensão
-       CheckBox { id: suspensãoL; checked: false; x: 3; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-             font.pixelSize: 14; text: qsTr("Suspensão");
-         CheckBox { id: suspeLEx1; checked: true; x: 0; y: 20
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("resolução interrompida")
-              CheckBox { id: suspeLEx1a; checked: true; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 5;
-                  Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                         font.pixelSize: 11; text: qsTr("somente por consonâncias") }}
-          }
-         }
-         CheckBox { id: suspeLEx2; checked: true; x: 0; y: 40
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("também a resolução ascendente (retardo)") }
-         }
-         CheckBox { id: suspeLEx3; checked: false; x: 0; y: 60
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("resolução somente em consonância imperfeita") }
-         }
-        }
-       }
-      }
-      Rectangle { x: 3; y: 318; width: 520; height: 67; color: "#131313"; radius: 2 // antecipação
-       CheckBox { id: antecipaL; checked: false; x: 3; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: qsTr("Antecipação");
-           Text { x: 3; y: 20; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("introduzida por grau conjunto (")
-           CheckBox { id: antecipaEx2; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0;
-            Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("descendente,")
-             CheckBox { id: antecipaEx3; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 5;
-              Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                     font.pixelSize: 11; text: qsTr("ascendente )") }}}
-           }
-         }
-         CheckBox { id: antecipaEx4; checked: false; x: 0; y: 37
-          Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                font.pixelSize: 11; text: qsTr("somente na cadência final") }
-         }
-        }
-       }
-      }
-      Rectangle { x: 3; y: 387; width: 520; height: 86; color: "#131313"; radius: 2 // apojatura
-       CheckBox { id: apojaturaL; checked: false; x: 3; y: 3;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: qsTr("Apojatura");
-          CheckBox { id: apojaEx1; checked: false; x: 0; y: 20
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente em tempo forte")
-             CheckBox { id: apojaEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
-               Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                      font.pixelSize: 11; text: qsTr("ou meio forte") }}
-          }}
-          CheckBox { id: apojaEx2; checked: false; x: 0; y: 40
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente preparação ascendente") }}
-          CheckBox { id: apojaEx3; checked: false; x: 0; y: 60
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente resolução descendente") }}
-          CheckBox { id: apojaEx4; checked: false; x: 230; y: 60
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente resolução na direção contrária") }}
-          CheckBox { id: apojaEx5; checked: false; x: 230; y: 40
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("preparação é obrigatória") }}
-
-        }
-       }
-      }
-      Rectangle { x: 3; y: 475; width: 257; height: 47; color: "#131313"; radius: 2 // escapada
-       CheckBox { id: escapadaL; checked: false; x: 3; y: 3;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: qsTr("Escapada");
-          CheckBox { id: escapaEx1; checked: false; x: 0; y: 20
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("somente em tempo fraco")
-            CheckBox { id: escapaEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
-              Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                     font.pixelSize: 11; text: qsTr("ou mf") }}
-          }}
-         }
-       }
-      }
-      Rectangle { x: 264; y: 475; width: 260; height: 47; color: "#131313"; radius: 2 // pedal
-       CheckBox { id: pedal; checked: false; x: 3; y: 3;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: qsTr("Nota pedal");
-          CheckBox { id: pedalEx1; checked: false; x: 0; y: 20
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("início e final em tempo forte")
-            CheckBox { id: pedalEx1MF; checked: false; anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 10;
-              Text { anchors.left: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.leftMargin: 0; color: "#e0dfc3";
-                     font.pixelSize: 11; text: qsTr("ou mf") }}
-          }}
-         }
-       }
-      }
-     }
-   }
- }
- Item { id: melodias; visible: false;
-   Rectangle { x: 2; y: 28; width: 532; height: 570;	color: "#5b5b5b"; radius: 2
-    Rectangle { x: 3; y: 3; width: 526; height: 80; color: "#303030"; radius: 2
-		 CheckBox { id: peNota; checked: true; x: 5; y: 5;
-		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)") }
-		 }
-
-		 CheckBox { id: ambito; checked: true; x: 5; y: 32;
-		   Text { id: ambTxt1; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Âmbito melódico não deve ser maior do que") }
-		   TextInput { id: ambInp; anchors.left: ambTxt1.right; anchors.leftMargin: 5; y: ambTxt1.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "12"; validator: IntValidator{bottom: 0; top: 99;}}
-		   Text { anchors.left: ambInp.right; anchors.leftMargin: 5; y: ambInp.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("semitons") }
-		 }
-
-		 CheckBox { id: priviGC; checked: true; x: 5; y: 55;
-		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Privilegiar graus conjuntos") }
-		   CheckBox { id: priviGCEx; checked: true; x: 195; y: 0;
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: qsTr("e terças") } }
-		 }
-	  }
-
-	  Rectangle { x: 3; y: 86; width: 526; height: 80; color: "#303030"; radius: 2
-		 //Text { x: 5; y: 3;  font.pixelSize: 13; color: "#e0dfc3"; text: "Não usar os seguintes intervalos:"
-			 CheckBox { id: salt7; checked: true; x: 5; y: 2;
-			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: qsTr("Sétimas maiores e menores") }
-			 }
-			 CheckBox { id: salt6; checked: true; x: 5; y: 21;
-		      Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		      color: "#e0dfc3"; text: qsTr("Sextas maiores e menores") }
-		      CheckBox { id: salt6Ex; checked: true; x: 180; y: 0;
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	          color: "#e0dfc3"; text: qsTr("Exceto se menor ascendente") } }
-		    }
-		    CheckBox { id: saltAum; checked: true; x: 5; y: 40;
-			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: qsTr("Aumentados e diminutos") }
-			  }
-        CheckBox { id: saltTrit; checked: true; x: 180; y: 40;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-         color: "#e0dfc3"; text: qsTr("Exceto trítono com tratamento") }
-        }
-			  CheckBox { id: saltM8; checked: true; x: 5; y: 59;
-			   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-			   color: "#e0dfc3"; text: qsTr("Maiores do que a oitava") }
-			  }
-	  }
-
-	  Rectangle { x: 3; y: 170; width: 526; height: 195; color: "#303030"; radius: 2
-	    CheckBox { id: tritono2; checked: true; x: 5; y: 2;
-		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Trítono nas duas extremidades de movimentos melódicos") }
-		 }
-
-		 CheckBox { id: tritono1; checked: false; x: 5; y: 21;
-		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Trítono em uma extremidade de movimentos melódicos") }
-		 }
-
-		 CheckBox { id: dissoC; checked: true; x: 5; y: 40;
-		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Dissonância composta") }
-	    }
-
-      CheckBox { id: doisSaltC; checked: true; x: 5; y: 60;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-        color: "#e0dfc3"; text: qsTr("Dois saltos em mov. contrário") }
-       CheckBox { id: doisSaltCEx1; checked: true; x: 195; y: -7;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-          color: "#e0dfc3"; text: qsTr("Exceto se precedidos e seguidos por mov. contrário") } }
-       CheckBox { id: doisSaltCEx2; checked: false; x: 195; y: 9
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-             color: "#e0dfc3"; text: qsTr("(e) Exceto se precedidos e seguidos grau conjunto") } }
-      }
-
-      CheckBox { id: doisSaltM; checked: true; x: 5; y: 86;
-
-       Text { anchors.left: parent.right; anchors.leftMargin: 2; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-              color: "#e0dfc3"; text: qsTr("Dois saltos na mesma direção")
-        CheckBox { id: doisSaltMEx; checked: true; x: 5; y: 13;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-                color: "#e0dfc3"; text: qsTr("Exceto se formar tríade")
-         CheckBox { id: doisSaltMEx1; checked: true; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-                 color: "#e0dfc3"; text: qsTr("ou 5J + 4J ou 4J + 5J") }}
-         }}
-        }
-       }
-
-	    CheckBox { id: saltM5; checked: true; x: 5; y: 129;
-		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Salto maior do que 5ªJ não compensado \ncom direcionamento contrário") }
-		   CheckBox { id: saltM5Ex1; checked: true; x: 300; y: -7;
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-	          color: "#e0dfc3"; text: qsTr("por grau conjunto") } }
-	      CheckBox { id: saltM5Ex2; checked: true; x: 300; y: 9;
-	          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-	          color: "#e0dfc3"; text: qsTr("por salto < 5ª") } }
-	    }
-
-      CheckBox { id: saltoTF; checked: false; x: 5; y: 158;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-              color: "#e0dfc3"; text: qsTr("Salto de tempo forte (")
-       CheckBox { id: saltoTmF; checked: false; anchors.left: parent.right; anchors.leftMargin: 3; anchors.verticalCenter: parent.verticalCenter;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-               color: "#e0dfc3"; text: qsTr("e de tempo meio forte) para o tempo fraco") }}
-         CheckBox { id: saltoTFEx; checked: false; x: 5; y: 12;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-                 color: "#e0dfc3"; text: qsTr("Somente se ascendente") }}
-      }}
-     }
-
-    Rectangle { x: 3; y: 368; width: 526; height: 106; color: "#303030"; radius: 2
-    CheckBox { id: varDir; checked: true; x: 5; y: 2;
-		Text { id: varDirTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		color: "#e0dfc3"; text: qsTr("Monotonia no contorno: mais do que") }
-		TextInput { id: varDirQt; anchors.left: varDirTxt.right; anchors.leftMargin: 5; y: varDirTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 0; top: 99;} }
-		Text { anchors.left: varDirQt.right; anchors.leftMargin: 5; y: varDirQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("movimento(s) na mesma direção") }
-	  }
-
-	  CheckBox { id: repNota; checked: true; x: 5; y: 22;
-		 Text { id: repNotaTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3";text: qsTr("Repetição de notas: mais do que") }
-		 TextInput { id: repNotaQt; anchors.left: repNotaTxt.right; anchors.leftMargin: 5; y: repNotaTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
-		 Text { anchors.left: repNotaQt.right; anchors.leftMargin: 5; y: repNotaQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("repetição(ões)")
-      CheckBox { id: repeteNoutra; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-       color: "#e0dfc3";text: qsTr("sem mudar nota em outra voz") }
-      }
-     }
-
-    }
-
-	  CheckBox { id: repPad; checked: true; x: 5; y: 42;
-		Text { id: repPadTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		color: "#e0dfc3"; text: qsTr("Repetição de padrões: mais do que") }
-		TextInput { id: repPadQt; anchors.left: repPadTxt.right; anchors.leftMargin: 5; y: repPadTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "0"; validator: IntValidator{bottom: 0; top: 99;} }
-		Text { anchors.left: repPadQt.right; anchors.leftMargin: 5; y: repPadQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("repetição(ões)") }
-	  }
-
-	  CheckBox { id: arpMel; checked: true; x: 5; y: 62;
-		  Text { id: arpMelTxt; anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		   color: "#e0dfc3"; text: qsTr("Arpejo de acordes na linha melódica: mais do que") }
-      TextInput { id: arpMelQt; anchors.left: arpMelTxt.right; anchors.leftMargin: 5; y: arpMelTxt.y; font.underline: true; font.pixelSize: 12; color: "yellow"; text: "1"; validator: IntValidator{bottom: 0; top: 99;} }
-	    Text { anchors.left: arpMelQt.right; anchors.leftMargin: 5; y: arpMelQt.y; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("arpejo(s)") }
-	  }
-
-    Text { x: 28; y: 86; font.pixelSize: 12; color: "#e0dfc3"; text: qsTr("Repetição de Ponto Focal");
-      CheckBox { id: melPFs; checked: true; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-	    	color: "#e0dfc3"; text: qsTr("Agudo")
-        CheckBox { id: melPFi; checked: false; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;
-  		   Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-  		   color: "#e0dfc3"; text: qsTr("Grave") }
-  	     }
-       }
-	    }
-    }
-   }
-
-	  Rectangle { x: 3; y: 478; width: 526; height: 44; color: "#303030"; radius: 2
-      CheckBox { id: neutA; checked: true; x: 5; y: 2;
-				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: qsTr("Se não conduzir 6° e 7° alterados") }
-				CheckBox { id: neutAim; checked: false; x: 220; y: 0;
-				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: qsTr("imediatamente") }}
-	  	}
-	  	CheckBox { id: neutN; checked: true; x: 5; y: 22;
-				Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-				       color: "#e0dfc3"; text: qsTr("Se 6°/7° naturais sem neutralizar") }
-				CheckBox { id: neutNim; checked: true; x: 220; y: 0;
-				  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-				         color: "#e0dfc3"; text: qsTr("a menos de")
-            TextInput { id: neutNqt; anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter;  font.underline: true;
-              font.pixelSize: 12; color: "yellow"; text: "4"; validator: IntValidator{bottom: 2; top: 99;}
-              Text { anchors.left: parent.right; anchors.leftMargin: 5; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 11;
-    				         color: "#e0dfc3"; text: qsTr("tempos da nota alterada") }
-            }
-          }
-        }
-	  	}
-	 }
-
-    Rectangle { x: 3; y: 526; width: 526; height: 42; color: "#303030"; radius: 2
-     CheckBox { id: tonic; checked: true; x: 5; y:1;
-		  Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("Nota inicial diferente de tônica/finalis,") }
-
-	   CheckBox { id: terça; checked: false; x: 255;
-		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("terça,") }
-	   }
-	   CheckBox { id: quinta; checked: false; x: 335;
-		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("ou quinta") }
-	   }
-	  }
-	   CheckBox { id: tonicF; checked: true; x: 5; y:22;
-		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("Nota final diferente de tônica/finalis,") }
-	   CheckBox { id: terçaF; checked: false; x: 250;
-		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("terça,") }
-	   }
-	   CheckBox { id: quintaF; checked: false; x: 330;
-		 Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; font.pixelSize: 12;
-		 color: "#e0dfc3"; text: qsTr("ou quinta") }
-	   }
-	  }
-   }
-  }
- }
- Item { id: intervalosClasse; visible: false;
-   Rectangle { x: 2; y: 28; width: 532; height: 551;	color: "#5a5a5a"; radius: 2
-    Rectangle { x: 3; y: 3; width: 526; height: 545; color: "#333333"; radius: 2
-     Rectangle { x: 3; y: 3; width: 520; height: 144; color: "#111111"; radius: 2
-      CheckBox { id: intDissT1; checked: false; x: 3; y: 3;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: qsTr("Uníssono, 8ªJ, etc")
-         CheckBox { id: intDissT1Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT2; checked: true; x: 3; y: 23;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "2ªs, 9ªs, etc"
-          CheckBox { id: intDissT2Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT3; checked: false; x: 3; y: 43;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "3ªs, 10ªs, etc"
-           CheckBox { id: intDissT3Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT4; checked: true; x: 3; y: 63;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 14; text: "4ªJ, 11ªJ, etc"
-            CheckBox { id: intDissT4Ex; checked: true; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                    font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT5; checked: false; x: 3; y: 83;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 14; text: "5ªJ, 12ªJ, etc"
-             CheckBox { id: intDissT5Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT6; checked: false; x: 3; y: 103;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 14; text: "6ªs, 13ªs, etc"
-              CheckBox { id: intDissT6Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-      CheckBox { id: intDissT7; checked: true; x: 3; y: 123;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "7ªs, 14ªs, etc"
-           CheckBox { id: intDissT7Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: qsTr("somente em relação ao baixo") }}
-       }}
-     }
-     Rectangle { x: 3; y: 150; width: 520; height: 144; color: "#111111"; radius: 2
-      CheckBox { id: intDissTad1; checked: true; x: 3; y: 3;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: "Uníssono aumentado ou diminuto"
-         CheckBox { id: intDissTad1Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad2; checked: true; x: 3; y: 23;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "2ª aumentada ou diminuta"
-          CheckBox { id: intDissTad2Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad3; checked: true; x: 3; y: 43;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "3ª aumentada ou diminuta"
-           CheckBox { id: intDissTad3Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad4; checked: true; x: 3; y: 63;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 14; text: "4ª aumentada ou diminuta"
-            CheckBox { id: intDissTad4Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                    font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad5; checked: true; x: 3; y: 83;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 14; text: "5ª aumentada ou diminuta"
-             CheckBox { id: intDissTad5Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad6; checked: true; x: 3; y: 103;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 14; text: "6ª aumentada ou diminuta"
-              CheckBox { id: intDissTad6Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissTad7; checked: true; x: 3; y: 123;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "7ª aumentada ou diminuta"
-           CheckBox { id: intDissTad7Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-     }
-     Rectangle { x: 3; y: 297; width: 520; height: 245; color: "#151515"; radius: 2
-      CheckBox { id: intDissA0; checked: false; x: 3; y: 3;
-       Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-              font.pixelSize: 14; text: "Intervalo 0"
-         CheckBox { id: intDissA0Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA1; checked: false; x: 3; y: 23;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Intervalo 1"
-          CheckBox { id: intDissA1Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA2; checked: false; x: 3; y: 43;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Intervalo 2"
-           CheckBox { id: intDissA2Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA3; checked: false; x: 3; y: 63;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                 font.pixelSize: 14; text: "Intervalo 3"
-            CheckBox { id: intDissA3Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-             Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                    font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA4; checked: false; x: 3; y: 83;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 14; text: "Intervalo 4"
-             CheckBox { id: intDissA4Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-              Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA5; checked: false; x: 3; y: 103;
-          Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 14; text: "Intervalo 5"
-              CheckBox { id: intDissA5Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA6; checked: false; x: 3; y: 123;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Intervalo 6"
-           CheckBox { id: intDissA6Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA7; checked: false; x: 3; y: 143;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Intervalo 7"
-          CheckBox { id: intDissA7Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA8; checked: false; x: 3; y: 163;
-         Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                font.pixelSize: 14; text: "Intervalo 8"
-           CheckBox { id: intDissA8Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-            Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                   font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA9; checked: false; x: 3; y: 183;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Intervalo 9"
-          CheckBox { id: intDissA9Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA10; checked: false; x: 3; y: 203;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Intervalo 10"
-          CheckBox { id: intDissA10Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-      CheckBox { id: intDissA11; checked: false; x: 3; y: 223;
-        Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-               font.pixelSize: 14; text: "Intervalo 11"
-          CheckBox { id: intDissA11Ex; checked: false; anchors.left: parent.right; anchors.leftMargin: 10; anchors.verticalCenter: parent.verticalCenter;
-           Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                  font.pixelSize: 11; text: "somente em relação ao baixo" }}
-       }}
-     }
-    }
-   }
- }
-} // window
-
-//--------------------------------------------------------------------------------
- // janela com as mensagens de resultado
-	ApplicationWindow {
-      id: msgResult
-	    visible: false;
-	    title: "Resultado"
-	    width: 550; height: 70
-	    color: "#343530"
-      flags: Qt.WindowStaysOnTopHint
-
-	    Rectangle {
-          id: btResult
-          property alias text: lresult.text
-          signal clicked
-          visible: true
-          width: 100; height: 25
-          x: 140
-          border { width: 1; color: "#555555" }
-          smooth: true
-          radius: 3
-          gradient: Gradient {
-              GradientStop { position: 0.0
-                  color: {
-                        if (mArea6.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
-              }
-              GradientStop { position: 1.0; color: "#035b25" }
-            }
-
-         Text {
-           id: lresult
-           anchors.centerIn: parent
-           text: "Fechar"
-           color: "#aaf0e1"
-         }
-
-         MouseArea {
-          id: mArea6
-          anchors.fill: parent
-          onClicked: { window.raise(); msgResult.close(); apagaCor(); }
-         } // mouseArea
-       } // Rectangle btResult
-
+      // Painel superior esquerdo
       Rectangle {
-          id: btAtualiza
-          property alias text: latual.text
-          signal clicked
-          visible: true
-          width: 100; height: 25
-          x: 300
-          border { width: 1; color: "#555555" }
-          smooth: true
-          radius: 3
-          gradient: Gradient {
-              GradientStop { position: 0.0
-                  color: {
-                        if (mArea61.pressed)
-                            return "#888d96"
-                           else
-                           return "#a0a8af"
-                     }
+        id: painelEsquerdo
+        x: 2; y: 2
+        width: 700
+        height: 550
+        border.color: corBorda
+        border.width: 1
+        color: corPainel
+
+        Rectangle { // página inicial
+          x: 5; y: 5
+          width: painelEsquerdo.width-10
+          height: painelEsquerdo.height-10
+          color: corPainelInterno
+          border.color: corBordaDestaque
+          visible: currentView === 0
+
+          StyledTextLabel {
+            width: parent.width
+            y: painelEsquerdo.height/2-40
+            text: "Analisador de Contrapontos v0.52"
+            color: corTextoDestaque
+            font.pixelSize: 30
+          }
+          StyledTextLabel {
+            width: parent.width
+            y: painelEsquerdo.height/2-5
+            text: "extensão para MuseScore 4.6.5"
+            color: corTextoSecundario
+            font.pixelSize: 16
+          }
+        }
+        Rectangle { // Condução de Vozes
+          x: 5; y: 5
+          width: painelEsquerdo.width-10
+          height: painelEsquerdo.height-10
+          color: corPainelInterno
+          border.color: corBordaDestaque
+          visible: currentView === 1
+
+          StyledTextLabel {
+            x: 5; y: 5
+            text: "Condução de Vozes"
+            color: corTextoDestaque
+            font.pixelSize: 18
+          }
+          Rectangle { // paralelas
+            x: 5; y: 5
+            width: 680
+            height: 42
+            color: corPainelDestaque
+
+            CheckBox { // 8ª
+              id: paralela8
+              x: 5; y: 3
+              text: qsTranslate("PrefsDialogBase","U/8ª paralela")
+              checked: true
+              onClicked: {
+                checked = !checked
               }
-              GradientStop { position: 1.0; color: "#035b25" }
+            }
+            StyledTextLabel {
+              id: par8RepTxt
+              x: 5; y: 25
+              text: qsTranslate("PrefsDialogBase", "- se ocorrer")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: par8RepTxt.right; anchors.leftMargin: 5; y: par8RepTxt.y;
+              color: "transparent"
+              TextInput {
+                id: par8Rep;
+                anchors.fill: parent
+                text: "1"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: par8RepTxt.right; anchors.leftMargin: 15; y: par8RepTxt.y;
+              text: "ou mais paralela(s)"
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox { // 5ª
+              id: paralela5
+              x: 170; y: 3
+              text: qsTranslate("PrefsDialogBase","5ª paralela")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: par5RepTxt
+              x: paralela5.x; y: 25
+              text: qsTranslate("PrefsDialogBase", "- se ocorrer")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: par5RepTxt.right; anchors.leftMargin: 5; y: par5RepTxt.y;
+              color: "transparent"
+              TextInput {
+                id: par5Rep;
+                anchors.fill: parent
+                text: "1"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: par5RepTxt.right; anchors.leftMargin: 15; y: par5RepTxt.y;
+              text: "ou mais paralela(s)"
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox { // 4ª
+              id: paralela4
+              x: 345; y: 3
+              text: qsTranslate("PrefsDialogBase", "4ªJ paralela")
+              checked: false
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: par4RepTxt
+              x: paralela4.x;
+              y: 25
+              text: qsTranslate("PrefsDialogBase", "- se ocorrer")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: par4RepTxt.right; anchors.leftMargin: 5; y: par4RepTxt.y;
+              color: "transparent"
+              TextInput {
+                id: par4Rep
+                anchors.fill: parent
+                text: "1"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: par4RepTxt.right; anchors.leftMargin: 15; y: par4RepTxt.y;
+              text: qsTranslate("PrefsDialogBase", "ou mais paralela(s)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox { // 3ª e 6ª
+              id: paralela36
+              x: 520; y: 3
+              text: qsTranslate("PrefsDialogBase", "3ª e 6ª paralela")
+              checked: false
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: par36RepTxt
+              x: paralela36.x;
+              y: 25
+              text: qsTranslate("PrefsDialogBase", "- se ocorrer")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: par36RepTxt.right; anchors.leftMargin: 5; y: par36RepTxt.y;
+              color: "transparent"
+              TextInput {
+                id: par36Rep
+                anchors.fill: parent
+                text: "1"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: par36RepTxt.right; anchors.leftMargin: 15; y: par36RepTxt.y;
+              text: qsTranslate("PrefsDialogBase", "ou mais paralela(s)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // ocultas
+            x: 5; y: 50
+            width: 680
+            height: 50
+            color: corPainelDestaque
+
+            CheckBox {
+              id: oculta8
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "8ª oculta/direta")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: oculta5
+              x: 170; y: 5
+              text: qsTranslate("PrefsDialogBase", "5ª oculta/direta")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: ocultEx
+              x: 50; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "Exceto no final")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: ocultExt
+              x: 215; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "Somente entre as vozes externas")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: ocultSalto
+              x: 470; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "Somente com salto na voz superior")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // intermitentes
+            id: intermitentes
+            x: 5; y: 103
+            width: 680
+            height: 190
+            color: corPainelDestaque
+            property int colX: 25
+            function row(a,b) {
+              return a + 18 * b
             }
 
-         Text {
-           id: latual
-           anchors.centerIn: parent
-           text: "Atualizar"
-           color: "#aaf0e1"
-         }
-
-         MouseArea {
-          id: mArea61
-          anchors.fill: parent
-          onClicked: { msgResult.close(); apagaCor(); verificar() }
-         } // mouseArea
-       } // Rectangle btAtualiza
-
-       Rectangle {
-            id: btAvança
-            property alias text: avanText.text
-            signal clicked
-            visible: true
-            width: 50; height: 20
-            x: 500
-            border { width: 1; color: "#555444" }
-            smooth: true
-            radius: 3
-            gradient: Gradient {
-                GradientStop { position: 0.0
-                    color: {
-                          if (mAreaAvan.pressed)
-                              return "#888d96"
-                             else
-                             return "#a0a7ae"
-                       }
-                }
-                GradientStop { position: 1.0; color: "#035b25" }
+            CheckBox { // Linha 1
+              id: inter8
+              x: 5; y: 3
+              text: qsTranslate("PrefsDialogBase", "U/8ª intermitente")
+              checked: true
+            }
+            CheckBox {
+              id: inter5
+              x: 170; y: 3
+              text: qsTranslate("PrefsDialogBase", "5ª intermitente")
+              checked: true
+            }
+            CheckBox { // Coluna esquerda
+              id: interPM
+              x: intermitentes.colX; y: intermitentes.row(8,1)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interPM.right; anchors.leftMargin: 5; y: interPM.y+5;
+              text: qsTranslate("PrefsDialogBase", "Na mesma posição métrica")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interSI
+              x: intermitentes.colX; y: intermitentes.row(8,2)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interSI.right; anchors.leftMargin: 5; y: interSI.y+5;
+              text: qsTranslate("PrefsDialogBase", "Separadas por um único intervalo")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExS
+              x: intermitentes.colX; y: intermitentes.row(8,3)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExS.right; anchors.leftMargin: 5; y: interExS.y+5;
+              text: qsTranslate("PrefsDialogBase", "Exceto se separadas por")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 10
+              anchors.left: interExS.right; anchors.leftMargin: 107; y: interExS.y+5;
+              color: "transparent"
+              TextInput {
+                id: interExSn
+                anchors.fill: parent
+                text: "0"
+                font.pixelSize: 9
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
               }
-
-           Text {
-             id: avanText
-             anchors.centerIn: parent
-             text: ">>"
-             color: "#aaf0e1"
-           }
-
-           MouseArea {
-            id: mAreaAvan
-            anchors.fill: parent
-            onClicked: { apresentaResultado(1); return }
-           } // mouseArea
-         } // Rectangle btResult
-
-         Rectangle {
-              id: btVolta
-              property alias text: voltaText.text
-              signal clicked
-              visible: true
-              width: 50; height: 20
-              x: 0
-              border { width: 1; color: "#555444" }
-              smooth: true
-              radius: 3
-              gradient: Gradient {
-                  GradientStop { position: 0.0
-                      color: {
-                            if (mAreaVolta.pressed)
-                                return "#888d96"
-                               else
-                               return "#a0a7ae"
-                         }
-                  }
-                  GradientStop { position: 1.0; color: "#035b25" }
-                }
-
-             Text {
-               id: voltaText
-               anchors.centerIn: parent
-               text: "<<"
-               color: "#aaf0e1"
-             }
-
-             MouseArea {
-              id: mAreaVolta
-              anchors.fill: parent
-              onClicked: { apresentaResultado(-1); return }
-             } // mouseArea
-           } // Rectangle btVolta
-
-           Rectangle { x: 0; y: 25; width: 550; height: 30; color: "#131313"; radius: 2 // Resultado Filtro
-             CheckBox { id: cxCond; checked: true; x: 5; y: 3;
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 12; text: qsTr("Condução Vozes")}
-             }
-             CheckBox { id: cxDiss; checked: true; x: 150; y: 3
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 12; text: qsTr("Dissonância") }
-             }
-             CheckBox { id: cxMelo; checked: true; x: 270; y: 3
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                     font.pixelSize: 12; text: qsTr("Melodia")}
-             }
-             CheckBox { id: cxOutr; checked: true; x: 390; y: 3
-               Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
-                      font.pixelSize: 11; text: qsTr("Outros") }
-             }
-           } // Rectangle Filtro
-
-	  Component {
-	    id: component
-	    Rectangle {
-          id: msg
-          property alias text: lResul.text
-          property int value: 0
-          signal clicked
-          visible: true
-          width: 550; height: 21
-          border { width: 1; color: "#000000" }
-          smooth: true
-          radius: 3
-          color: "#6c6d6d"
-
-         Text {
-           id: lResul
-           anchors.left: parent.left; anchors.leftMargin: 3
-           anchors.verticalCenter: parent.verticalCenter
-           text: "-"
-           color: "#aaf0e1"
-         }
-
-         MouseArea {
-          id: msgClick
-          anchors.fill: parent
-          onClicked: { colorir(parent.value); }
-          onDoubleClicked: { explicarMsg(parent.value); }
+            }
+            StyledTextLabel {
+              anchors.left: interExS.right; anchors.leftMargin: 117; y: interExS.y+5;
+              text: qsTranslate("PrefsDialogBase", "intervalo(s)")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExTf
+              x: intermitentes.colX; y: intermitentes.row(8,4)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExTf.right; anchors.leftMargin: 5; y: interExTf.y+5;
+              text: qsTranslate("PrefsDialogBase", "Exceto em tempo fraco e")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExTf3
+              anchors.left: interExTf.right; anchors.leftMargin: 100; y: interExTf.y;
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "em tempo meio-forte:")
+              font.pixelSize: 11
+              checked: true
+            }
+            CheckBox {
+              id: interExTf1
+              x: intermitentes.colX+20; y: intermitentes.row(7,5)
+              scale: 0.7
+              text: qsTranslate("PrefsDialogBase", "Sincopada e")
+              checked: true
+            }
+            CheckBox {
+              id: interExTf2
+              x: intermitentes.colX+75; y: intermitentes.row(7,5)
+              scale: 0.7
+              text: qsTranslate("PrefsDialogBase", "alcançada por grau conjunto")
+              checked: true
+            }
+            CheckBox {
+              id: interExTF
+              x: intermitentes.colX; y: intermitentes.row(5,6)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExTF.right; anchors.leftMargin: 5; y: interExTF.y+5;
+              text: qsTranslate("PrefsDialogBase", "Exceto em tempo forte com ambas notas ligadas às anteriores")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExFim
+              x: intermitentes.colX; y: intermitentes.row(5,7)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExFim.right; anchors.leftMargin: 5; y: interExFim.y+5;
+              text: qsTranslate("PrefsDialogBase", "Exceto na cadência final")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExCF
+              x: intermitentes.colX; y: intermitentes.row(5,8)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExCF.right; anchors.leftMargin: 5; y: interExCF.y+5;
+              text: qsTranslate("PrefsDialogBase", "Exceto se CF não se move")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: interExt
+              x: intermitentes.colX; y: intermitentes.row(5,9)
+              scale: 0.8
+              checked: true
+            }
+            StyledTextLabel {
+              anchors.left: interExt.right; anchors.leftMargin: 5; y: interExt.y+5;
+              text: qsTranslate("PrefsDialogBase", "Somente nas vozes externas")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
           }
-       } // retângulo msg
-	  } // componente
- } // msgResult
+          Rectangle { // movimentos similares
+            x: 5; y: 296
+            width: 680
+            height: 55
+            color: corPainelDestaque
+
+            CheckBox {
+              id: movContObli
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "priorizar movimento contrário e oblíquo")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: movSim
+              x: 5; y: 30
+              text: qsTranslate("PrefsDialogBase", "Qtd Máxima de")
+              font.pixelSize: 11
+              checked: true
+            }
+            Rectangle {
+              anchors.left: movSim.left
+              anchors.leftMargin: 108
+              y: movSim.y+4
+              width: 5
+              height: 11
+              color: "transparent"
+              TextInput {
+                id: qtdMovSim
+                anchors.fill: parent
+                text: "0"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+              }
+            }
+            StyledTextLabel {
+              anchors.left: parent.left
+              anchors.leftMargin: 123
+              y: movSim.y+4
+              text: qsTranslate("PrefsDialogBase", "movimentos similares, em sequência, em todas as vozes")
+              font.pixelSize: 11
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // consecutivas por movimento contrário e oblíquo
+            x: 5; y: 354
+            width: 338
+            height: 55
+            color: corPainelDestaque
+
+            CheckBox {
+              id: consecObli
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "5ª e 8ª consecutivas por mov. oblíquo")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: consecCont
+              x: 5; y: 30
+              text: qsTranslate("PrefsDialogBase", "5ª e 8ª consecutivas por mov. contrário")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // cruzamento de vozes
+            x: 347; y: 354
+            width: 338
+            height: 55
+            color: corPainelDestaque
+
+            CheckBox {
+              id: cruzaVozes
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Cruzamento de vozes")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: falsaR
+              x: 5; y: 30
+              text: qsTranslate("PrefsDialogBase", "Falsa relação")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // uníssono
+            x: 5; y: 412
+            width: 680
+            height: 41
+            color: corPainelDestaque
+
+            CheckBox {
+              id: uniss
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Uníssono")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: unissTxt
+              x: 5; y: 25
+              text: qsTranslate("PrefsDialogBase", "- se quantidade for maior do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: unissTxt.right; anchors.leftMargin: 5; y: unissTxt.y;
+              color: "transparent"
+              TextInput {
+                id: unissQt;
+                anchors.fill: parent
+                text: "1"
+                font.pixelSize: 10
+                color: corInput
+                validator: IntValidator { bottom: 0; top: 9 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            CheckBox {
+              id: unissIF
+              x: 170; y: 5
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "Exceto Início/Final")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: unissTF
+              x: 320; y: 5
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "Exceto tempo fraco")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: unissTmF
+              x: 440; y: 5
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "e meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+        }
+        Rectangle { // Dissonâncias
+          id: dissonancias
+          x: 5; y: 5
+          width: painelEsquerdo.width-10
+          height: painelEsquerdo.height-10
+          color: corPainelInterno
+          border.color: corBordaDestaque
+          visible: currentView === 2
+
+          property int colX: 25
+          function row(a,b) {
+            return a + 18 * b
+          }
+          Rectangle { // verificar dissonâncias
+            x: 5; y: 5
+            width: 680
+            height: 30
+            color: corPainelDestaque
+
+            CheckBox {
+              id: dissonanciasG
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Verificar dissonâncias")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            Button { // Botão de intervalos
+              id: btIntervalos
+              x: 505; y: 5
+              width: 170
+              height: 20
+              background: Rectangle {
+                color: btIntervalos.pressed ? corBotaoSelecionado : corBotaoNormal
+                radius: 4
+              }
+              text: qsTranslate("PrefsDialogBase", "Configurar intervalos")
+              onClicked: {
+                configInt.open()
+              }
+            }
+          }
+          Rectangle { // Nota de passagem
+            x: 5; y: 38
+            width: 680
+            height: 50
+            color: corPainelDestaque
+
+            CheckBox {
+              id: passagemL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Nota de passagem")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: passaLEx2
+              x: 150; y: 5
+              text: qsTranslate("PrefsDialogBase", "e Grupo de NP")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: passaLEx
+              x: 15; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "somente em tempo fraco")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: passaLExMF
+              x: 160; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // Bordaduras
+            x: 5; y: 91
+            width: 680
+            height: 48
+            color: corPainelDestaque
+
+            StyledTextLabel {
+              x: 5; y: 3
+              text: qsTranslate("PrefsDialogBase", "Bordadura")
+              font.pixelSize: 13
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: bordaduraLI
+              x: 75; y: 1
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "inferior")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: bordaduraLS
+              x: 150; y: 1
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "superior")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: bordaLEx
+              x: 290; y: 1
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "somente em tempo fraco")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: bordaLExMF
+              x: 440; y: 1
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: bordaduraD
+              x: 5; y: 25
+              text: qsTranslate("PrefsDialogBase", "Bordadura dupla")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: bordaLEx1
+              x: 110; y: 25
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "somente em tempo fraco ou meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // Cambiata
+            x: 5; y: 142
+            width: 343
+            height: 120
+            color: corPainelDestaque
+
+            CheckBox {
+              id: cambiataL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Cambiata")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: cambiLEx1
+              x: dissonancias.colX; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx1.right; anchors.leftMargin: 5; y: cambiLEx1.y+5;
+              text: qsTranslate("PrefsDialogBase", "1ª e última nota em tempo forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx1MF
+              x: dissonancias.colX+165; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx1MF.right; anchors.leftMargin: 5; y: cambiLEx1MF.y+5;
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx2
+              x: dissonancias.colX; y: dissonancias.row(8, 2)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx2.right; anchors.leftMargin: 5; y: cambiLEx2.y+5;
+              text: qsTranslate("PrefsDialogBase", "cambiata na mesma direção do CF")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx3
+              x: dissonancias.colX; y: dissonancias.row(8, 3)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx3.right; anchors.leftMargin: 5; y: cambiLEx3.y+5;
+              text: qsTranslate("PrefsDialogBase", "dissonâncias somente em tempo fraco")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx3MF
+              x: dissonancias.colX+187; y: dissonancias.row(8, 3)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx3MF.right; anchors.leftMargin: 5; y: cambiLEx3MF.y+5;
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx4
+              x: dissonancias.colX; y: dissonancias.row(8, 4)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx4.right; anchors.leftMargin: 5; y: cambiLEx4.y+5;
+              text: qsTranslate("PrefsDialogBase", "2ª nota deve ser dissonânte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cambiLEx5
+              x: dissonancias.colX; y: dissonancias.row(8, 5)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cambiLEx5.right; anchors.leftMargin: 5; y: cambiLEx5.y+5;
+              text: qsTranslate("PrefsDialogBase", "2ª nota com duração igual ou mais curta do que a 1ª e a última")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Suspensão
+            x: 351; y: 142
+            width: 334
+            height: 90
+            color: corPainelDestaque
+
+            CheckBox {
+              id: suspensãoL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Suspensão")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: suspeLEx1
+              x: dissonancias.colX; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: suspeLEx1.right; anchors.leftMargin: 5; y: suspeLEx1.y+5;
+              text: qsTranslate("PrefsDialogBase", "resolução interrompida")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: suspeLEx1a
+              x: dissonancias.colX+135; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: suspeLEx1a.right; anchors.leftMargin: 5; y: suspeLEx1a.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente por consonâncias")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: suspeLEx2
+              x: dissonancias.colX; y: dissonancias.row(8, 2)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: suspeLEx2.right; anchors.leftMargin: 5; y: suspeLEx2.y+5;
+              text: qsTranslate("PrefsDialogBase", "também a resolução ascendente (retardo)")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: suspeLEx3
+              x: dissonancias.colX; y: dissonancias.row(8, 3)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: suspeLEx3.right; anchors.leftMargin: 5; y: suspeLEx3.y+5;
+              text: qsTranslate("PrefsDialogBase", "resolução somente em consonância imperfeita")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Antecipação
+            x: 5; y: 265
+            width: 343
+            height: 61
+            color: corPainelDestaque
+
+            CheckBox {
+              id: antecipaL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Antecipação")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              x: dissonancias.colX+3; y: dissonancias.row(10, 1)
+              text: qsTranslate("PrefsDialogBase", "introduzida por grau conjunto (")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: antecipaEx2
+              x: dissonancias.colX+125; y: dissonancias.row(5, 1)
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "descendente,")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: antecipaEx3
+              x: dissonancias.colX+210; y: dissonancias.row(5, 1)
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "ascendente)")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: antecipaEx4
+              x: dissonancias.colX; y: dissonancias.row(3, 2)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: antecipaEx4.right; anchors.leftMargin: 5; y: antecipaEx4.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente na cadência final")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Apojatura
+            x: 351; y: 235
+            width: 334
+            height: 120
+            color: corPainelDestaque
+
+            CheckBox {
+              id: apojaturaL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Apojatura")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: apojaEx1
+              x: dissonancias.colX; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx1.right; anchors.leftMargin: 5; y: apojaEx1.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente em tempo forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: apojaEx1MF
+              x: dissonancias.colX+140; y: dissonancias.row(8, 1)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx1MF.right; anchors.leftMargin: 5; y: apojaEx1MF.y+5;
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: apojaEx2
+              x: dissonancias.colX; y: dissonancias.row(8, 2)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx2.right; anchors.leftMargin: 5; y: apojaEx2.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente preparação ascendente")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: apojaEx3
+              x: dissonancias.colX; y: dissonancias.row(8, 3)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx3.right; anchors.leftMargin: 5; y: apojaEx3.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente resolução descendente")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: apojaEx4
+              x: dissonancias.colX; y: dissonancias.row(8, 4)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx4.right; anchors.leftMargin: 5; y: apojaEx4.y+5;
+              text: qsTranslate("PrefsDialogBase", "somente resolução na direção contrária")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: apojaEx5
+              x: dissonancias.colX; y: dissonancias.row(8, 5)
+              scale: 0.8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: apojaEx5.right; anchors.leftMargin: 5; y: apojaEx5.y+5;
+              text: qsTranslate("PrefsDialogBase", "preparação é obrigatória")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Escapada
+            x: 5; y: 329
+            width: 343
+            height: 50
+            color: corPainelDestaque
+
+            CheckBox {
+              id: escapadaL
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Escapada")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: escapaEx1
+              x: 15; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "somente em tempo fraco")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: escapaEx1MF
+              x: 160; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+          Rectangle { // Pedal
+            x: 5; y: 382
+            width: 343
+            height: 50
+            color: corPainelDestaque
+
+            CheckBox {
+              id: pedal
+              x: 5; y: 5
+              text: qsTranslate("PrefsDialogBase", "Nota pedal")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: pedalEx1
+              x: 13; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "início e final em tempo forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: pedalEx1MF
+              x: 170; y: 28
+              scale: 0.8
+              text: qsTranslate("PrefsDialogBase", "ou meio forte")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+          }
+        }
+        Rectangle { // Melodia
+          id: melodias
+          x: 5; y: 5
+          width: painelEsquerdo.width-10
+          height: painelEsquerdo.height-10
+          color: corPainelInterno
+          border.color: corBordaDestaque
+          visible: currentView === 3
+
+          property int colX: 25
+          function row(a,b) {
+            return a + 8 + 19 * b
+          }
+
+          Rectangle { // Penúltima -> última nota
+            x: 5; y: 5
+            width: 339
+            height: 80
+            color: corPainelDestaque
+
+            CheckBox {
+              id: peNota
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: peNota.right; anchors.leftMargin: 5; y: peNota.y;
+              text: qsTranslate("PrefsDialogBase", "Penúltima nota deve pertencer ao V ou vii grau (quando tonal), \nou conduzir por grau conjunto para a finalis (quando modal)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ambito
+              scale: 0.8
+              x: 5; y: melodias.row(0, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: ambitoTxt
+              anchors.left: ambito.right; anchors.leftMargin: 5; y: ambito.y+5;
+              text: qsTranslate("PrefsDialogBase", "Âmbito melódico não deve ser maior do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: ambitoTxt.right; anchors.leftMargin: 3; y: ambitoTxt.y
+              color: "transparent"
+              TextInput {
+                id: ambInp;
+                font.pixelSize: 10
+                color: corInput
+                text: "12"
+                validator: IntValidator { bottom: 2; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ambitoTxt.right; anchors.leftMargin: 18; y: ambitoTxt.y;
+              text: qsTranslate("PrefsDialogBase", "semitons")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: priviGC
+              scale: 0.8
+              x: 5; y: melodias.row(0, 2)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: priviGC.right; anchors.leftMargin: 5; y: priviGC.y+5;
+              text: qsTranslate("PrefsDialogBase", "Privilegiar graus conjuntos")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: priviGCEx
+              scale: 0.8
+              x: 153; y: priviGC.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: priviGCEx.right; anchors.leftMargin: 5; y: priviGCEx.y+5;
+              text: qsTranslate("PrefsDialogBase", "e terças")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Intervalos
+            x: 347; y: 5
+            width: 338
+            height: 140
+            color: corPainelDestaque
+
+            CheckBox {
+              id: salt7
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: salt7.right; anchors.leftMargin: 5; y: salt7.y+5;
+              text: qsTranslate("PrefsDialogBase", "Sétimas maiores e menores")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: salt6
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: salt6.right; anchors.leftMargin: 5; y: salt6.y+5
+              text: qsTranslate("PrefsDialogBase", "Sextas maiores e menores")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: salt6Ex
+              scale: 0.8
+              anchors.left: salt6.right; anchors.leftMargin: 110; y: salt6.y+1
+              text: qsTranslate("PrefsDialogBase", "Exceto se menor ascendente")
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            CheckBox {
+              id: tritono
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 3)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritono.right; anchors.leftMargin: 5; y: tritono.y+5
+              text: qsTranslate("PrefsDialogBase", "Trítono")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            StyledTextLabel {
+              anchors.left: tritono.right; anchors.leftMargin: 50; y: tritono.y+5
+              text: qsTranslate("PrefsDialogBase", " - Exceto se:")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: tritonoPrep
+              scale: 0.7
+              anchors.left: tritono.right; anchors.leftMargin: 105; y: tritono.y-16
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritonoPrep.right; anchors.leftMargin: 5; y: tritonoPrep.y+5
+              text: qsTranslate("PrefsDialogBase", "preparado por semitom")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: tritonoRes
+              scale: 0.7
+              anchors.left: tritono.right; anchors.leftMargin: 105; y: tritono.y+1
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritonoRes.right; anchors.leftMargin: 5; y: tritonoRes.y+5
+              text: qsTranslate("PrefsDialogBase", "resolvido por semitom")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: tritonoDirCon
+              scale: 0.7
+              anchors.left: tritono.right; anchors.leftMargin: 105; y: tritono.y+18
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritonoDirCon.right; anchors.leftMargin: 5; y: tritonoDirCon.y+5
+              text: qsTranslate("PrefsDialogBase", "preparado/resolvido na direção contrária")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltAum
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltAum.right; anchors.leftMargin: 5; y: saltAum.y+5
+              text: qsTranslate("PrefsDialogBase", "Outros intervalos aumentados e diminutos")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltM8
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 6)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltM8.right; anchors.leftMargin: 5; y: saltM8.y+5
+              text: qsTranslate("PrefsDialogBase", "Maiores do que a oitava")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Nota inicial e final
+            x: 5; y: 88
+            width: 339
+            height: 57
+            color: corPainelDestaque
+
+            CheckBox {
+              id: tonic
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tonic.right; anchors.leftMargin: 5; y: tonic.y+5;
+              text: qsTranslate("PrefsDialogBase", "Nota inicial diferente de tônica/finalis,")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: terça
+              scale: 0.8
+              x: 204; y: tonic.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: terça.right; anchors.leftMargin: 5; y: terça.y+5;
+              text: qsTranslate("PrefsDialogBase", "terça,")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: quinta
+              scale: 0.8
+              x: 259; y: tonic.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: quinta.right; anchors.leftMargin: 5; y: quinta.y+5;
+              text: qsTranslate("PrefsDialogBase", "quinta")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: tonicF
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tonicF.right; anchors.leftMargin: 5; y: tonicF.y+5;
+              text: qsTranslate("PrefsDialogBase", "Nota final diferente de tônica/finalis,")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: terçaF
+              scale: 0.8
+              x: 204; y: tonicF.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: terçaF.right; anchors.leftMargin: 5; y: terçaF.y+5;
+              text: qsTranslate("PrefsDialogBase", "terça,")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: quintaF
+              scale: 0.8
+              x: 259; y: tonicF.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: quintaF.right; anchors.leftMargin: 5; y: quintaF.y+5;
+              text: qsTranslate("PrefsDialogBase", "quinta")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Alterações do modo menor
+            x: 5; y: 148
+            width: 680
+            height: 45
+            color: corPainelDestaque
+
+            CheckBox {
+              id: neutA
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: neutA.right; anchors.leftMargin: 5; y: neutA.y+5;
+              text: qsTranslate("PrefsDialogBase", "Se não conduzir 6° e 7° alterados")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: neutAim
+              scale: 0.8
+              x: 199; y: neutA.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: neutAim.right; anchors.leftMargin: 5; y: neutAim.y+5;
+              text: qsTranslate("PrefsDialogBase", "imediatamente")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: neutN
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: neutN.right; anchors.leftMargin: 5; y: neutN.y+5;
+              text: qsTranslate("PrefsDialogBase", "Se usar 6°/7° naturais sem neutralizar")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: neutNim
+              scale: 0.8
+              x: 204; y: neutN.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: neutNimTxt
+              anchors.left: neutNim.right; anchors.leftMargin: 5; y: neutNim.y+5;
+              text: qsTranslate("PrefsDialogBase", "a menos de")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: neutNimTxt.right; anchors.leftMargin: 3; y: neutNimTxt.y
+              color: "transparent"
+              TextInput {
+                id: neutNqt;
+                font.pixelSize: 10
+                color: corInput
+                text: "4"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: neutNimTxt.right; anchors.leftMargin: 15; y: neutNimTxt.y;
+              text: qsTranslate("PrefsDialogBase", "tempos da nota alterada")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+
+          }
+          Rectangle { // Intervalos compostos
+            x: 5; y: 196
+            width: 680
+            height: 198
+            color: corPainelDestaque
+
+            CheckBox {
+              id: tritono2
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritono2.right; anchors.leftMargin: 5; y: tritono2.y+5;
+              text: qsTranslate("PrefsDialogBase", "Trítono nas duas extremidades de movimentos melódicos")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: tritono1
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: tritono1.right; anchors.leftMargin: 5; y: tritono1.y+5
+              text: qsTranslate("PrefsDialogBase", "Trítono em uma extremidade de movimentos melódicos")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: dissoC
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 2)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: dissoC.right; anchors.leftMargin: 5; y: dissoC.y+5
+              text: qsTranslate("PrefsDialogBase", "Dissonância composta")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltC
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 3.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltC.right; anchors.leftMargin: 5; y: doisSaltC.y+5
+              text: qsTranslate("PrefsDialogBase", "Dois saltos em mov. contrário")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltCEx1
+              scale: 0.7
+              anchors.left: doisSaltC.right; anchors.leftMargin: 200; y: doisSaltC.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltCEx1.right; anchors.leftMargin: 5; y: doisSaltCEx1.y+5
+              text: qsTranslate("PrefsDialogBase", "Exceto se precedidos e seguidos por mov. contrário")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltCEx2
+              scale: 0.7
+              anchors.left: doisSaltC.right; anchors.leftMargin: 200; y: doisSaltC.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltCEx2.right; anchors.leftMargin: 5; y: doisSaltCEx2.y+5
+              text: qsTranslate("PrefsDialogBase", "Exceto se precedidos e seguidos grau conjunto")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltM
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 5.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltM.right; anchors.leftMargin: 5; y: doisSaltM.y+5
+              text: qsTranslate("PrefsDialogBase", "Dois saltos na mesma direção")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltMEx
+              scale: 0.7
+              anchors.left: doisSaltM.right; anchors.leftMargin: 200; y: doisSaltM.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltMEx.right; anchors.leftMargin: 5; y: doisSaltMEx.y+5
+              text: qsTranslate("PrefsDialogBase", "Exceto se formar tríade")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: doisSaltMEx1
+              scale: 0.7
+              anchors.left: doisSaltM.right; anchors.leftMargin: 200; y: doisSaltM.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: doisSaltMEx1.right; anchors.leftMargin: 5; y: doisSaltMEx1.y+5
+              text: qsTranslate("PrefsDialogBase", "ou 5J + 4J ou 4J + 5J")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltM5
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 7.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltM5.right; anchors.leftMargin: 5; y: saltM5.y
+              text: qsTranslate("PrefsDialogBase", "Salto maior do que 5ªJ não compensado \ncom direcionamento contrário")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltM5Ex1
+              scale: 0.7
+              anchors.left: saltM5.right; anchors.leftMargin: 200; y: saltM5.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltM5Ex1.right; anchors.leftMargin: 5; y: saltM5Ex1.y+5
+              text: qsTranslate("PrefsDialogBase", "por grau conjunto")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltM5Ex2
+              scale: 0.7
+              anchors.left: saltM5.right; anchors.leftMargin: 200; y: saltM5.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltM5Ex2.right; anchors.leftMargin: 5; y: saltM5Ex2.y+5
+              text: qsTranslate("PrefsDialogBase", "por salto menor do que 5ª")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltoTF
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 9)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltoTF.right; anchors.leftMargin: 5; y: saltoTF.y+5
+              text: qsTranslate("PrefsDialogBase", "Salto de tempo forte (")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltoTmF
+              scale: 0.8
+              anchors.left: saltoTF.right; anchors.leftMargin: 106; y: saltoTF.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltoTmF.right; anchors.leftMargin: 5; y: saltoTmF.y+5
+              text: qsTranslate("PrefsDialogBase", "e de tempo meio forte) para o tempo fraco.")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: saltoTFEx
+              scale: 0.7
+              anchors.left: saltoTF.right; anchors.leftMargin: 330; y: saltoTF.y
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: saltoTFEx.right; anchors.leftMargin: 5; y: saltoTFEx.y+6
+              text: qsTranslate("PrefsDialogBase", "Somente se ascendente")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // Monotonia
+            x: 5; y: 397
+            width: 680
+            height: 103
+            color: corPainelDestaque
+
+            CheckBox {
+              id: varDir
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: varDirTxt
+              anchors.left: varDir.right; anchors.leftMargin: 5; y: varDir.y+5;
+              text: qsTranslate("PrefsDialogBase", "Monotonia no contorno: mais do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: varDirTxt.right; anchors.leftMargin: 3; y: varDirTxt.y
+              color: "transparent"
+              TextInput {
+                id: varDirQt;
+                font.pixelSize: 10
+                color: corInput
+                text: "4"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: varDirTxt.right; anchors.leftMargin: 15; y: varDirTxt.y;
+              text: qsTranslate("PrefsDialogBase", "movimento(s) na mesma direção")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: repNota
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: repNotaTxt
+              anchors.left: repNota.right; anchors.leftMargin: 5; y: repNota.y+5;
+              text: qsTranslate("PrefsDialogBase", "Repetição de notas: mais do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: repNotaTxt.right; anchors.leftMargin: 3; y: repNotaTxt.y
+              color: "transparent"
+              TextInput {
+                id: repNotaQt;
+                font.pixelSize: 10
+                color: corInput
+                text: "1"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: repNotaTxt.right; anchors.leftMargin: 15; y: repNotaTxt.y;
+              text: qsTranslate("PrefsDialogBase", "repetição(ões)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: repeteNoutra
+              scale: 0.8
+              x: 275; y: melodias.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: repeteNoutra.right; anchors.leftMargin: 5; y: repeteNoutra.y+5;
+              text: qsTranslate("PrefsDialogBase", "sem mudar nota em outra voz")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: repPad
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 2)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: repPadTxt
+              anchors.left: repPad.right; anchors.leftMargin: 5; y: repPad.y+5;
+              text: qsTranslate("PrefsDialogBase", "Repetição de padrões: mais do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: repPadTxt.right; anchors.leftMargin: 3; y: repPadTxt.y
+              color: "transparent"
+              TextInput {
+                id: repPadQt;
+                font.pixelSize: 10
+                color: corInput
+                text: "0"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: repPadTxt.right; anchors.leftMargin: 15; y: repPadTxt.y;
+              text: qsTranslate("PrefsDialogBase", "repetição(ões)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: arpMel
+              scale: 0.8
+              x: 5; y: melodias.row(-5, 3)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              id: arpMelTxt
+              anchors.left: arpMel.right; anchors.leftMargin: 5; y: arpMel.y+5;
+              text: qsTranslate("PrefsDialogBase", "Arpejo de acordes na linha melódica: mais do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: arpMelTxt.right; anchors.leftMargin: 3; y: arpMelTxt.y
+              color: "transparent"
+              TextInput {
+                id: arpMelQt;
+                font.pixelSize: 10
+                color: corInput
+                text: "0"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: arpMelTxt.right; anchors.leftMargin: 15; y: arpMelTxt.y;
+              text: qsTranslate("PrefsDialogBase", "arpejo(s)")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            StyledTextLabel {
+              x: 7; y: melodias.row(0, 4)
+              text: qsTranslate("PrefsDialogBase", "Repetição de Ponto Focal")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: melPFs
+              scale: 0.8
+              x: 135; y: melodias.row(-5, 4)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: melPFs.right; anchors.leftMargin: 5; y: melPFs.y+5;
+              text: qsTranslate("PrefsDialogBase", "Agudo")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: melPFi
+              scale: 0.8
+              x: 210; y: melodias.row(-5, 4)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: melPFi.right; anchors.leftMargin: 5; y: melPFi.y+5;
+              text: qsTranslate("PrefsDialogBase", "Grave")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+        }
+        Rectangle { // Outros aspectos
+          id: outros
+          x: 5; y: 5
+          width: painelEsquerdo.width-10
+          height: painelEsquerdo.height-10
+          color: corPainelInterno
+          border.color: corBordaDestaque
+          visible: currentView === 4
+
+          property int colX: 25
+          function row(a,b) {
+            return a + 8 + 19 * b
+          }
+
+          Rectangle { // primeiro intervalo
+            x: 5; y: 5
+            width: 680
+            height: 118
+            color: corPainelDestaque
+
+            CheckBox {
+              id: primInt
+              scale: 0.8
+              x: 5; y: outros.row(-5, 0.4)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: primInt.right; anchors.leftMargin: 5; y: primInt.y+5
+              text: qsTranslate("PrefsDialogBase", "início diferente de uníssono ou 8ªJ")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ex5Ji
+              scale: 0.7
+              anchors.left: primInt.right; anchors.leftMargin: 170; y: primInt.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ex5Ji.right; anchors.leftMargin: 5; y: ex5Ji.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 5ªJ, com a Tônica na voz inferior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ex3i
+              scale: 0.7
+              anchors.left: primInt.right; anchors.leftMargin: 170; y: primInt.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ex3i.right; anchors.leftMargin: 5; y: ex3i.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 3ª, com a Tônica na voz inferior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ultInt
+              scale: 0.8
+              x: 5; y: outros.row(-5, 2.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ultInt.right; anchors.leftMargin: 5; y: ultInt.y+5
+              text: qsTranslate("PrefsDialogBase", "final diferente de uníssono ou 8ªJ")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ex5Jf
+              scale: 0.7
+              anchors.left: ultInt.right; anchors.leftMargin: 170; y: ultInt.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ex5Jf.right; anchors.leftMargin: 5; y: ex5Jf.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 5ªJ, com a Tônica na voz inferior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ex3f
+              scale: 0.7
+              anchors.left: ultInt.right; anchors.leftMargin: 170; y: ultInt.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ex3f.right; anchors.leftMargin: 5; y: ex3f.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 3ª, com a Tônica na voz inferior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ultNotas
+              scale: 0.8
+              x: 5; y: outros.row(-5, 4.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: ultNotas.right; anchors.leftMargin: 5; y: ultNotas.y
+              text: qsTranslate("PrefsDialogBase", "Se não alcançar último intervalo\npor grau conj. e mov. contrário")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: quartaJi
+              scale: 0.7
+              anchors.left: ultNotas.right; anchors.leftMargin: 170; y: ultNotas.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: quartaJi.right; anchors.leftMargin: 5; y: quartaJi.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 4ªJ ascendente ou 5ªJ descendente, na voz inferior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: quartaJs
+              scale: 0.7
+              anchors.left: ultNotas.right; anchors.leftMargin: 170; y: ultNotas.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: quartaJs.right; anchors.leftMargin: 5; y: quartaJs.y+5
+              text: qsTranslate("PrefsDialogBase", "exceto 4ªJ ascendente ou 5ªJ descendente, na voz superior")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // cadência final
+            x: 5; y: 126
+            width: 680
+            height: 41
+            color: corPainelDestaque
+
+            CheckBox {
+              id: sensCad
+              scale: 0.8
+              x: 5; y: outros.row(-5, 0.4)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: sensCad.right; anchors.leftMargin: 5; y: sensCad.y+5
+              text: qsTranslate("PrefsDialogBase", "Se não usar a sensível na cadência final")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: sensCadR
+              scale: 0.7
+              anchors.left: sensCad.right; anchors.leftMargin: 190; y: sensCad.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: sensCadR.right; anchors.leftMargin: 5; y: sensCadR.y+5
+              text: qsTranslate("PrefsDialogBase", "ou se a sensível não resolver")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: sensCadEx
+              scale: 0.7
+              anchors.left: sensCad.right; anchors.leftMargin: 190; y: sensCad.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: sensCadEx.right; anchors.leftMargin: 5; y: sensCadEx.y+5
+              text: qsTranslate("PrefsDialogBase", "Exceto no modo Frígio")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+
+          }
+          Rectangle { // distância
+            x: 5; y: 170
+            width: 680
+            height: 44
+            color: corPainelDestaque
+
+            CheckBox {
+              id: distancia
+              scale: 0.8
+              x: 5; y: outros.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: distancia.right; anchors.leftMargin: 5; y: distancia.y+5
+              text: qsTranslate("PrefsDialogBase", "Distância entre as vozes")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            StyledTextLabel {
+              id: distTxt
+              x: 7; y: outros.row(-5, 1.2)
+              text: qsTranslate("PrefsDialogBase", "- se uma sequência maior do que")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: distTxt.right; anchors.leftMargin: 5; y: distTxt.y
+              color: "transparent"
+              TextInput {
+                id: distQt;
+                font.pixelSize: 10
+                color: corInput
+                text: "4"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: distTxt.right; anchors.leftMargin: 15; y: distTxt.y;
+              text: qsTranslate("PrefsDialogBase", "intervalo(s) maior(es) do que a")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            Rectangle {
+              width: 5
+              height: 11
+              anchors.left: distTxt.right; anchors.leftMargin: 150; y: distTxt.y
+              color: "transparent"
+              TextInput {
+                id: distInt;
+                font.pixelSize: 10
+                color: corInput
+                text: "10"
+                validator: IntValidator { bottom: 0; top: 99 }
+                inputMethodHints: Qt.ImhDigitsOnly
+              }
+            }
+            StyledTextLabel {
+              anchors.left: distTxt.right; anchors.leftMargin: 154; y: distTxt.y;
+              text: qsTranslate("PrefsDialogBase", "ª")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // consonâncias imperfeitas
+            x: 5; y: 217
+            width: 680
+            height: 30
+            color: corPainelDestaque
+
+            CheckBox {
+              id: consImp
+              scale: 0.8
+              x: 5; y: outros.row(-5, 0)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: consImp.right; anchors.leftMargin: 5; y: consImp.y+5
+              text: qsTranslate("PrefsDialogBase", "Prioridade para Consonâncias Imperfeitas")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+          }
+          Rectangle { // coerência harmônica
+            x: 5; y: 250
+            width: 680
+            height: 80
+            color: corPainelDestaque
+
+            StyledTextLabel {
+              x: 7; y: outros.row(-5, 0)
+              text: qsTranslate("PrefsDialogBase", "Coerência harmônica")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cHarmoniaF
+              scale: 0.8
+              x: 5; y: outros.row(-5, 1)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cHarmoniaF.right; anchors.leftMargin: 5; y: cHarmoniaF.y+5
+              text: qsTranslate("PrefsDialogBase", "ausência da fundamental")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cHarmonia
+              scale: 0.8
+              x: 5; y: outros.row(-5, 2.5)
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cHarmonia.right; anchors.leftMargin: 5; y: cHarmonia.y+5
+              text: qsTranslate("PrefsDialogBase", "notas que não pertencem ao acorde")
+              font.pixelSize: 10
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cHarmoniaEx
+              scale: 0.7
+              anchors.left: cHarmonia.right; anchors.leftMargin: 175; y: cHarmonia.y-9
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cHarmoniaEx.right; anchors.leftMargin: 5; y: cHarmoniaEx.y+5
+              text: qsTranslate("PrefsDialogBase", "Exceto em tempo fraco")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: cHarmoniaEx2
+              scale: 0.7
+              anchors.left: cHarmonia.right; anchors.leftMargin: 175; y: cHarmonia.y+8
+              checked: true
+              onClicked: {
+                checked = !checked
+              }
+            }
+            StyledTextLabel {
+              anchors.left: cHarmoniaEx2.right; anchors.leftMargin: 5; y: cHarmoniaEx2.y+5
+              text: qsTranslate("PrefsDialogBase", "e meio forte")
+              font.pixelSize: 9
+              color: corTextoPrimario
+            }
+          }
+        }
+      }
+
+      // Painel Configurações -----------------------------
+      Rectangle {
+        id: painelDireita
+        x: 705; y: 2
+        width: 190
+        height: 550
+        border.color: corBorda
+        border.width: 1
+        color: corPainel
+
+        StyledTextLabel {
+          width: parent.width
+          x: 0; y: 3
+          text: qsTranslate("PrefsDialogBase", "Configurações")
+          font.pixelSize: 18
+          font.bold: true
+          color: corTextoDestaque
+        }
+        Rectangle { // tom, modo, voz cf
+          id: tonalidade
+          x: 5; y: 25
+          width: 180
+          height: 97
+          color: corPainelDestaque
+
+          StyledTextLabel {
+            x: 5; y: 6
+            text: qsTranslate("PrefsDialogBase", "Tônica/finalis")
+            color: corTextoPrimario
+          }
+          StyledDropdown { //Tônica/Finalis
+            id: btTonica
+            x: 80; y: 3
+            width: 50
+            height: 20
+            model: [
+              { 'text': "Dó",  'value': 1 },
+              { 'text': "Ré", 'value': 2 },
+              { 'text': "Mi",  'value': 3 },
+              { 'text': "Fá", 'value': 4 },
+              { 'text': "Sol",  'value': 5 },
+              { 'text': "Lá",  'value': 6 },
+              { 'text': "Si", 'value': 7 }
+            ]
+            currentIndex: 1
+            onActivated: function(index, value) {
+              currentIndex = index
+            }
+          }
+          StyledTextLabel {
+            x: 5; y: 29
+            text: "Acidente"
+            color: corTextoPrimario
+          }
+          StyledDropdown {
+            id: btAcid
+            x: 63; y: 26
+            width: 50
+            height: 20
+            model: [ {'text': " ",  'value': 1  },
+            { 'text': "♯", 'value': 2  },
+            { 'text': "♭",  'value': 3  }
+            ]
+            currentIndex: 0
+            onActivated: function(index, value) {
+              currentIndex = index
+            }
+          }
+          StyledTextLabel {
+            text: "Modo"
+            x: 5; y: 52
+            color: corTextoPrimario
+          }
+          StyledDropdown { //Tônica/Finalis
+            id: btModo
+            x: 47; y: 50
+            width: 100
+            height: 20
+            model: [
+              { 'text': "Maior",  'value': 1 },
+              { 'text': "Menor", 'value': 2 },
+              { 'text': "Jônico",  'value': 3 },
+              { 'text': "Dórico", 'value': 4 },
+              { 'text': "Frígio",  'value': 5 },
+              { 'text': "Lídio",  'value': 6 },
+              { 'text': "Mixolídio", 'value': 7 },
+              { 'text': "Eólio",  'value': 8 },
+              { 'text': "Lócrio", 'value': 9 }
+            ]
+            currentIndex: 0
+            onActivated: function(index, value) {
+              currentIndex = index
+            }
+          }
+          StyledTextLabel {
+            text: "Voz do CF"
+            x: 5; y: 77
+            color: corTextoDestaque
+          }
+          StyledDropdown { //Voz do CF
+            id: vozCantusFirmus
+            x: 64; y: 74
+            width: 50
+            height: 20
+            model: [
+              { 'text': "1",  'value': 1 },
+              { 'text': "2", 'value': 2 },
+              { 'text': "3",  'value': 3 },
+              { 'text': "4", 'value': 4 },
+              { 'text': "5",  'value': 5 },
+              { 'text': "6",  'value': 6 },
+              { 'text': "7", 'value': 7 },
+              { 'text': "8",  'value': 8 }
+            ]
+            currentIndex: 0
+            onActivated: function(index, value) {
+              currentIndex = index
+            }
+          }
+        }
+        Rectangle { // tipo de contraponto
+          x: 5; y: 127
+          width: 180
+          height: 137
+          color: corPainelDestaque
+
+          StyledTextLabel {
+            width: parent.width
+            x: 0; y: 2
+            text: "Tipo de contraponto:"
+            color: corTextoDestaque
+          }
+          Button { // Cantus Firmus
+            id: botao27
+            x: 5; y: 19
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 0 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Cantus Firmus")
+            onClicked: {
+              tipoBotoes = 0
+              salvarCfg();
+              if (melodia) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              }
+              else  {
+                conduz.visible = false; dissonancias.visible = false; outros.visible = false;
+                intervalosClasse.visible = false; melodias.visible = true;
+                priEsp = false; secEsp = false; terEsp = false; quaEsp = false;
+                quiEsp = false; melodia = true; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // botão primeira espécie
+            id: botao1
+            x: 5; y: 42
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 1 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "1ª esp.")
+            onClicked: {
+              tipoBotoes = 1
+              salvarCfg();
+              if (priEsp) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              }
+              else  {
+                priEsp = true; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // botão segunda espécie
+            id: botao2
+            x: 92; y: 42
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 2 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "2ª esp.")
+            onClicked: {
+              tipoBotoes = 2
+              salvarCfg();
+              if (secEsp) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              }
+              else  {
+                priEsp = false; secEsp = true; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // botão terceira espécie
+            id: botao23
+            x: 5; y: 65
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 3 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "3ª esp.")
+            onClicked: {
+              tipoBotoes = 3
+              salvarCfg();
+              if (terEsp) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              } else  {
+                priEsp = false; secEsp = false; terEsp = true; quaEsp = false; quiEsp = false; melodia = false; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // botão quarta espécie
+            id: botao24
+            x: 92; y: 65
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 4 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "4ª esp.")
+            onClicked: {
+              tipoBotoes = 4
+              salvarCfg();
+              if (quaEsp) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              } else  {
+                priEsp = false; secEsp = false; terEsp = false; quaEsp = true; quiEsp = false; melodia = false; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // botão quinta espécie
+            id: botao25
+            x: 5; y: 88
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 5 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "5ª espécie")
+            onClicked: {
+              tipoBotoes = 5
+              salvarCfg();
+              if (quiEsp) {
+                intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              } else  {
+                priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = true; melodia = false; livreCP = false; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+          Button { // Contraponto livre
+            id: livre
+            x: 5; y: 111
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: tipoBotoes === 6 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Contraponto Livre")
+            onClicked: {
+              tipoBotoes = 6
+              salvarCfg();
+              if (livreCP) { intervalosClasse.visible = false; titulo1.text = ""; titulo2.text = ""; outros.visible = false;
+                melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
+              } else  {
+                priEsp = false; secEsp = false; terEsp = false; quaEsp = false; quiEsp = false; melodia = false; livreCP = true; }
+                atualizarTitulo();
+                carregarCfg();
+            }
+          }
+        }
+        Rectangle { // Aspectos
+          x: 5; y: 269
+          width: 180
+          height: 114
+          color: corPainelDestaque
+
+          StyledTextLabel {
+            width: parent.width
+            x: 0; y: 3;
+            text: "Aspectos:"
+            color: corTextoDestaque
+          }
+          Button { // Condução de Vozes
+            id: botao26
+            x: 5; y: 20
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: currentView === 1 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Condução de Vozes")
+            onClicked: {
+              currentView === 1 ? currentView = 0 : currentView = 1
+            }
+          }
+          Button { // Dissonâncias
+            id: botao29
+            x: 5; y: 43
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: currentView === 2 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Dissonâncias")
+            onClicked: {
+              currentView === 2 ? currentView = 0 : currentView = 2
+            }
+          }
+          Button { // Melodia
+            id: botao28
+            x: 5; y: 66
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: currentView === 3 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Melodia")
+            onClicked: {
+              currentView === 3 ? currentView = 0 : currentView = 3
+            }
+          }
+          Button { // Outros aspectos
+            id: botao26o
+            x: 5; y: 89
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: currentView === 4 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Outros Aspectos")
+            onClicked: {
+              currentView === 4 ? currentView = 0 : currentView = 4
+            }
+          }
+        }
+        Rectangle { // Pre-configurações
+          x: 5; y: 388;
+          width: 180
+          height: 70
+          color: corPainelDestaque
+
+          StyledTextLabel {
+            width: parent.width
+            x: 0; y: 3
+            color: corTextoDestaque
+            text: qsTranslate("PrefsDialogBase","Pré-configurações:")
+          }
+          Rectangle { // mostra nome do preset
+            x: 5; y: 22;
+            width: 170
+            height: 20
+            border.color: corBordaDestaque
+            border.width: 1
+            color: corInputFundo
+
+            StyledTextLabel {
+              id: nomePre
+              width: parent.width
+              x: 0; y: 3
+              color: corTextoPrimario
+              text: qsTranslate("PrefsDialogBase","Nome da configuração")
+            }
+          }
+          Button { // Salvar
+            id: salvarCnfiguração
+            x: 5; y: 45
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: corBotaoAcaoPrimario
+            }
+            text: qsTranslate("PrefsDialogBase", "Salvar")
+            onClicked: {
+              salvarCfg(); saveFileDialog.open();
+            }
+          }
+          Button { // Carregar
+            id: carregarCnfiguração
+            x: 92; y: 45
+            width: 83
+            height: 20
+            background: Rectangle {
+              color: corBotaoAcaoSecundario
+            }
+            text: qsTranslate("PrefsDialogBase", "Carregar")
+            onClicked: {
+              openFileDialog.open();
+            }
+          }
+        }
+        Rectangle { // Relatório
+          x: 5; y: 504;
+          width: 180
+          height: 40
+          color: corPainelDestaque
+
+          StyledTextLabel {
+            width: parent.width
+            y: 2
+            text: qsTranslate("PrefsDialogBase", "Relatório")
+            color: corTextoDestaque
+          }
+          Button {
+            id: geraRel
+            x: 5; y: 16
+            width: 170
+            height: 20
+            background: Rectangle {
+              color: corBotaoAcaoPrimario
+            }
+            text: qsTranslate("PrefsDialogBase", "Gerar Relatório")
+            onClicked: { gerarRelatorio() }
+          }
+        }
+      }
+
+      // Painel inferior
+      Rectangle {
+        id: painelInferior
+        x: 5; y: 555
+        width: 890
+        height: 40
+        border.color: corBorda
+        border.width: 1
+        color: corPainel
+
+        StyledTextLabel {
+          x: 5; y: 13
+          text: qsTranslate("PrefsDialogBase", "Criado por")
+          font.pixelSize: 7
+          font.bold: true
+          color: corTextoSecundario
+        }
+        StyledTextLabel {
+          x: 5; y: 25
+          text: "Rogério Tavares Constante"
+          font.pixelSize: 10
+          font.bold: true
+          color: corTextoPrimario
+        }
+        Button {
+          id: btVerifica
+          width: 100
+          x: painelInferior.width/2-90; y: painelInferior.height/2-12
+          background: Rectangle {
+            radius: 2
+            color: corBotaoAcaoPrimario
+          }
+          text: qsTranslate("PrefsDialogBase", "Verificar")
+          onClicked: { msgResult.close(); verificar(); }
+          padding: 5
+        }
+        Button {
+          id: btFechar
+          width: 100
+          x: painelInferior.width/2+15; y: painelInferior.height/2-12
+          background: Rectangle {
+            radius: 2
+            color: corBotaoAcaoSecundario
+          }
+          text: qsTranslate("PrefsDialogBase", "Fechar")
+          onClicked: {
+            (typeof(quit) === 'undefined' ? Qt.quit : quit()); window.close(); msgResult.close(); msgRelatorio.close();
+          }
+          padding: 5
+        }
+        StyledTextLabel {
+          x: painelInferior.width-42; y: painelInferior.height/2-5
+          text: "(c)2026"
+          font.pixelSize: 10
+          font.bold: true
+          color: corTextoSecundario
+        }
+      }
+
+      MessageDialog { // error
+        id: errorDialog
+        title: "Error"
+        text: ""
+        onAccepted: {
+          errorDialog.close()
+        }
+        visible: false
+      }
+
+      Popup {
+        id: configInt
+        //title: qsTranslate("PrefsDialogBase", "Configuração de Intervalos")
+        width: 420
+        height: 200
+        modal: true
+        focus: true
+
+        property int painelAtual: 0
+        function row(b) {
+          return 25 + 16 * b
+        }
+
+        Rectangle { // configurar dissonâncias
+          anchors.fill: parent
+          color: corFundoPrincipal
+          radius: 3
+
+          StyledTextLabel {
+            x: 5; y: 4
+            text: qsTranslate("PrefsDialogBase", "Configuração de Intervalos:")
+            font.pixelSize: 14
+            font.bold: true
+            color: corTextoAlerta
+          }
+          Button { // Tonal
+            id: btTonal
+            x: 230; y: 3
+            width: 100
+            height: 20
+            background: Rectangle {
+              radius: 3
+              color: configInt.painelAtual === 0 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Tonal/Modal")
+            onClicked: {
+              configInt.painelAtual = 0
+            }
+          }
+          Button { // Atonal
+            id: btAtonal
+            x: 333; y: 3
+            width: 70
+            height: 20
+            background: Rectangle {
+              radius: 3
+              color: configInt.painelAtual === 1 ? corBotaoSelecionado : corBotaoNormal
+            }
+            text: qsTranslate("PrefsDialogBase", "Atonal")
+            onClicked: {
+              configInt.painelAtual = 1
+            }
+          }
+
+          Rectangle { // Tonal
+            id: cfgTonal
+            y: 25
+            width: parent.width
+            height: 160
+            color: corPainelDestaque
+            visible: configInt.painelAtual === 0
+
+            StyledTextLabel {
+              x: 180; y: 5
+              text: qsTranslate("PrefsDialogBase", "Consonância")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel {
+              x: 250; y: 2
+              text: qsTranslate("PrefsDialogBase", "Dissonância\ncom o baixo")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel {
+              x: 320; y: 5
+              text: qsTranslate("PrefsDialogBase", "Dissonância")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel { // U e 6ª
+              x: 5; y: configInt.row(0)+3
+              text: qsTranslate("PrefsDialogBase", "Uníssono e 8ª justa")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckConsU
+              x: 200; y: configInt.row(0)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckConsU.checked = true
+                ckDissBaixU.checked = false
+                ckDissU.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaixU
+              x: 270; y: configInt.row(0)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsU.checked = false
+                ckDissBaixU.checked = true
+                ckDissU.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissU
+              x: 340; y: configInt.row(0)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsU.checked = false
+                ckDissBaixU.checked = false
+                ckDissU.checked = true
+              }
+            }
+            StyledTextLabel { // 2ª e 7ª
+              x: 5; y: configInt.row(1)+2
+              text: qsTranslate("PrefsDialogBase", "2ª e 7ª (maiores e menores)")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons2a
+              x: 200; y: configInt.row(1)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons2a.checked = true
+                ckDissBaix2a.checked = false
+                ckDiss2a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix2a
+              x: 270; y: configInt.row(1)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons2a.checked = false
+                ckDissBaix2a.checked = true
+                ckDiss2a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss2a
+              x: 340; y: configInt.row(1)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons2a.checked = false
+                ckDissBaix2a.checked = false
+                ckDiss2a.checked = true
+              }
+            }
+            StyledTextLabel { // 3ª e 6ª
+              x: 5; y: configInt.row(2)+3
+              text: qsTranslate("PrefsDialogBase", "3ª e 6ª (maiores e menores)")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons3a
+              x: 200; y: configInt.row(2)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons3a.checked = true
+                ckDissBaix3a.checked = false
+                ckDiss3a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix3a
+              x: 270; y: configInt.row(2)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons3a.checked = false
+                ckDissBaix3a.checked = true
+                ckDiss3a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss3a
+              x: 340; y: configInt.row(2)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons3a.checked = false
+                ckDissBaix3a.checked = false
+                ckDiss3a.checked = true
+              }
+            }
+            StyledTextLabel { // 4ªJ
+              x: 5; y: configInt.row(3)+3
+              text: qsTranslate("PrefsDialogBase", "4ª justa")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons4a
+              x: 200; y: configInt.row(3)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons4a.checked = true
+                ckDissBaix4a.checked = false
+                ckDiss4a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix4a
+              x: 270; y: configInt.row(3)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons4a.checked = false
+                ckDissBaix4a.checked = true
+                ckDiss4a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss4a
+              x: 340; y: configInt.row(3)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons4a.checked = false
+                ckDissBaix4a.checked = false
+                ckDiss4a.checked = true
+              }
+            }
+            StyledTextLabel { // trítono
+              x: 5; y: configInt.row(4)+3
+              text: qsTranslate("PrefsDialogBase", "Trítono")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckConsTT
+              x: 200; y: configInt.row(4)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsTT.checked = true
+                ckDissBaixTT.checked = false
+                ckDissTT.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaixTT
+              x: 270; y: configInt.row(4)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckConsTT.checked = false
+                ckDissBaixTT.checked = true
+                ckDissTT.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissTT
+              x: 340; y: configInt.row(4)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsTT.checked = false
+                ckDissBaixTT.checked = false
+                ckDissTT.checked = true
+              }
+            }
+            StyledTextLabel { // 5J
+              x: 5; y: configInt.row(5)+3
+              text: qsTranslate("PrefsDialogBase", "5ª justa")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons5a
+              x: 200; y: configInt.row(5)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons5a.checked = true
+                ckDissBaix5a.checked = false
+                ckDiss5a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix5a
+              x: 270; y: configInt.row(5)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons5a.checked = false
+                ckDissBaix5a.checked = true
+                ckDiss5a.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss5a
+              x: 340; y: configInt.row(5)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons5a.checked = false
+                ckDissBaix5a.checked = false
+                ckDiss5a.checked = true
+              }
+            }
+            StyledTextLabel { // outros
+              x: 5; y: configInt.row(6)+3
+              text: qsTranslate("PrefsDialogBase", "Outros (aumentados e diminutos)")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckConsOu
+              x: 200; y: configInt.row(6)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsOu.checked = true
+                ckDissBaixOu.checked = false
+                ckDissOu.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaixOu
+              x: 270; y: configInt.row(6)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckConsOu.checked = false
+                ckDissBaixOu.checked = true
+                ckDissOu.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissOu
+              x: 340; y: configInt.row(6)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckConsOu.checked = false
+                ckDissBaixOu.checked = false
+                ckDissOu.checked = true
+              }
+            }
+          }
+          Rectangle { // Atonal
+            id: cfgAtonal
+            y: 25
+            width: parent.width
+            height: 160
+            color: corPainelDestaque
+            visible: configInt.painelAtual === 1
+
+            StyledTextLabel {
+              x: 180; y: 5
+              text: qsTranslate("PrefsDialogBase", "Consonância")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel {
+              x: 250; y: 2
+              text: qsTranslate("PrefsDialogBase", "Dissonância\ncom o baixo")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel {
+              x: 320; y: 5
+              text: qsTranslate("PrefsDialogBase", "Dissonância")
+              font.pixelSize: 10
+              font.bold: true
+              color: corTextoAlerta
+            }
+            StyledTextLabel { // Classe 0
+              x: 5; y: configInt.row(0)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 0: Uníssono/8ª")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons0
+              x: 200; y: configInt.row(0)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons0.checked = true
+                ckDissBaix0.checked = false
+                ckDiss0.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix0
+              x: 270; y: configInt.row(0)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons0.checked = false
+                ckDissBaix0.checked = true
+                ckDiss0.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss0
+              x: 340; y: configInt.row(0)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons0.checked = false
+                ckDissBaix0.checked = false
+                ckDiss0.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 1
+              x: 5; y: configInt.row(1)+2
+              text: qsTranslate("PrefsDialogBase", "Classe 1: 2ª menor/7ª maior")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons1
+              x: 200; y: configInt.row(1)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons1.checked = true
+                ckDissBaix1.checked = false
+                ckDiss1.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix1
+              x: 270; y: configInt.row(1)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons1.checked = false
+                ckDissBaix1.checked = true
+                ckDiss1.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss1
+              x: 340; y: configInt.row(1)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons1.checked = false
+                ckDissBaix1.checked = false
+                ckDiss1.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 2
+              x: 5; y: configInt.row(2)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 2: 2ª maior/7ª menor")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons2
+              x: 200; y: configInt.row(2)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons2.checked = true
+                ckDissBaix2.checked = false
+                ckDiss2.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix2
+              x: 270; y: configInt.row(2)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons2.checked = false
+                ckDissBaix2.checked = true
+                ckDiss2.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss2
+              x: 340; y: configInt.row(2)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons2.checked = false
+                ckDissBaix2.checked = false
+                ckDiss2.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 3
+              x: 5; y: configInt.row(3)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 3: 3ª menor/6ª maior")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons3
+              x: 200; y: configInt.row(3)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons3.checked = true
+                ckDissBaix3.checked = false
+                ckDiss3.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix3
+              x: 270; y: configInt.row(3)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons3.checked = false
+                ckDissBaix3.checked = true
+                ckDiss3.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss3
+              x: 340; y: configInt.row(3)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons3.checked = false
+                ckDissBaix3.checked = false
+                ckDiss3.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 4
+              x: 5; y: configInt.row(4)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 4: 3ª maior/6ª menor")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons4
+              x: 200; y: configInt.row(4)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons4.checked = true
+                ckDissBaix4.checked = false
+                ckDiss4.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix4
+              x: 270; y: configInt.row(4)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons4.checked = false
+                ckDissBaix4.checked = true
+                ckDiss4.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss4
+              x: 340; y: configInt.row(4)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons4.checked = false
+                ckDissBaix4.checked = false
+                ckDiss4.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 5
+              x: 5; y: configInt.row(5)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 5: 4ª justa/5ª justa")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons5
+              x: 200; y: configInt.row(5)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons5.checked = true
+                ckDissBaix5.checked = false
+                ckDiss5.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix5
+              x: 270; y: configInt.row(5)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons5.checked = false
+                ckDissBaix5.checked = true
+                ckDiss5.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss5
+              x: 340; y: configInt.row(5)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons5.checked = false
+                ckDissBaix5.checked = false
+                ckDiss5.checked = true
+              }
+            }
+            StyledTextLabel { // Classe 6
+              x: 5; y: configInt.row(6)+3
+              text: qsTranslate("PrefsDialogBase", "Classe 6: 4ª aumentada/5ª diminuta")
+              font.pixelSize: 12
+              color: corTextoPrimario
+            }
+            CheckBox {
+              id: ckCons6
+              x: 200; y: configInt.row(6)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons6.checked = true
+                ckDissBaix6.checked = false
+                ckDiss6.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDissBaix6
+              x: 270; y: configInt.row(6)
+              scale: 0.6
+              checked: true
+              onClicked: {
+                ckCons6.checked = false
+                ckDissBaix6.checked = true
+                ckDiss6.checked = false
+              }
+            }
+            CheckBox {
+              id: ckDiss6
+              x: 340; y: configInt.row(6)
+              scale: 0.6
+              checked: false
+              onClicked: {
+                ckCons6.checked = false
+                ckDissBaix6.checked = false
+                ckDiss6.checked = true
+              }
+            }
+          }
+          Button {
+            width: parent.width
+            y: parent.height - 20
+            text: "OK"
+            background: Rectangle {
+              radius: 2
+              color: corBotaoAcaoPrimario
+            }
+            onClicked: configInt.close()
+          }
+        }
+      }
+
+
+//------------------------------------------------------------------/*--------------
+ // janela com as mensagens de resultado
+	// ApplicationWindow {
+ //      id: msgResult
+	//     visible: false;
+	//     title: "Resultado"
+	//     width: 550; height: 70
+	//     color: "#343530"
+ //        flags: Qt.WindowStaysOnTopHint
+ //
+ //        // Tooltip customizado
+ //        Rectangle {
+ //          id: tooltip
+ //          visible: false
+ //          width: tooltipText.width + 10
+ //          height: tooltipText.height + 6
+ //          color: "#2c3e50"
+ //          border.color: "#3498db"
+ //          border.width: 1
+ //          radius: 3
+ //          z: 1000  // Garante que fique acima de outros elementos
+ //
+ //          Text {
+ //            id: tooltipText
+ //            anchors.centerIn: parent
+ //            color: "#ecf0f1"
+ //            font.pixelSize: 12
+ //          }
+ //        }
+ //
+	//     Rectangle {
+ //          id: btResult
+ //          property alias text: lresult.text
+ //          signal clicked
+ //          visible: true
+ //          width: 100; height: 25
+ //          x: 140
+ //          border { width: 1; color: "#555555" }
+ //          smooth: true
+ //          radius: 3
+ //          gradient: Gradient {
+ //              GradientStop { position: 0.0
+ //                  color: {
+ //                        if (mArea6.pressed)
+ //                            return "#888d96"
+ //                           else
+ //                           return "#a0a8af"
+ //                     }
+ //              }
+ //              GradientStop { position: 1.0; color: "#035b25" }
+ //            }
+ //
+ //         Text {
+ //           id: lresult
+ //           anchors.centerIn: parent
+ //           text: "Fechar"
+ //           color: "#aaf0e1"
+ //         }
+ //
+ //         MouseArea {
+ //          id: mArea6
+ //          anchors.fill: parent
+ //          hoverEnabled: true
+ //          onEntered: showTooltip("Fecha a janela de resultados", mouseX, mouseY)
+ //          onExited: tooltip.visible = false
+ //          onClicked: { window.raise(); msgResult.close(); apagaCor(); }
+ //         } // mouseArea
+ //       } // Rectangle btResult
+ //
+ //      Rectangle {
+ //          id: btAtualiza
+ //          property alias text: latual.text
+ //          signal clicked
+ //          visible: true
+ //          width: 100; height: 25
+ //          x: 300
+ //          border { width: 1; color: "#555555" }
+ //          smooth: true
+ //          radius: 3
+ //          gradient: Gradient {
+ //              GradientStop { position: 0.0
+ //                  color: {
+ //                        if (mArea61.pressed)
+ //                            return "#888d96"
+ //                           else
+ //                           return "#a0a8af"
+ //                     }
+ //              }
+ //              GradientStop { position: 1.0; color: "#035b25" }
+ //            }
+ //
+ //         Text {
+ //           id: latual
+ //           anchors.centerIn: parent
+ //           text: "Atualizar"
+ //           color: "#aaf0e1"
+ //         }
+ //
+ //         MouseArea {
+ //          id: mArea61
+ //          anchors.fill: parent
+ //          hoverEnabled: true
+ //          onEntered: showTooltip("Atualiza a verificação da partitura", mouseX, mouseY)
+ //          onExited: tooltip.visible = false
+ //          onClicked: { msgResult.close(); apagaCor(); verificar() }
+ //         } // mouseArea
+ //       } // Rectangle btAtualiza
+ //
+ //       Rectangle {
+ //            id: btAvança
+ //            property alias text: avanText.text
+ //            signal clicked
+ //            visible: true
+ //            width: 50; height: 20
+ //            x: 500
+ //            border { width: 1; color: "#555444" }
+ //            smooth: true
+ //            radius: 3
+ //            gradient: Gradient {
+ //                GradientStop { position: 0.0
+ //                    color: {
+ //                          if (mAreaAvan.pressed)
+ //                              return "#888d96"
+ //                             else
+ //                             return "#a0a7ae"
+ //                       }
+ //                }
+ //                GradientStop { position: 1.0; color: "#035b25" }
+ //              }
+ //
+ //           Text {
+ //             id: avanText
+ //             anchors.centerIn: parent
+ //             text: ">>"
+ //             color: "#aaf0e1"
+ //           }
+ //
+ //           MouseArea {
+ //            id: mAreaAvan
+ //            anchors.fill: parent
+ //            hoverEnabled: true
+ //            onEntered: showTooltip("Próximo resultado", mouseX, mouseY)
+ //            onExited: tooltip.visible = false
+ //            onClicked: { apresentaResultado(1); return }
+ //           } // mouseArea
+ //         } // Rectangle btResult
+ //
+ //         Rectangle {
+ //              id: btVolta
+ //              property alias text: voltaText.text
+ //              signal clicked
+ //              visible: true
+ //              width: 50; height: 20
+ //              x: 0
+ //              border { width: 1; color: "#555444" }
+ //              smooth: true
+ //              radius: 3
+ //              gradient: Gradient {
+ //                  GradientStop { position: 0.0
+ //                      color: {
+ //                            if (mAreaVolta.pressed)
+ //                                return "#888d96"
+ //                               else
+ //                               return "#a0a7ae"
+ //                         }
+ //                  }
+ //                  GradientStop { position: 1.0; color: "#035b25" }
+ //                }
+ //
+ //             Text {
+ //               id: voltaText
+ //               anchors.centerIn: parent
+ //               text: "<<"
+ //               color: "#aaf0e1"
+ //             }
+ //
+ //             MouseArea {
+ //              id: mAreaVolta
+ //              anchors.fill: parent
+ //              hoverEnabled: true
+ //              onEntered: showTooltip("Resultado anterior", mouseX, mouseY)
+ //              onExited: tooltip.visible = false
+ //              onClicked: { apresentaResultado(-1); return }
+ //             } // mouseArea
+ //           } // Rectangle btVolta
+ //
+ //           Rectangle { x: 0; y: 25; width: 550; height: 30; color: "#131313"; radius: 2 // Resultado Filtro
+ //             CheckBox { id: cxCond; checked: true; x: 5; y: 3;
+ //                Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+ //                     font.pixelSize: 12; text: qsTr("Condução Vozes")}
+ //                MouseArea {
+ //                  anchors.fill: parent
+ //                  hoverEnabled: true
+ //                  onEntered: showTooltip("Mostra/oculta erros de condução de vozes", mouseX, mouseY)
+ //                  onExited: tooltip.visible = false
+ //                }
+ //             }
+ //             CheckBox { id: cxDiss; checked: true; x: 150; y: 3
+ //                Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+ //                      font.pixelSize: 12; text: qsTr("Dissonância") }
+ //                MouseArea {
+ //                  anchors.fill: parent
+ //                  hoverEnabled: true
+ //                  onEntered: showTooltip("Mostra/oculta erros de tratamento de dissonâncias", mouseX, mouseY)
+ //                  onExited: tooltip.visible = false
+ //                }
+ //             }
+ //             CheckBox { id: cxMelo; checked: true; x: 270; y: 3
+ //                Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+ //                     font.pixelSize: 12; text: qsTr("Melodia")}
+ //                MouseArea {
+ //                  anchors.fill: parent
+ //                  hoverEnabled: true
+ //                  onEntered: showTooltip("Mostra/oculta erros de construção melódica", mouseX, mouseY)
+ //                  onExited: tooltip.visible = false
+ //                }
+ //             }
+ //             CheckBox { id: cxOutr; checked: true; x: 390; y: 3
+ //                Text { anchors.left: parent.right; anchors.leftMargin: 0; anchors.verticalCenter: parent.verticalCenter; color: "#e0dfc3";
+ //                      font.pixelSize: 11; text: qsTr("Outros") }
+ //                MouseArea {
+ //                  anchors.fill: parent
+ //                  hoverEnabled: true
+ //                  onEntered: showTooltip("Mostra/oculta outros erros", mouseX, mouseY)
+ //                  onExited: tooltip.visible = false
+ //                }
+ //             }
+ //           } // Rectangle Filtro
+ //
+	//   Component {
+	//     id: component
+	//     Rectangle {
+ //          id: msg
+ //          property alias text: lResul.text
+ //          property int value: 0
+ //          signal clicked
+ //          visible: true
+ //          width: 550; height: 21
+ //          border { width: 1; color: "#000000" }
+ //          smooth: true
+ //          radius: 3
+ //          color: "#6c6d6d"
+ //
+ //         Text {
+ //           id: lResul
+ //           anchors.left: parent.left; anchors.leftMargin: 3
+ //           anchors.verticalCenter: parent.verticalCenter
+ //           text: "-"
+ //           color: "#aaf0e1"
+ //         }
+ //
+ //         MouseArea {
+ //          id: msgClick
+ //          anchors.fill: parent
+ //          onClicked: { colorir(parent.value); }
+ //          onDoubleClicked: { explicarMsg(parent.value); }
+ //          }
+ //       } // retângulo msg
+	//   } // componente
+ // } // msgResult
  //--------------------------------------------------------------------------------
   // janela com o relatório
-  ApplicationWindow {
-     id: msgRelatorio
-     title: "Relatório"
-     width: 650; height: 40
-     color: "#343530"
-     visible: false
-      Text {
-        id: lRelatorio
-        anchors.left: parent.left; anchors.leftMargin: 3
-        anchors.verticalCenter: parent.verticalCenter
-        text: "-"
-        color: "#aaf0e1"
-      }
- }
+    Popup {
+      id: msgRelatorio
+      title: "Relatório"
+      width: 650; height: 40
+      color: corFundoPrincipal
+      visible: false
+        StyledTextLabel {
+          id: lRelatorio
+          anchors.left: parent.left; anchors.leftMargin: 3
+          anchors.verticalCenter: parent.verticalCenter
+          text: "-"
+          color: corTextoPrimario
+        }
+  }
  // msgRelatorio
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -2059,20 +3966,20 @@ MuseScore {
      }
      visible: false;
   } // msg de Explicação
-// -----------------------------------------------------------------------------------------------------------------
+//*/ -----------------------------------------------------------------------------------------------------------------
 // caixas de dialogo para salvar e abrir presets
-FileDialog {
-    id: openFileDialog
-    nameFilters: ["Configuração do Analisador (*.cfA)"]
-    onAccepted: openFile(openFileDialog.fileUrl)
-
-}
-FileDialog {
-    id: saveFileDialog
-    selectExisting: false
-    nameFilters: ["Configuração do Analisador (*.cfA)", "All files (*)"]
-    onAccepted: saveFile(saveFileDialog.fileUrl, "")
-}
+// FileDialog {
+//     id: openFileDialog
+//     filters: ["Configuração do Analisador (*.cfA)"]
+//     onAccepted: openFile(openFileDialog.fileUrl)
+//
+// }
+// FileDialog {
+//     id: saveFileDialog
+//     // selectExisting (removido: Qt6/MuseScore 4): false
+//     filters: ["Configuração do Analisador (*.cfA)", "All files (*)"]
+//     onAccepted: saveFile(saveFileDialog.fileUrl, "")
+// }
 // -----------------------------------------------------------------------------------------------------------------
   // ---- variáveis globais ----
 
@@ -2102,20 +4009,20 @@ FileDialog {
       property var pag: 0;
 
 // ----------- funções ---------
-function atualizarTitulo() {
-  if (melodia) { titulo2.text = "Cantus Firmus:"; tipoCP = 0; };
-  if (priEsp) { titulo2.text = "1ª espécie:"; tipoCP = 1;};
-  if (secEsp) { titulo2.text = "2ª espécie:"; tipoCP = 2;};
-  if (terEsp) { titulo2.text = "3ª espécie:"; tipoCP = 3;};
-  if (quaEsp) { titulo2.text = "4ª espécie:"; tipoCP = 4;};
-  if (quiEsp) { titulo2.text = "5ª espécie:"; tipoCP = 5;};
-  if (livreCP) { titulo2.text = "Contraponto livre:"; tipoCP = 6;};
-  if (melodias.visible) { titulo1.text = "construção melódica" };
-  if (dissonâncias.visible) { titulo1.text = "tratamento de dissonâncias" };
-  if (conduz.visible) { titulo1.text = "condução de vozes" };
-  if (outros.visible) { titulo1.text = "outros aspectos" };
-  if (intervalosClasse.visible) { titulo1.text = "Seleção de intervalos dissonântes" };
-}
+// function atualizarTitulo() {
+//   if (melodia) { titulo2.text = "Cantus Firmus:"; tipoCP = 0; };
+//   if (priEsp) { titulo2.text = "1ª espécie:"; tipoCP = 1;};
+//   if (secEsp) { titulo2.text = "2ª espécie:"; tipoCP = 2;};
+//   if (terEsp) { titulo2.text = "3ª espécie:"; tipoCP = 3;};
+//   if (quaEsp) { titulo2.text = "4ª espécie:"; tipoCP = 4;};
+//   if (quiEsp) { titulo2.text = "5ª espécie:"; tipoCP = 5;};
+//   if (livreCP) { titulo2.text = "Contraponto livre:"; tipoCP = 6;};
+//   if (melodias.visible) { titulo1.text = "construção melódica" };
+//   if (dissonâncias.visible) { titulo1.text = "tratamento de dissonâncias" };
+//   if (conduz.visible) { titulo1.text = "condução de vozes" };
+//   if (outros.visible) { titulo1.text = "outros aspectos" };
+//   if (intervalosClasse.visible) { titulo1.text = "Seleção de intervalos dissonântes" };
+// }
 
 function salvarCfg() {
 
@@ -2591,38 +4498,70 @@ function gerarRelatorio() {
 }
 
 function explicarMsg(valor) {
-  console.log("explicaMsg:", valor);
+  //console.log("explicaMsg:", valor);
   if (valor >= 10) { var n = 4; } else { var n = 3; };
-  var explica = "----";
+  let explica = "----";
   if (resultado[valor][0].slice(0+n, 10+n) == "não conduz") { explica = "Para criar um sentido de conclusão mais acentuado, a melodia deve finalizar conduzindo para a finalis por grau conjunto." } else // melodia
   if (resultado[valor][0].slice(0+n, 9+n) == "penúltima") { explica = "Para criar uma expectativa de resolução e conclusão na nota final, a penúltima nota da melodia deve pertencer ao acorde do V ou do vii° grau." } else
   if (resultado[valor][0].slice(0+n, 6+n) == "Âmbito") { explica = "O âmbito melódico (intervalo entre a nota mais grave e a mais aguda da melodia), ultrapassou o limite estabelecido." } else
+  if (resultado[valor][0].slice(0+n, 19+n) == "Não privilegia grau") { explica = "O uso de graus conjuntos beneficia a fluência melódica. Saltos maiores do que a 3ª devem ser usados somente em pontos estratégicos, para deixar a melodia mais expressiva." } else
   if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 7ª") { explica = "Intervalo melódico de 7ª prejudica a fluência melódica e é de difícil execução vocal." } else
-  if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 6ª") { explica = "Intervalo melódico de 6ª prejudica a fluência melódica." } else
+  if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 6ª") { explica = "Intervalo melódico de 6ª, por ser amplo, prejudica a fluência melódica e deveria ser compensado por um movimento suave na direção contrária." } else
   if (resultado[valor][0].slice(0+n, 28+n) == "intervalo melódico aumentado") { explica = "Intervalo melódico aumentado ou diminuto prejudica a fluência melódica e é de difícil execução vocal." } else
-  if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 8ª") { explica = "Intervalo melódico maior do que a 8ª prejudica a fluência melódica e é de difícil execução vocal." } else
+  if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 8ª") { explica = "Intervalo melódico maior do que a 8ª, por ser amplo, prejudica a fluência melódica e deveria ser compensado por um movimento suave na direção contrária." } else
   if (resultado[valor][0].slice(0+n, 13+n) == "trítono nas 2") { explica = "O intervalo de trítono entre as notas das duas extremidades de um segmento melódico de intervalos na mesma direção coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono, em alguns contextos, o trítono nas duas extremidades também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
   if (resultado[valor][0].slice(0+n, 13+n) == "trítono em 1") { explica = "O intervalo de trítono entre uma nota da extremidade de um segmento melódico de intervalos na mesma direção e outra nota deste mesmo segmento coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono e do que o trítono nas duas extremidades, em alguns contextos, o trítono em uma extremidade também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
   if (resultado[valor][0].slice(0+n, 20+n) == "dissonância composta") { explica = "A dissonância composta (dois saltos que, somados, geram um intervalo melódico de 7ª ou 9ª) prejudica a fluência melódica e dificulta a execução vocal." } else
   if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 5ª") { explica = "O intervalo melódico maior do que a quinta deve ser compensado por movimento em direção contrária e movimento menor do que o do salto de quinta (preferencialmente por grau conjunto). Isso beneficia a fluência e direcionamento melódico." } else
   if (resultado[valor][0].slice(0+n, 19+n) == "movimentos na mesma") { explica = "O excesso de movimentos na mesma direção e em sequência pode gerar monotonia na melodia, por ser muito previsível." } else
   if (resultado[valor][0].slice(0+n, 18+n) == "repetição de notas") { explica = "A repetição de notas (sem a mudança de nota na outra voz) tende a gerar monotonia." } else
-  if (resultado[valor][0].slice(0+n, 19+n) == "repetição de padrão") { explica = "A repetição seguida de padrões melódicos curtos pode gerar monotonia." } else
+  if (resultado[valor][0].slice(0+n, 19+n) == "repetição de padrão") { explica = "A repetição seguida de padrões melódicos curtos deixa a melodia previsível e pode gerar monotonia." } else
   if (resultado[valor][0].slice(0+n, 6+n) == "arpejo") { explica = "O excesso de arpejos na melodia prejudica a fluência e o direcionamento." } else
   if (resultado[valor][0].slice(0+n, 20+n) == "repete ponto focal s") { explica = "A repetição de Ponto Focal superior (a nota mais aguda da melodia), em trechos diferentes, enfraquece a definição do clímax da melodia e o direcionamento melódico." } else
   if (resultado[valor][0].slice(0+n, 20+n) == "repete ponto focal i") { explica = "A repetição de Ponto Focal inferior (a nota mais grave da melodia), em trechos diferentes, enfraquece a definição do clímax da melodia e o direcionamento melódico." } else
   if (resultado[valor][0].slice(0+n, 9+n) == "alteração") { explica = "O uso frequente da sensível é indispensável para a definição de tonalidades, no modo menor. A alteração do 7º grau melódico (sensível) pode exigir também a alteração ascendente do 6º grau, para evitar o intervalo melódico aumentado de 2ª." } else
   if (resultado[valor][0].slice(0+n, 9+n) == "neutraliz") { explica = "Em tonalidades menores, as tendências melódicas do 6º e 7º graus devem ser neutralizadas através da sua resolução nas notas subsequentes. O 6º grau melódico, quando alterado, deve seguir para o 7º grau também alterado. O 7º grau alterado (sensível), deve resolver na tônica. Os 6º e 7º graus naturais resolvem por grau conjunto descendente, no 5º e 6º graus, respectivamente." } else
-  if (resultado[valor][0].slice(0+n, 12+n) == "Nota inicial") { explica = "A nota inicial da melodia é, frequentemente, importante para a definição tonal/modal (principalmente no Cantus Firmus). O uso da tônica/finalis como primeira nota, em uma posição métrica forte, é a forma mais eficiente para determinar o tom/modo já no início da melodia." } else
-  if (resultado[valor][0].slice(0+n, 11+n) == "2 saltos na") { explica = "2 ou mais saltos seguidos, na mesma direção, prejudicam a fluência melódica." } else
+  if (resultado[valor][0].slice(0+n, 12+n) == "Nota inicial") { explica = "A nota inicial da melodia é, frequentemente, importante para a definição tonal/modal (especialmente quando a melodia está na voz mais grave). O uso da tônica/finalis como primeira nota, em uma posição métrica forte, é a forma mais eficiente para determinar o tom/modo já no início da melodia." } else
+  if (resultado[valor][0].slice(0+n, 11+n) == "2 saltos na") { explica = "2 ou mais saltos seguidos, na mesma direção, prejudicam a fluência melódica. É aceitável o padrão 5J + 4J, ou 4J + 5J." } else
   if (resultado[valor][0].slice(0+n, 11+n) == "2 saltos em") { explica = "2 ou mais saltos seguidos, em direção contrária, podem criar ruptura e prejudicar a fluência melódica." } else
-  if (resultado[valor][0].slice(0+n, 8+n) == "salto de") { explica = "A ênfase melódica na nota alcançada por salto pode gerar um deslocamento do acento métrico." } // else
-
-  //explica = resultado[valor][0].slice(0+n, 9+n);
+  if (resultado[valor][0].slice(0+n, 8+n) == "salto de") { explica = "A ênfase melódica na nota alcançada por salto pode gerar um deslocamento do acento métrico." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "8ª pa") { explica = "As 8ªs paralelas (ou uníssonos paralelos) prejudicam o fundamental princípio da polifonia, que é a independência das vozes, e não devem ser realizadas." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "5ª pa") { explica = "As 5ªs paralelas prejudicam o fundamental princípio da polifonia, que é a independência das vozes, e não devem ser realizadas." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "4ª pa") { explica = "O excesso de movimentos paralelos de 4ª prejudica o fundamental princípio da polifonia, que é a independência das vozes, e não devem ser realizadas." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "3ª pa") { explica = "O excesso de movimentos paralelos de 3ª prejudica o fundamental princípio da polifonia, que é a independência das vozes, e não devem ser realizadas." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "6ª pa") { explica = "O excesso de movimentos paralelos de 6ª prejudica o fundamental princípio da polifonia, que é a independência das vozes, e não devem ser realizadas." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "8ª oc") { explica = "As 8ªs ocultas (ou diretas) ocorrem quando um intervalo de 8ªJ é alcançado por movimento direto, prejudicando o fundamental princípio da polifonia, que é a independência das vozes." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "5ª oc") { explica = "As 5ªs ocultas (ou diretas) ocorrem quando um intervalo de 5ªJ é alcançada por movimento direto, prejudicando o fundamental princípio da polifonia, que é a independência das vozes." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "5ª ou") { explica = "A ocorrência de dois ou mais intervalos justos consecutivos deixa a sonoridade muito vazia e, portanto, deve ser evitada." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "8ª in") { explica = "As 8ªs intermitentes são a ocorrência de dois intervalos de 8ªJ intercalados por outro(s) intervalo(s). Elas prejudicam o fundamental princípio da polifonia, que é a independência das vozes." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "5ª in") { explica = "As 5ªs intermitentes são a ocorrência de dois intervalos de 5ªJ  intercalados por outro(s) intervalo(s). Elas prejudicam o fundamental princípio da polifonia, que é a independência das vozes. " }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "uníss") { explica = "A ocorrência de uníssonos deixa a sonoridade muito vazia e, portanto, deve ser evitada." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "cruza") { explica = "Uma voz não deve cruzar o caminho de outra, ficando mais aguda do que aquela que está acima ou mais grave do que a que está logo abaixo. O cruzamento prejudica a independência e modifica o desenho melódico das vozes." }  else
+  if (resultado[valor][0].slice(0+n, 5+n) == "falsa") { explica = "A falsa relação de cromatismo prejudica a clareza das linhas melódicas, ao dar a impressão de cruzamento de vozes atráves do movimento melódico cromático." }  else
+  if (resultado[valor][0].slice(4+n, 23+n) == "prioriza movimentos") { explica = "O uso de movimentos contrários e oblíquos, em detrimento dos movimentos similares, beneficia a independência das vozes." }  else
+  if (resultado[valor][0] == "Excesso de movimentos similares") { explica = "O excesso de movimentos similares prejudica a independência das vozes. " }  else
+  if (resultado[valor][0] == "intervalo inicial") { explica = "Intervalo Inicial não expressa claramente a tônica e isso pode enfraquecer a definição tonal/modal. Para maior clareza, todas as vozes devem iniciar com uma nota do acorde da tônica, e a sua fundamental deveria ser apresentada, pelo menos, na voz mais grave." }  else
+  if (resultado[valor][0] == "intervalo final") { explica = "Intervalo final não expressa claramente a tônica e isso pode enfraquecer a definição tonal/modal e o sentido de resolução. Para maior clareza, todas as vozes devem finalizar com uma nota do acorde da tônica, e a sua fundamental deveria ser apresentada, pelo menos, na voz mais grave." }  else
+  if (resultado[valor][0] == "alcança intervalo final") { explica = "O movimento contrário na cadência final, beneficia o sentido de conclusão." }  else
+  if (resultado[valor][0] == "cadência final sem a sensível") { explica = "O uso da sensível conduzindo para a tônica, na cadência final, fortalece o sentido de conclusão." }  else
+  if (resultado[valor][0].slice(0+n, 16+n) == "cons. imperfeita") { explica = "As consonâncias imperfeitas tem uma sonoridade mais cheia de harmônicos e devem ser priorizadas, em detrimento das consonâncias imperfeitas." }  else
+  if (resultado[valor][0].slice(0+n, 9+n) == "distância") { explica = "Os intervalos harmônicos entre as vozes não deve ultrapassar o limite estipulado. Intervalos excessivamente amplos não são percebidos com a mesma clareza do que os mais próximos. A distância muito ampla também gera uma separação demasiada que enfraquece a relação entre as vozes." }  else
+  if (resultado[valor][0].slice(0+n, 10+n) == "nota não p") { explica = "Nota não pertencente ao acorde, sem o devido tratamento." }  else
+  if (resultado[valor][0].slice(11) == "fundamental") { explica = "A fundamental do acorde precisa ser apresentada para que ele soe como tal." }  else
+  if (resultado[valor][0] == "dissonância") { explica = "O uso de dissonância(s) não é permitido em exercícios de contraponto de 1ª espécie." }  else
+  if (resultado[valor][0] == "dissonância não tratada") { explica = "Dissonância(s) sem o tratamento adequado. Em um contexto consonante, as dissonâncias devem ser suavizadas através de tratamentos melódicos e intervalares específicos, tais como 'nota de passagem', 'bordadura', 'suspensão', entre outros, e de acordo com as diretrizes do exercício. Os tratamentos de dissonâncias são uma forma de potencializar a tensão dos intervalos dissonantes dando um sentido de movimento ao contraponto, ao direcionar para a resolução em um intervalo consonante." } // else
 
   msgExplica.text = explica;
   msgExplica.estado = true;
   msgExplica.visible = true; return;
+}
+
+// Função para mostrar tooltips
+function showTooltip(text, x, y) {
+  tooltipText.text = text
+  tooltip.x = x
+  tooltip.y = y + 20  // Posiciona abaixo do cursor
+  tooltip.visible = true
 }
 
 function destroirMsg() {
@@ -3305,8 +5244,7 @@ function verificar() {
  resultado = removeRepetição(resultado); // função para apresentar o resultado em uma nova janela
  //console.log( " - resultado.length - depois:" + resultado.length);
  apresentaResultado(0);
- //console.log( " - apresentou resultado?");
- console.log(log);
+
 }
 
 function analisaMelodia() {
@@ -3406,16 +5344,16 @@ function carregarNotas() {
   var cantus;
   for (var cf = 0; cf < cursor.segment.annotations.length; cf++) {
     if (cursor.segment.annotations[cf].type == 49 ||
-        cursor.segment.annotations[cf].type == 48) { console.log("Anotações:", cursor.segment.annotations[cf].text);
+        cursor.segment.annotations[cf].type == 48) { //console.log("Anotações:", cursor.segment.annotations[cf].text);
         cantus = cursor.segment.annotations[cf].text.toUpperCase();
         if (cantus == "CF" || cantus == "C.F." ||
             cantus == "CANTUS FIRMUS" || cantus == "CANTUS") {
-            if (cursor.segment.annotations[cf].track == 0) { console.log("CF está no track 0");
+            if (cursor.segment.annotations[cf].track == 0) { //console.log("CF está no track 0");
               vozCantusFirmus.text = 1;
-            } else { console.log("CF não está no track 0");
+            } else { //console.log("CF não está no track 0");
               vozCantusFirmus.text = (cursor.segment.annotations[cf].track/4)+1;
             };
-        }; console.log("track:", cursor.segment.annotations[cf].track, vozCantusFirmus.text);
+        }; //console.log("track:", cursor.segment.annotations[cf].track, vozCantusFirmus.text);
     };
   };
 
@@ -3455,12 +5393,12 @@ function carregarNotas() {
         var tempo = ((segmento.tick - tickComp[compasso]) / (1920 / denominador)) + 1;
         var voz = 0;
         var cifras, tom;
-        for (var cif = 0; cif < segmento.annotations.length; cif++) { console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
+        for (var cif = 0; cif < segmento.annotations.length; cif++) { //console.log(segmento.annotations[cif].type, segmento.annotations[cif].subStyle, segmento.annotations[cif].text);
              if (segmento.annotations[cif].subStyle == 30 &&
                  segmento.annotations[cif].type == 49) {
-              console.log("compasso", compasso, ":", segmento.annotations[cif]);
+              //console.log("compasso", compasso, ":", segmento.annotations[cif]);
               cifras = segmento.annotations[cif].text;
-              console.log("cif", cif, cifras);
+              //console.log("cif", cif, cifras);
            } else if ((segmento.annotations[cif].type == 49 ||
                        segmento.annotations[cif].type == 48) &&
                        segmento.annotations[cif].text.length > 4) {
@@ -4946,7 +6884,7 @@ function quantidadeMovSim() {
     if ((!seq || x == vozes.length) && mS > qtdMax) {
       verificados++;
       criaResultado(verificados, x-1, 0, v2, "Excesso de movimentos similares", mS+1, vozes[0].nota.length);
-      console.log("verificados", verificados);
+      //console.log("verificados", verificados);
     };
     if (seq) { mS++; } else { mS = 0;};
   };
@@ -6001,11 +7939,11 @@ function notaPedal(x, tipo) { //console.log(x,"=============== função nota ped
 //------------------------------------------------------------------------------
 function criaResultado(verificados, x, voz, i, tipo, numAcordes, numVozes) {
    var vozesR = [];
-   if (vozesT.length >= 1) { console.log("=== vozesT ===");
+   if (vozesT.length >= 1) { //console.log("=== vozesT ===");
      vozesR = vozesT; voz = vS; i = vI; }
-     else { console.log("=== vozes ===");
+     else { //console.log("=== vozes ===");
        vozesR = vozes; };
-       console.log("x:", x, "voz1:", voz, "voz2:", i, "tipo:", tipo, "qtdAcordes:", numAcordes, "qtdVozes:", numVozes);
+       //console.log("x:", x, "voz1:", voz, "voz2:", i, "tipo:", tipo, "qtdAcordes:", numAcordes, "qtdVozes:", numVozes);
    var primAcorde = x - (numAcordes-1);
    var compAnt = Math.floor(vozesR[primAcorde].compasso);
    var compAtual = Math.floor(vozesR[x].compasso);
@@ -6096,8 +8034,8 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
 
   //openFile('config.cfA');
 
-  inicializaVariáveis();
-  carregarCfg();
+  //inicializaVariáveis();
+  //carregarCfg();
   function inicializaVariáveis() {
    var preSet = "false-false-false-false-false-false-false-false-false-false-1-false-1-false-1-false-4-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-0-false-false-false-true-false-false-false-false-false-false-false-false-false-false-true-false-0-8-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-false-true-true-true-12-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-3-true-0-false-false-0-false-2-true-true-false-false-true-true-4-true-false-false-true-false-false-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-false-false-true-true-true-true-true-true-0-15-true-true-false-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-16-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-3-true-true-false-false-true-true-4-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-3-true-3-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-true-true-true-true-true-false-true-true-false-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-18-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-4-true-true-false-false-true-true-6-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-true-false-true-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-18-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-1-true-4-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-3-false-3-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-2-false-false-true-0-true-true-true-true-true-true-true-true-true-0-15-true-true-true-true-true-true-true-true-false-true-true-true-false-true-true-false-false-false-false-false-false-true-false-false-true-false-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-16-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-4-true-0-true-true-0-true-3-true-true-false-false-true-true-4-true-true-true-true-true-true-true-true-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-false-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-3-false-false-true-0-true-true-true-true-true-true-true-true-true-1-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-false-true-true-true-false-true-true-false-true-true-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-24-true-true-true-false-true-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-5-true-1-true-true-1-true-4-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true-true-true-true-true-false-true-1-true-1-true-4-true-4-true-true-true-true-true-true-true-true-true-true-true-false-false-false-true-true-true-true-4-true-true-4-false-false-true-0-true-true-true-true-true-true-true-true-true-2-15-true-true-true-true-true-true-true-false-true-false-true-true-true-false-false-true-true-true-false-false-true-true-false-true-true-true-true-true-true-true-true-true-false-true-true-true-false-false-true-true-true-true-true-false-false-false-true-true-24-true-true-true-false-false-true-true-true-false-false-true-false-true-true-true-false-false-true-true-true-true-5-true-2-true-true-1-true-5-true-true-false-false-true-true-8-true-true-true-true-true-true-true-true-false-false-false-false-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-true-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-false-true-true-true-true"
 
@@ -6108,14 +8046,8 @@ if (tipo == "dissonância não tratada") { avalia -= 5; };
     config[i] = preSet[i];
    };
 
-   //console.log(config.length, config[config.length-1]);
-
   }
-  window.visible = true;
-  window.raise();
-  // window.raise();
-  // window.raise();
-  // window.raise();
+
  } // fecha onRun
 
 } // fecha função Musescore
