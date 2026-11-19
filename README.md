@@ -7,7 +7,7 @@ marcando as notas envolvidas.
 
 ![Logo do Analisador de Contrapontos](Analisador/Logo.png)
 
-**Versão atual:** 0.5.2 (beta) · [Histórico de versões](CHANGELOG.md) · Licença [GPL-3.0](LICENSE)
+**Versão atual:** 0.5.3 (beta) · [Histórico de versões](CHANGELOG.md) · Licença [GPL-3.0](LICENSE)
 
 ## O que o plugin verifica
 
@@ -31,7 +31,8 @@ marcando as notas envolvidas.
 
 Todas as verificações podem ser ligadas, desligadas e ajustadas. As
 configurações podem ser salvas em arquivos `.cfA` e reaproveitadas; a última
-configuração usada é guardada automaticamente.
+configuração usada é guardada automaticamente (arquivo `analisador_auto.cfA`,
+na pasta do plugin).
 
 ## Instalação
 
@@ -55,8 +56,10 @@ configuração usada é guardada automaticamente.
    a partitura inteira é analisada.
 3. Abra o plugin, escolha o tipo de exercício (cantus firmus, espécie ou
    contraponto livre) e ajuste as verificações desejadas.
-4. Clique em verificar. As ocorrências aparecem na lista de resultados e são
-   marcadas na partitura.
+4. Clique em **Verificar**. As ocorrências aparecem na lista de resultados;
+   clique em um item para marcar as notas na partitura (duplo clique mostra
+   uma dica). Ao fechar a lista, as notas voltam à cor original, e o botão
+   **Ver análise** reabre a última lista.
 
 O [manual da versão 0.3](docs/manual-v0.3.md) (MuseScore 2 e 3) continua
 disponível e descreve em detalhe os conceitos e as opções de configuração,

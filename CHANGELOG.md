@@ -4,6 +4,38 @@ Todas as versões estão disponíveis como *tags* no GitHub (aba **Tags**, ou em
 `https://github.com/rogerioConstante/analisador-de-contrapontos/tree/<tag>`).
 Tags com sufixo `-ms2` são da linha para MuseScore 2; `v0.3-ms3` é a primeira para MuseScore 3.
 
+## v0.5.3 — 2026-11-19
+
+*Correções de análise e da interface*
+
+- **Trítono melódico** passa a ser verificado de forma independente, com as
+  exceções "preparado por semitom", "resolvido por semitom" e
+  "preparado/resolvido na direção contrária" (a exceção vale quando todas as
+  condições marcadas são atendidas). Corrige o erro `saltTrit is not defined`,
+  que interrompia a análise ao encontrar um trítono.
+- **Outros intervalos aumentados e diminutos** deixam de incluir o trítono e
+  passam a reconhecer todos os aumentados/diminutos (2ªA, 4ªd, 5ªA, 7ªd,
+  uníssono aumentado etc.).
+- **5ªs/8ªs consecutivas:** notas repetidas ou prolongadas nas duas vozes não
+  são mais acusadas; a marcação inclui as notas do 1º intervalo.
+- Vozes cruzadas: corrigida a comparação que identificava a voz superior em
+  paralelas, ocultas, consecutivas e uníssonos.
+- **Seleção de compassos:** quando a seleção ia até o fim da partitura, a
+  análise começava no 1º compasso. As mensagens passam a usar a numeração de
+  compassos da partitura.
+- **Configuração por tipo de contraponto:** cinco opções que não podiam ser
+  alteradas (exceções das intermitentes e quantidade máxima de movimentos
+  similares) e três que não eram guardadas passam a funcionar; configurações e
+  presets antigos são completados com as opções novas.
+- **Configuração automática** é carregada ao abrir o plugin e gravada ao trocar
+  de tipo e ao verificar, no arquivo `analisador_auto.cfA` da pasta do plugin
+  (o MuseScore 4.6 bloqueia a gravação na pasta pessoal).
+- **Marcação na partitura:** as notas voltam à cor original ao trocar de item,
+  ao fechar a janela de resultados, ao verificar de novo e ao fechar o plugin.
+- Novo botão **Ver análise**, que reabre a última lista de resultados.
+- Log de depuração mais limpo (aviso único quando faltam cifras na coerência
+  harmônica).
+
 ## v0.5.2 — 2026-02-26
 
 *Revisão de fevereiro*

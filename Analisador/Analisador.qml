@@ -1,5 +1,5 @@
 //=========================================================================================\\
-//  Analisador de Contrapontos v0.5.2                                                      \\
+//  Analisador de Contrapontos v0.5.3                                                      \\
 //                                                                                         \\
 //  Copyright (C)2026 Rogério Tavares Constante                                            \\
 //                                                                                         \\
@@ -24,7 +24,7 @@ import Qt.labs.platform 1.1 as Platform
 import FileIO 3.0
 
 MuseScore {
-  version: "0.5.2"
+  version: "0.5.3"
   title: "Analisador de Contrapontos"
   pluginType: "dialog"
   categoryCode: "Contraponto"
@@ -93,7 +93,7 @@ MuseScore {
       StyledTextLabel {
         width: parent.width
         y: painelEsquerdo.height/2-40
-        text: "Analisador de Contrapontos v0.52"
+        text: "Analisador de Contrapontos v0.5.3"
         color: corTextoDestaque
         font.pixelSize: 30
       }
@@ -495,6 +495,9 @@ MuseScore {
           x: intermitentesPainel.colX; y: intermitentesPainel.row(5,6)
           scale: 0.8
           checked: true
+          onClicked: {
+            checked = !checked; atualizarConfigPluginDoComponente(this, "interExTF")
+          }
         }
         StyledTextLabel {
           anchors.left: interExTF.right; anchors.leftMargin: 5; y: interExTF.y+5;
@@ -507,6 +510,9 @@ MuseScore {
           x: intermitentesPainel.colX; y: intermitentesPainel.row(5,7)
           scale: 0.8
           checked: true
+          onClicked: {
+            checked = !checked; atualizarConfigPluginDoComponente(this, "interExFim")
+          }
         }
         StyledTextLabel {
           anchors.left: interExFim.right; anchors.leftMargin: 5; y: interExFim.y+5;
@@ -519,6 +525,9 @@ MuseScore {
           x: intermitentesPainel.colX; y: intermitentesPainel.row(5,8)
           scale: 0.8
           checked: true
+          onClicked: {
+            checked = !checked; atualizarConfigPluginDoComponente(this, "interExCF")
+          }
         }
         StyledTextLabel {
           anchors.left: interExCF.right; anchors.leftMargin: 5; y: interExCF.y+5;
@@ -531,6 +540,9 @@ MuseScore {
           x: intermitentesPainel.colX; y: intermitentesPainel.row(5,9)
           scale: 0.8
           checked: true
+          onClicked: {
+            checked = !checked; atualizarConfigPluginDoComponente(this, "interExt")
+          }
         }
         StyledTextLabel {
           anchors.left: interExt.right; anchors.leftMargin: 5; y: interExt.y+5;
@@ -560,6 +572,9 @@ MuseScore {
           text: qsTranslate("PrefsDialogBase", "Qtd Máxima de")
           font.pixelSize: 11
           checked: true
+          onClicked: {
+            checked = !checked; atualizarConfigPluginDoComponente(this, "movSim")
+          }
         }
         Rectangle {
           anchors.left: movSim.left
@@ -2715,6 +2730,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "Cantus Firmus")
         onClicked: {
           tipoBotoes = 0
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
           if (melodia) {
             titulo1.text = ""; titulo2.text = ""; outros.visible = false;
@@ -2739,6 +2755,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "1ª esp.")
         onClicked: {
           tipoBotoes = 1
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
           if (priEsp) {
             titulo1.text = ""; titulo2.text = ""; outros.visible = false;
@@ -2760,6 +2777,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "2ª esp.")
         onClicked: {
           tipoBotoes = 2
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
           if (secEsp) {
             titulo1.text = ""; titulo2.text = ""; outros.visible = false;
@@ -2781,6 +2799,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "3ª esp.")
         onClicked: {
           tipoBotoes = 3
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
 
           if (terEsp) {
@@ -2802,6 +2821,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "4ª esp.")
         onClicked: {
           tipoBotoes = 4
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
 
           if (quaEsp) {
@@ -2823,6 +2843,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "5ª espécie")
         onClicked: {
           tipoBotoes = 5
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
 
           if (quiEsp) {
@@ -2844,6 +2865,7 @@ MuseScore {
         text: qsTranslate("PrefsDialogBase", "Contraponto Livre")
         onClicked: {
           tipoBotoes = 6
+          salvarConfiguracaoAutomatica();
           aplicarConfiguracaoNaInterface();
           if (livreCP) { titulo1.text = ""; titulo2.text = ""; outros.visible = false;
             melodias.visible = false; dissonancias.visible = false; conduz.visible = false;
@@ -3044,8 +3066,23 @@ MuseScore {
       }
       text: qsTranslate("PrefsDialogBase", "Fechar")
       onClicked: {
-        (typeof(quit) === 'undefined' ? Qt.quit : quit()); msgResult.close(); msgRelatorio.close();
+        apagaCor(); msgResult.close(); msgRelatorio.close();
+        (typeof(quit) === 'undefined' ? Qt.quit : quit());
       }
+      padding: 5
+    }
+    Button {
+      id: btVerAnalise
+      width: 100
+      x: painelInferior.width/2+120; y: painelInferior.height/2-12
+      enabled: temAnalise
+      opacity: temAnalise ? 1.0 : 0.4
+      background: Rectangle {
+        radius: 2
+        color: corBotaoAcaoSecundario
+      }
+      text: qsTranslate("PrefsDialogBase", "Ver análise")
+      onClicked: { verAnalise(); }
       padding: 5
     }
     StyledTextLabel {
@@ -3886,6 +3923,7 @@ MuseScore {
     id: msgResult
     modal: false
     visible: false
+    onVisibleChanged: { if (!visible) { apagaCor(); } }
     title: qsTr("Resultado da Análise")
     x: 5
     width: 695
@@ -4124,9 +4162,9 @@ MuseScore {
   }
   FileIO {
     id: autoConfigFile
-    source: autoConfigFile.homePath() + "/.analisador_auto.cfA"
+    source: caminhoAutoConfig
     onError: function(msg) {
-      debugLog("Erro no arquivo de configuração: " + msg)
+      if (!silenciarErroArquivo) { debugLog("Erro no arquivo de configuração: " + msg) };
     }
   }
   //-----------------------------------------------------------------------------------------------------------------
@@ -4159,6 +4197,12 @@ MuseScore {
   property var log: "";
   property var tipoCpAtual: ["cantusFirmus", "especie1", "especie2", "especie3", "especie4", "especie5", "contrapontoLivre"];
   property var configPlugin: null
+  property var configPadrao: null
+  property var notasColoridas: []        // [{obj, cor}] notas pintadas na partitura e sua cor original
+  property int itemSelecionado: 0        // último resultado clicado (para reabrir a análise)
+  property bool temAnalise: false        // há resultados guardados para o botão "Ver análise"
+  property string caminhoAutoConfig: ""  // arquivo de configuração automática (na pasta do plugin)
+  property bool silenciarErroArquivo: false
 
   Component.onCompleted: { // inicializa o configPlugin
     configPlugin = {
@@ -4187,6 +4231,7 @@ MuseScore {
             excetoTempoFraco: false,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: false,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: false,
             excetoCadenciaFinal: false,
             excetoSeCfNaoMove: false,
@@ -4311,6 +4356,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -4327,6 +4373,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -4405,6 +4452,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -4529,6 +4577,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -4545,6 +4594,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -4623,6 +4673,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -4747,6 +4798,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -4763,6 +4815,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -4841,6 +4894,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -4965,6 +5019,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -4981,6 +5036,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -5059,6 +5115,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -5183,6 +5240,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -5199,6 +5257,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -5277,6 +5336,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -5401,6 +5461,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -5417,6 +5478,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -5495,6 +5557,7 @@ MuseScore {
             excetoTempoFraco: true,
             tempoMeioForte: false,
             sincopadaEGrauConjunto: true,
+            alcancadaGrauConjunto: true,
             excetoTempoForteLigadas: true,
             excetoCadenciaFinal: true,
             excetoSeCfNaoMove: true,
@@ -5619,6 +5682,7 @@ MuseScore {
             naoConduzirAlterados: true,
             imediatamente: true,
             usarNaturaisSemNeutralizar: true,
+            limitarTempos: true,
             temposNotaAlterada: 4
           },
           intervalosCompostos: {
@@ -5635,6 +5699,7 @@ MuseScore {
             compensadoPorGrauConjunto: true,
             compensadoPorSaltoMenor5: true,
             saltoTempoForteMeioForte: true,
+            saltoTempoMeioForte: true,
             saltoSomenteAscendente: true
           },
           monotonia: {
@@ -5710,10 +5775,18 @@ MuseScore {
         }
       }
     }
+    configPadrao = JSON.parse(JSON.stringify(configPlugin)); // cópia dos valores padrão
     atualizarCaminhoPresets();
+    // o MuseScore 4.6 só permite gravar em pastas autorizadas: o arquivo automático fica na pasta do plugin
+    caminhoAutoConfig = formatarCaminho(Qt.resolvedUrl(".")) + "analisador_auto.cfA";
+    autoConfigFile.source = caminhoAutoConfig;
+    carregarConfiguracaoAutomatica(); // recupera a configuração da última sessão
+    aplicarConfiguracaoNaInterface();
+    aplicarConfigIntervNaInterface();
   }
   // Salva automaticamente ao fechar o plugin
   Component.onDestruction: {
+    try { apagaCor(); } catch(e) {};
     salvarConfiguracaoAutomatica()
   }
   // ----------- funções ---------
@@ -5758,6 +5831,7 @@ MuseScore {
       interExTf.checked = config.conducaoVozes.intermitentes.excetoTempoFraco;
       interExTf3.checked = config.conducaoVozes.intermitentes.tempoMeioForte;
       interExTf1.checked = config.conducaoVozes.intermitentes.sincopadaEGrauConjunto;
+      interExTf2.checked = config.conducaoVozes.intermitentes.alcancadaGrauConjunto;
       interExTF.checked = config.conducaoVozes.intermitentes.excetoTempoForteLigadas;
       interExFim.checked = config.conducaoVozes.intermitentes.excetoCadenciaFinal;
       interExCF.checked = config.conducaoVozes.intermitentes.excetoSeCfNaoMove;
@@ -5874,6 +5948,7 @@ MuseScore {
       neutA.checked = config.melodia.alteracoesModoMenor.naoConduzirAlterados;
       neutAim.checked = config.melodia.alteracoesModoMenor.imediatamente;
       neutN.checked = config.melodia.alteracoesModoMenor.usarNaturaisSemNeutralizar;
+      neutNim.checked = config.melodia.alteracoesModoMenor.limitarTempos;
       neutNqt.text = config.melodia.alteracoesModoMenor.temposNotaAlterada.toString();
 
       // Intervalos Compostos
@@ -5890,6 +5965,7 @@ MuseScore {
       saltM5Ex1.checked = config.melodia.intervalosCompostos.compensadoPorGrauConjunto;
       saltM5Ex2.checked = config.melodia.intervalosCompostos.compensadoPorSaltoMenor5;
       saltoTF.checked = config.melodia.intervalosCompostos.saltoTempoForteMeioForte;
+      saltoTmF.checked = config.melodia.intervalosCompostos.saltoTempoMeioForte;
       saltoTFEx.checked = config.melodia.intervalosCompostos.saltoSomenteAscendente;
 
       // Monotonia
@@ -5974,7 +6050,7 @@ MuseScore {
       marcarTrio(ckCons5, ckDissBaix5, ckDiss5, a.classe5);
       marcarTrio(ckCons6, ckDissBaix6, ckDiss6, a.classe6);
 
-      debugLog("Configuração de intervalos aplicada à interface com sucesso!");
+      //debugLog("Configuração de intervalos aplicada à interface com sucesso!");
 
     } catch(e) {
       debugLog("Erro fatal ao aplicar intervalos na interface: " + e);
@@ -6012,6 +6088,7 @@ MuseScore {
       "interExTf": "conducaoVozes.intermitentes.excetoTempoFraco",
       "interExTf3": "conducaoVozes.intermitentes.tempoMeioForte",
       "interExTf1": "conducaoVozes.intermitentes.sincopadaEGrauConjunto",
+      "interExTf2": "conducaoVozes.intermitentes.alcancadaGrauConjunto",
       "interExTF": "conducaoVozes.intermitentes.excetoTempoForteLigadas",
       "interExFim": "conducaoVozes.intermitentes.excetoCadenciaFinal",
       "interExCF": "conducaoVozes.intermitentes.excetoSeCfNaoMove",
@@ -6126,6 +6203,7 @@ MuseScore {
       "neutA": "melodia.alteracoesModoMenor.naoConduzirAlterados",
       "neutAim": "melodia.alteracoesModoMenor.imediatamente",
       "neutN": "melodia.alteracoesModoMenor.usarNaturaisSemNeutralizar",
+      "neutNim": "melodia.alteracoesModoMenor.limitarTempos",
       "neutNqt": "melodia.alteracoesModoMenor.temposNotaAlterada",
 
       // Melodia - Intervalos Compostos
@@ -6142,6 +6220,7 @@ MuseScore {
       "saltM5Ex1": "melodia.intervalosCompostos.compensadoPorGrauConjunto",
       "saltM5Ex2": "melodia.intervalosCompostos.compensadoPorSaltoMenor5",
       "saltoTF": "melodia.intervalosCompostos.saltoTempoForteMeioForte",
+      "saltoTmF": "melodia.intervalosCompostos.saltoTempoMeioForte",
       "saltoTFEx": "melodia.intervalosCompostos.saltoSomenteAscendente",
 
       // Melodia - Monotonia
@@ -6208,7 +6287,7 @@ MuseScore {
     }
   }
   function atualizarConfigPluginDoComponente(componente, componenteId) {
-    debugLog("atualizarConfigPluginDoComponente: " + componenteId);
+    //debugLog("atualizarConfigPluginDoComponente: " + componenteId);
     var valor;
     // Determina o valor baseado no tipo do componente
     if (componente.hasOwnProperty('checked')) {
@@ -6228,19 +6307,37 @@ MuseScore {
     configPlugin.intervalos[modo][chave] = valor;
     debugLog("Intervalo atualizado: " + modo + "." + chave + " = " + valor);
   }
+  function completarConfig(destino, padrao) { // acrescenta as opções que faltam em configurações salvas por versões anteriores
+    if (!padrao || typeof padrao !== "object") { return destino; };
+    if (!destino || typeof destino !== "object") { return JSON.parse(JSON.stringify(padrao)); };
+    for (var chave in padrao) {
+      if (destino[chave] === undefined || destino[chave] === null) {
+        destino[chave] = JSON.parse(JSON.stringify(padrao[chave]));
+      } else if (typeof padrao[chave] === "object" && !Array.isArray(padrao[chave])) {
+        destino[chave] = completarConfig(destino[chave], padrao[chave]);
+      };
+    };
+    return destino;
+  }
   function carregarConfiguracaoAutomatica() {
     try {
+      var conteudo = "";
       if (autoConfigFile.exists()) {
-        var conteudo = autoConfigFile.read();
-        if (conteudo && conteudo.trim() !== "") {
-          // Converte o texto do arquivo diretamente para o objeto configPlugin
-          configPlugin = JSON.parse(conteudo);
-          debugLog("Configuração JSON carregada com sucesso!");
-        } else {
-          debugLog("Arquivo de preset vazio. Usando configuração padrão.");
+        conteudo = autoConfigFile.read();
+      } else { // primeira execução: tenta aproveitar o arquivo das versões anteriores (pasta pessoal)
+        silenciarErroArquivo = true;
+        try {
+          autoConfigFile.source = autoConfigFile.homePath() + "/.analisador_auto.cfA";
+          if (autoConfigFile.exists()) { conteudo = autoConfigFile.read(); };
+        } catch(e2) { conteudo = ""; }
+        finally {
+          autoConfigFile.source = caminhoAutoConfig;
+          silenciarErroArquivo = false;
         }
-      } else {
-        debugLog("Nenhuma configuração salva encontrada. Usando padrão.");
+      }
+      if (conteudo && conteudo.trim() !== "") {
+        // Converte o texto do arquivo diretamente para o objeto configPlugin
+        configPlugin = completarConfig(JSON.parse(conteudo), configPadrao);
       }
     } catch(e) {
       debugLog("Erro fatal ao carregar configuração JSON: " + e);
@@ -6251,7 +6348,6 @@ MuseScore {
       // Converte o objeto configPlugin em texto formatado (com recuo de 2 espaços)
       var configTexto = JSON.stringify(configPlugin, null, 2);
       autoConfigFile.write(configTexto);
-      debugLog("Configuração salva em JSON com sucesso!");
     } catch(e) {
       debugLog("Erro ao salvar configuração: " + e);
     }
@@ -6266,7 +6362,7 @@ MuseScore {
       var conteudo = autoConfigFile.read();
 
       if (conteudo && conteudo.trim() !== "") {
-        configPlugin = JSON.parse(conteudo);
+        configPlugin = completarConfig(JSON.parse(conteudo), configPadrao);
         aplicarConfiguracaoNaInterface();
         aplicarConfigIntervNaInterface();
         debugLog("Arquivo carregado: " + path);
@@ -6276,7 +6372,7 @@ MuseScore {
     } catch(e) {
       debugLog("Erro ao abrir preset: " + e);
     } finally {
-      autoConfigFile.source = autoConfigFile.homePath() + "/.analisador_auto.cfA";
+      autoConfigFile.source = caminhoAutoConfig;
     }
   }
   function atualizarCaminhoPresets() { //debugLog("AtualizarCaminhoPresets()")
@@ -6307,13 +6403,14 @@ MuseScore {
       debugLog("Erro ao exportar preset: " + e);
     } finally {
       // SEMPRE volte para o arquivo padrão para não quebrar o salvamento automático
-      autoConfigFile.source = autoConfigFile.homePath() + "/.analisador_auto.cfA";
+      autoConfigFile.source = caminhoAutoConfig;
     }
   }
   function formatarCaminho(fileUrl) {
     var path = fileUrl.toString();
     // Remove o protocolo file:// ou file:///
     path = path.replace(/^(file:\/{2,3})/, "");
+    try { path = decodeURIComponent(path); } catch(e) {}; // espaços e acentos vêm codificados (%20, %C3%A9...)
 
     // No Windows, o QML às vezes deixa uma barra no início: /C:/...
     // No Linux, precisamos garantir que comece com /
@@ -6356,6 +6453,7 @@ MuseScore {
     if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 7ª") { explica = "Intervalo melódico de 7ª prejudica a fluência melódica e é de difícil execução vocal." } else
     if (resultado[valor][0].slice(0+n, 24+n) == "intervalo melódico de 6ª") { explica = "Intervalo melódico de 6ª, por ser amplo, prejudica a fluência melódica e deveria ser compensado por um movimento suave na direção contrária." } else
     if (resultado[valor][0].slice(0+n, 28+n) == "intervalo melódico aumentado") { explica = "Intervalo melódico aumentado ou diminuto prejudica a fluência melódica e é de difícil execução vocal." } else
+    if (resultado[valor][0].slice(0+n, 16+n) == "trítono melódico") { explica = "O trítono melódico (4ª aumentada ou 5ª diminuta) prejudica a fluência melódica e é de difícil execução vocal. Quando permitido, deve ser preparado e resolvido por semitom, na direção contrária à do salto, conforme as exceções marcadas." } else
     if (resultado[valor][0].slice(0+n, 23+n) == "intervalo melódico > 8ª") { explica = "Intervalo melódico maior do que a 8ª, por ser amplo, prejudica a fluência melódica e deveria ser compensado por um movimento suave na direção contrária." } else
     if (resultado[valor][0].slice(0+n, 13+n) == "trítono nas 2") { explica = "O intervalo de trítono entre as notas das duas extremidades de um segmento melódico de intervalos na mesma direção coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono, em alguns contextos, o trítono nas duas extremidades também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
     if (resultado[valor][0].slice(0+n, 13+n) == "trítono em 1") { explica = "O intervalo de trítono entre uma nota da extremidade de um segmento melódico de intervalos na mesma direção e outra nota deste mesmo segmento coloca em evidência este trítono. Embora mais sutil do que a realização melódica direta do trítono e do que o trítono nas duas extremidades, em alguns contextos, o trítono em uma extremidade também prejudica a fluência e o direcionamento melódico e é de difícil execução vocal." } else
@@ -6424,34 +6522,53 @@ MuseScore {
   }
   function colorir(valor) {
     //debugLog("colorir = ", valor, mensagem[valor-1].text);
-    var indiceReal = (pag * 20) + (valor - 1);
+    if (typeof curScore == 'undefined' || !curScore) { return; };
     curScore.startCmd();
-    apagaCor();
+    restaurarCores(); // devolve a cor original das notas marcadas antes
+    for (var x = 0; x < mensagem.length; x++) {
+      if (mensagem[x]) { mensagem[x].color = corFundoPrincipal; };
+    };
     if (mensagem[valor-1]) { // Verifica se mensagem[x] existe
       mensagem[valor-1].color = corBotaoSelecionado;
     };
     if (Array.isArray(resultado[valor])) { // Garante que resultado[x] é um array
+      // 1º guarda a cor original de todas as notas (uma nota prolongada pode aparecer mais de uma vez)...
+      // A cor é guardada como TEXTO ("#rrggbb"): no Qt 6, 'obj.color' é uma referência à propriedade da nota,
+      // que seria lida novamente (já vermelha) no momento de restaurar.
+      var novas = [];
       for (var z=1;z<resultado[valor].length;z++) {
-        if (resultado[valor][z]) { resultado[valor][z].color = "red"; };
+        var obj = resultado[valor][z];
+        if (obj) { try { novas.push({ obj: obj, cor: String(obj.color) }); } catch(e) {}; };
+      };
+      notasColoridas = novas; // atribuição direta (não depende de alterar o array da propriedade no lugar)
+      // ...depois pinta
+      for (var z=1;z<resultado[valor].length;z++) {
+        if (resultado[valor][z]) { try { resultado[valor][z].color = "red"; } catch(e) {}; };
       };
     };
     curScore.endCmd();
-    //msgResult.raise();
+    itemSelecionado = valor;
+  }
+  function restaurarCores() { // deve ser chamada dentro de startCmd/endCmd
+    for (var k = notasColoridas.length - 1; k >= 0; k--) {
+      try { notasColoridas[k].obj.color = notasColoridas[k].cor; } catch(e) {}; // a nota pode ter sido apagada/editada
+    };
+    notasColoridas = [];
   }
   function apagaCor() {
-
-    for (var x=0;x<=resultado.length;x++) { // apaga seleções anteriores e botões
-      if (mensagem[x]) { // Verifica se mensagem[x] existe
-        mensagem[x].color = corFundoPrincipal; // Ajusta a cor para "#6c6d6d"
-      };
-      if (Array.isArray(resultado[x])) { // Garante que resultado[x] é um array
-        for (var z = 0; z < resultado[x].length; z++) { // Corrige índices baseados em 0
-          if (resultado[x][z]) { // Verifica se resultado[x][z] existe
-              resultado[x][z].color = "black"; // Ajusta a cor para "black"
-          };
-        };
-      };
+    for (var x = 0; x < mensagem.length; x++) { // desmarca os botões de resultado
+      if (mensagem[x]) { mensagem[x].color = corFundoPrincipal; };
     };
+    if (notasColoridas.length == 0) { return; };
+    if (typeof curScore == 'undefined' || !curScore) { notasColoridas = []; return; };
+    curScore.startCmd();
+    restaurarCores();
+    curScore.endCmd();
+  }
+  function verAnalise() { // reabre a janela de resultados da última verificação
+    if (!temAnalise) { return; };
+    apresentaResultado(0);
+    if (itemSelecionado > 0 && mensagem[itemSelecionado-1]) { colorir(itemSelecionado); };
   }
   function removeRepetição(tpc) {  //
     var acordeX = [];
@@ -7058,6 +7175,9 @@ MuseScore {
   }
   //-----------------------------------------------
   function verificar() {
+  apagaCor();
+  itemSelecionado = 0;
+  temAnalise = false;
   vozCF = null;
   vozesT = [];
   finaliza = false;
@@ -7071,6 +7191,7 @@ MuseScore {
             msgErros.text += "Erro! \n Nenhum tipo de contraponto selecionado!\n Utilize a barra laterial para selecionar.";
                         msgErros.visible=true; return; };
   destroirMsg();
+  salvarConfiguracaoAutomatica();
   resultado = [];
   carregarNotas();
   //debugLog(" - carregou notas ---------");
@@ -7082,6 +7203,8 @@ MuseScore {
   //debugLog(" resultado.length - antes:" + resultado.length);
   resultado = removeRepetição(resultado); // função para apresentar o resultado em uma nova janela
   //debugLog( " - resultado.length - depois:" + resultado.length);
+  pag = 0;
+  temAnalise = true;
   apresentaResultado(0);
   }
   function analisaMelodia() {
@@ -7091,6 +7214,7 @@ MuseScore {
   if (priviGC.checked) { privilegiaConj(); };
   if (salt7.checked) { melodia7(); };
   if (salt6.checked) { melodia6(); };
+  if (tritono.checked) { melodiaTritono(); };
   if (saltAum.checked) { melodiaAum(); };
   if (saltM8.checked) { melodia8(); };
   if (tritono2.checked) { tritono2Ext(); };
@@ -7136,7 +7260,7 @@ MuseScore {
   //---------------------------------------
   function carregarNotas() {
 
-   //debugLog("Analisador de Contrapontos v0.5.2 .... Rogério Tavares Constante - 2026(c)")
+   //debugLog("Analisador de Contrapontos v0.5.3 .... Rogério Tavares Constante - 2026(c)")
 
     if (typeof curScore == 'undefined' || curScore == null) { // verifica se há partitura
       //debugLog("nenhuma partitura encontrada");
@@ -7214,11 +7338,14 @@ MuseScore {
 
         // lê as informações da seleção (ou do documento inteiro, caso não haja seleção)
 
-          if(!cursor.segment) { cursor.rewind(0); } else { cursor.rewind(1); }; // posiciona o cursor no início
+          // posiciona o cursor no início da seleção (ou da partitura). Obs.: o laço acima deixa cursor.segment nulo
+          // quando a seleção vai até o fim da partitura; por isso a decisão usa 'processaTudo' e não o cursor.
+          if (processaTudo) { cursor.rewind(0); } else { cursor.rewind(1); };
           var segmento = cursor.segment;
           var pausa = false;
-          for (var c=1;c<tickComp.length;c++) { // atualiza 'compasso' para posição do segmento
-            if (tickComp[c] >= segmento.tick) { compasso = c; break; };
+          compasso = 1;
+          for (var c=1;c<tickComp.length;c++) { // atualiza 'compasso' para o compasso que contém o segmento
+            if (tickComp[c] <= segmento.tick) { compasso = c; } else { break; };
           };
         while (segmento && (processaTudo || segmento.tick < posFinal)) {
           carregou = false;
@@ -7253,7 +7380,7 @@ MuseScore {
                 if ( textoTom.substr(0, 2) == "DÓ" || textoTom.substr(0, 2) == "RÉ" ||
                     textoTom.substr(0, 2) == "MI" || textoTom.substr(0, 2) == "FÁ" ||
                     textoTom.substr(0, 2) == "SO" || textoTom.substr(0, 2) == "LÁ" ||
-                    textoTom.substr(0, 2) == "SI") { tom = textoTom; debugLog(`${segmento.tick} tom ${tom}`)};
+                    textoTom.substr(0, 2) == "SI") { tom = textoTom; /*debugLog(`${segmento.tick} tom ${tom}`)*/ };
             };
           };
 
@@ -7356,7 +7483,7 @@ MuseScore {
 
                 cursor.next(); segmento = cursor.segment;
             compasso++;
-            if (tickComp[compasso] && segmento.tick < tickComp[compasso]) { compasso--; };
+            if (segmento && tickComp[compasso] && segmento.tick < tickComp[compasso]) { compasso--; };
         };
 
     if (seg == 0) { msgErros.text += "Nenhum acorde carregado!!\n";
@@ -7554,7 +7681,7 @@ MuseScore {
     };
   };
   }
-  function melodiaAum() {
+  function melodiaAum() { // intervalos melódicos aumentados e diminutos, exceto o trítono (verificado em melodiaTritono)
   if (vozes.length<2) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de intervalo melódico aumentado!\n";
                           msgErros.estado = true; return; };
 
@@ -7563,22 +7690,42 @@ MuseScore {
     if ((melodia && voz != vozCF) || (!melodia && !livreCP && voz == vozCF)) { continue; };
     for (var x=1;x<vozes.length;x++) { // percorre acordes
     if (!vozes[x].nota[voz] || !vozes[x-1].nota[voz]) {break;};
-    if (vozes[x-2] && vozes[x+1]) {
-      var iPrep = vozes[x-1].nota[voz] - vozes[x-2].nota[voz];
-      var iTrit = vozes[x].nota[voz] - vozes[x-1].nota[voz];
-      var iRes = vozes[x+1].nota[voz] - vozes[x].nota[voz];
-      if ((Math.abs(iPrep) < 3 && Math.abs(iRes) < 3 && Math.abs(iPrep) > 0 && Math.abs(iRes) > 0) && // prepara e resolve por grau conjunto
-          ((iPrep > 0 && iTrit < 0 && iRes < 0) || (iPrep > 0 && iTrit < 0 && iRes < 0))) // prepara e resolve na direção contrária do trítono
-          { var preparado = true } else { var preparado = false; };
-    };
-    var intervalo = Math.abs(vozes[x].nota[voz] - vozes[x-1].nota[voz]);
     var intCT = Math.abs(vozes[x].tonal[voz] - vozes[x-1].tonal[voz]);
-    if ((intervalo == 6 && (!saltTrit.checked || !preparado) )|| // 4ªa e 5ªd
-        (intCT == 9) || // 2ªa
-        (intCT == 8)) { // 5ªa
+    // distância no ciclo de quintas (tpc): 0-5 = justos, maiores e menores; 6 = trítono (4ªA/5ªd);
+    // 7 ou mais = demais aumentados e diminutos (1ªA/8ªd, 2ªA/7ªd, 4ªd/5ªA, 3ªd/6ªA, 3ªA/6ªd, 2ªd/7ªA...)
+    if (intCT >= 7) {
         verificados++;
-        criaResultado(verificados, x, voz, voz, "intervalo melódico aumentado ou diminuto", 2, 1);
+        criaResultado(verificados, x, voz, voz, "intervalo melódico aumentado/diminuto", 2, 1);
       };
+    };
+  };
+  }
+  function melodiaTritono() { // trítono melódico (4ªA ou 5ªd), com as exceções de preparação/resolução
+  if (vozes.length<2) { msgErros.text += "Não possui a quantidade mínima de acordes para a verificação de trítono melódico!\n";
+                          msgErros.estado = true; return; };
+  var exPrep = tritonoPrep.checked, exRes = tritonoRes.checked, exDir = tritonoDirCon.checked;
+  var vozInicial = 0, vozFinal = vozes[1].tonal.length-1;
+  for (var voz = vozInicial; voz <= vozFinal; voz++) {
+    if ((melodia && voz != vozCF) || (!melodia && !livreCP && voz == vozCF)) { continue; };
+    var nv = []; // somente as notas atacadas (ignora prolongamentos e ligaduras)
+    for (var x=0;x<vozes.length;x++) {
+      if (!vozes[x].nota[voz]) { break; };
+      if (x == 0 || !vozes[x].ligadura[voz]) { nv.push({ nota: vozes[x].nota[voz], tonal: vozes[x].tonal[voz], pos: x }); };
+    };
+    for (var k=1;k<nv.length;k++) {
+      var iTrit = nv[k].nota - nv[k-1].nota;
+      var dTpc = Math.abs(nv[k].tonal - nv[k-1].tonal);
+      if (Math.abs(iTrit) != 6 || dTpc != 6) { continue; };
+      var iPrep = (k >= 2) ? nv[k-1].nota - nv[k-2].nota : null;
+      var iRes = (k+1 < nv.length) ? nv[k+1].nota - nv[k].nota : null;
+      // exceção: somente quando todas as condições marcadas são atendidas
+      var excecao = (exPrep || exRes || exDir);
+      if (exPrep && (iPrep === null || Math.abs(iPrep) != 1)) { excecao = false; };
+      if (exRes && (iRes === null || Math.abs(iRes) != 1)) { excecao = false; };
+      if (exDir && (iPrep === null || iRes === null || iPrep * iTrit >= 0 || iRes * iTrit >= 0)) { excecao = false; };
+      if (excecao) { continue; };
+      verificados++;
+      criaResultado(verificados, nv[k].pos, voz, voz, "trítono melódico", nv[k].pos - nv[k-1].pos + 1, 1);
     };
   };
   }
@@ -7972,7 +8119,7 @@ MuseScore {
     if (vozSup[x] == pfSs) { pfSsc++; // contagem dos pontos focais superiores;
       var distS = vozes[x].posição[voz] - vozes[pfAntS].posição[voz]; //distância para o PF anterior
       if (vozSup[x-1] == pfSs || // não conta se nota anterior é ponto focal
-          ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == 1)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
+          ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == vozes[0].compasso)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
           distS <= distMax // não conte se distância entre os PFs for <= a dois tempos
           ) { pfSsc--; } else
       if (melPFs.checked && pfSsc > 1) { verificados++; criaResultado(verificados, x, voz, voz, "repete ponto focal superior", 1, 1); } else
@@ -7982,7 +8129,7 @@ MuseScore {
       var distI = vozes[x].posição[voz] - vozes[pfAntI].posição[voz]; //distância para o PF anterior
       //debugLog(voz, x, distMax, distI, pfAntI);
       if (vozSup[x-1] == pfSi || // não conta se nota anterior é ponto focal
-          ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == 1)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
+          ((x >= vozes.length-3 && (vozes[x].compasso == ultComp-1 || vozes[x].compasso == ultComp)) || (x <= 3 && vozes[x].compasso == vozes[0].compasso)) || // não conta se é a uma das 3 primeiras (no 1º comp.) ou 3 últimas notas (no último ou penúltimo comp.)
           distI <= distMax // não conte se distância entre os PFs for <= a dois tempos
           ) { pfSic--; } else
       if (melPFi.checked && pfSic > 1) { verificados++; criaResultado(verificados, x, voz, voz, "repete ponto focal inferior", 1, 1); } else
@@ -8292,10 +8439,10 @@ MuseScore {
           var dir2 = direção(vozesT[x].nota[1] - vozesT[x-1].nota[1]);
           var intAtual = vozesT[x].nota[0] - vozesT[x].nota[1];
           var intAnt = vozesT[x-1].nota[0] - vozesT[x-1].nota[1];
-          if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+          if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
             var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
               var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
-          if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+          if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[1]) {
             var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
               var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
         } else { return };
@@ -8363,10 +8510,10 @@ MuseScore {
               var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
               var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
               var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
-              if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+              if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
                 var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
                   var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
-              if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+              if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[1]) {
                 var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
                   var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
 
@@ -8416,10 +8563,10 @@ MuseScore {
               var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
               var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
               var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
-              if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+              if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
                 var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
                   var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
-              if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
+              if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[1]) {
                 var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
                   var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
 
@@ -8486,7 +8633,7 @@ MuseScore {
           var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
           var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
           var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
-          if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+          if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
             var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
               var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
 
@@ -8528,14 +8675,15 @@ MuseScore {
           for (i=voz+1; i < vozesT[x].nota.length; i++) { // percorre outras vozesT
 
               var dir2 = direção(vozesT[x].nota[i] - vozesT[x-1].nota[i]);
+              if (dir1 == 0 && dir2 == 0) { continue; }; // nenhuma voz se move (nota repetida ou prolongada): não há condução
               var intAtual = vozesT[x].nota[voz] - vozesT[x].nota[i];
               var intAnt = vozesT[x-1].nota[voz] - vozesT[x-1].nota[i];
-              if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
-                var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
-                  var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
-              if (vozesT[x-1].nota[0] >= vozesT[x-1].nota[0]) {
-                var intT2 = vozesT[x-1].tonal[0] - vozesT[x-1].tonal[1]; } else {
-                  var intT2 = vozesT[x-1].tonal[1] - vozesT[x-1].tonal[0]; };
+              if (intAtual >= 0) {
+                var intT1 = vozesT[x].tonal[voz] - vozesT[x].tonal[i]; } else {
+                  var intT1 = vozesT[x].tonal[i] - vozesT[x].tonal[voz]; };
+              if (intAnt >= 0) {
+                var intT2 = vozesT[x-1].tonal[voz] - vozesT[x-1].tonal[i]; } else {
+                  var intT2 = vozesT[x-1].tonal[i] - vozesT[x-1].tonal[voz]; };
 
               // consecutivas
 
@@ -8544,8 +8692,11 @@ MuseScore {
                   (intT1 == 1 || intT1 == 0) && (intT2 == 1 || intT2 == 0))  {
 
                 if ((consecObli.checked && (dir1 == 0 || dir2 == 0)) || (consecCont.checked && (dir1 != 0 && dir2 != 0 && dir1 != dir2))) {
+                    // marca a partir do último ataque de cada voz, para incluir o 1º intervalo mesmo quando há notas prolongadas
+                    var ini = x-1;
+                    while (ini > 0 && vozesT[ini].ligadura[0] && vozesT[ini].ligadura[1]) { ini--; };
                     verificados++;
-                    criaResultado(verificados, x, voz, i, "5ª ou 8ª consecutivas", 2, 2);
+                    criaResultado(verificados, x, voz, i, "5ª ou 8ª consecutivas", x - ini + 1, 2);
                 };
               };
           };
@@ -8617,7 +8768,7 @@ MuseScore {
     if ((!unissTF.checked || pMetric != "f") && (!unissTmF.checked || pMetric != "mF"))  { // exceção tempo fraco e meio forte
       for (var voz=1;voz<vozesT[x].nota.length;voz++) {
         var int1 = vozesT[x].nota[voz-1] - vozesT[x].nota[voz];
-        if (vozesT[x].nota[0] >= vozesT[x].nota[0]) {
+        if (vozesT[x].nota[0] >= vozesT[x].nota[1]) {
           var intT1 = vozesT[x].tonal[0] - vozesT[x].tonal[1]; } else {
             var intT1 = vozesT[x].tonal[1] - vozesT[x].tonal[0]; };
         if (int1 == 0 && intT1 == 0) { uni++; };
@@ -8833,31 +8984,33 @@ MuseScore {
   function coerenciaHarmonica() {
   //debugLog( "================ Coerência Harmônica =================\n")
     var novoX, acordeAnterior;
+    var semCifra = []; // compassos com notas sem cifra
     for (var x=0;x<vozes.length;x++) {
+      if (!vozes[x].cifras && semCifra.indexOf(vozes[x].compasso) == -1) { semCifra.push(vozes[x].compasso); };
       //debugLog(x, vozes[x].tom);
       texto2tonica(vozes[x].tom);
       var tom = tonicaTPC(btTonica.currentText, btAcid.currentText);
-      debugLog("=========== " + tom);
+      //debugLog("=========== " + tom);
       for (var voz = 0; voz < vozes[1].tonal.length; voz++) {
         //debugLog("= = = = = = ", x, vozes.length);
         var notaAcento = verificaTempoForte(vozes[x].tempo[voz],vozes[x].formula[0]);
         var nota = vozes[x].tonal[voz] - tom;
-        debugLog(`  ======== ${x}, ${vozes[x].cifras}`);
+        //debugLog(`  ======== ${x}, ${vozes[x].cifras}`);
         var acorde = cifra2notas(vozes[x].cifras, x); //debugLog(x, "Acorde:", acorde);
         if (!acorde) { //debugLog(x,") var acorde = indefinido!!");
                       continue; };
-        debugLog(`===========----------------=========== ${acorde}, ${nota}`);
+        //debugLog(`===========----------------=========== ${acorde}, ${nota}`);
         var pertence = sePertence(acorde, nota);
         var mudaAcorde = true;
         if (acordeAnterior && acorde.toString() == acordeAnterior.toString()) { mudaAcorde = false; };
-        debugLog(`nota pertence ao acorde? ${pertence}, ${acorde.toString()}, ${acordeAnterior}, ${mudaAcorde}, ${notaAcento}`);
+        //debugLog(`nota pertence ao acorde? ${pertence}, ${acorde.toString()}, ${acordeAnterior}, ${mudaAcorde}, ${notaAcento}`);
         if (!pertence &&
                   (notaAcento == "F" || mudaAcorde ||
                   (!cHarmoniaEx.checked && notaAcento == "f") ||
                   (!cHarmoniaEx2.checked && notaAcento == "mF")
                 )) {
           if (!priEsp) {
-            debugLog("compasso: " + vozes[x].compasso + " " + x);
+            //debugLog("compasso: " + vozes[x].compasso + " " + x);
             novoX = cambiata(x, "ch"); if (novoX != x) { continue; };
             novoX = bordadura4(x, "ch"); if (novoX != x) { continue; };
             novoX = suspensão5(x, "ch"); if (novoX != x) { continue; };
@@ -8878,6 +9031,20 @@ MuseScore {
     };
     acordeAnterior = acorde;
   };
+    if (semCifra.length > 0) {
+      debugLog("coerenciaHarmonica(): notas sem cifra no(s) compasso(s) " + faixasCompassos(semCifra) +
+               " — verificação de notas fora do acorde ignorada nesses trechos.");
+    };
+  }
+  function faixasCompassos(lista) { // [1,2,3,5,7,8] -> "1–3, 5, 7–8"
+    var c = lista.slice().sort(function(a, b) { return a - b; });
+    var partes = [], ini = c[0], ant = c[0];
+    for (var k = 1; k <= c.length; k++) {
+      if (k < c.length && c[k] == ant + 1) { ant = c[k]; continue; };
+      partes.push(ini == ant ? String(ini) : ini + "–" + ant);
+      if (k < c.length) { ini = c[k]; ant = c[k]; };
+    };
+    return partes.join(", ");
   }
   function coerHarmFund() {
 
@@ -9746,9 +9913,8 @@ MuseScore {
     var compAnt = Math.floor(vozesR[primAcorde].compasso);
     var compAtual = Math.floor(vozesR[x].compasso);
     var qtdVozes = vozesR[x].nota.length;
-    var compInicial = Math.floor(vozesR[0].compasso);
-    if (compAnt != compAtual && numAcordes > 1) { var compasso = (compAnt - compInicial + 1) + " ao " + (compAtual - compInicial + 1);}
-                                                          else { var compasso = (compAtual - compInicial + 1); };
+    if (compAnt != compAtual && numAcordes > 1) { var compasso = compAnt + " ao " + compAtual;}
+                                                          else { var compasso = compAtual; };
     switch (numVozes) {   // cria mensagem de texto
       case "ne":
       case 1: var qualVoz = ", na voz "+ (voz+1); break;
@@ -9789,7 +9955,8 @@ MuseScore {
       tipo.substring(0, 14) == "Não privilegia" ||
       tipo == "intervalo melódico de 7ª" ||
       tipo == "intervalo melódico de 6ª" ||
-      tipo == "intervalo melódico aumentado" ||
+      tipo == "intervalo melódico aumentado/diminuto" ||
+      tipo == "trítono melódico" ||
       tipo == "intervalo melódico > 8ª" ||
       tipo == "trítono nas 2 extremidades" ||
       tipo == "trítono em 1 extremidade" ||
